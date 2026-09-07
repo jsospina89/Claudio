@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Running Calculator</title>
+<style>
+  :root {
+    --bg: #f4f6f5;
+    --panel: #ffffff;
+    --ink: #1c2321;
+    --muted: #6b7770;
+    --border: #e1e6e3;
+    --orange: #ff6b35;
+    --orange-dark: #e6501f;
+    --teal: #12877f;
+    --teal-light: #e3f5f3;
+    --orange-light: #fff1ea;
+    --danger: #d94848;
+    --shadow: 0 6px 20px rgba(20, 40, 35, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161a;
+      --panel: #1a2126;
+      --ink: #ecf1ee;
+      --muted: #9aa8a1;
+      --border: #2a3339;
+      --teal-light: #16302d;
+      --orange-light: #2c1f16;
+      --shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .logo {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--orange), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  h1 { font-size: 22px; margin: 0; }
+  .sub { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .panel h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+
+  .row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 120px; }
+  .field label { font-size: 12px; color: var(--muted); font-weight: 600; }
+  input, select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    font-family: inherit;
+  }
+  input:focus, select:focus { border-color: var(--teal); }
+
+  .unit-toggle { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .unit-toggle button {
+    flex: 1; border: none; background: var(--bg); color: var(--muted);
+    padding: 10px 12px; cursor: pointer; font-size: 13px; font-weight: 600;
+  }
+  .unit-toggle button.active { background: var(--teal); color: white; }
+
+  .btn {
+    border: none; border-radius: 10px; padding: 11px 20px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    color: white;
+  }
+  .btn:hover { filter: brightness(1.05); }
+  .btn.secondary {
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .add-row { display: flex; justify-content: flex-end; margin-top: 14px; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+  }
+  .stat {
+    background: var(--teal-light);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .stat .val { font-size: 20px; font-weight: 800; color: var(--teal); }
+  .stat .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+  .entries { display: flex; flex-direction: column; gap: 10px; }
+  .entry {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+  }
+  .entry .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px 16px;
+    margin-top: 8px;
+  }
+  .entry .metrics .m .v { font-weight: 700; font-size: 14px; }
+  .entry .metrics .m .l { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .entry .title { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .entry .date { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .badge {
+    background: var(--orange-light); color: var(--orange-dark);
+    font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+  }
+  .del {
+    background: none; border: none; color: var(--danger); cursor: pointer;
+    font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px;
+  }
+  .del:hover { background: rgba(217, 72, 72, 0.1); }
+
+  .empty { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 14px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">🏃</div>
+    <div>
+      <h1>Running Calculator</h1>
+      <div class="sub">Log a run — distance & speed, pace and calories work themselves out.</div>
+    </div>
+  </header>
+
+  <div class="panel">
+    <h2>Your weight (used for calories)</h2>
+    <div class="row">
+      <div class="field">
+        <label for="weightInput">Weight</label>
+        <input type="number" id="weightInput" min="1" step="0.1" placeholder="e.g. 70">
+      </div>
+      <div class="field" style="max-width:140px;">
+        <label>Unit</label>
+        <div class="unit-toggle">
+          <button type="button" id="wUnitKg" class="active">kg</button>
+          <button type="button" id="wUnitLb">lb</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Add a run</h2>
+    <div class="row">
+      <div class="field">
+        <label for="labelInput">Label (optional)</label>
+        <input type="text" id="labelInput" placeholder="Morning run">
+      </div>
+      <div class="field">
+        <label for="dateInput">Date</label>
+        <input type="date" id="dateInput">
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="field">
+        <label for="distInput">Distance</label>
+        <input type="number" id="distInput" min="0" step="0.01" placeholder="e.g. 5">
+      </div>
+      <div class="field" style="max-width:140px;">
+        <label>Unit</label>
+        <div class="unit-toggle">
+          <button type="button" id="dUnitKm" class="active">km</button>
+          <button type="button" id="dUnitMi">mi</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="timeInput">Time (hh:mm:ss)</label>
+        <input type="text" id="timeInput" placeholder="00:25:30">
+      </div>
+    </div>
+    <div class="add-row">
+      <button class="btn" id="addBtn">Add run</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Totals</h2>
+    <div class="summary-grid" id="summaryGrid"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Runs</h2>
+    <div class="entries" id="entriesList"></div>
+  </div>
+
+  <footer>Stored locally in this browser. Calories are a MET-based estimate, not a medical measurement.</footer>
+</div>
+
+<script>
+const KM_PER_MI = 1.609344;
+const KG_PER_LB = 0.45359237;
+
+// speed (mph) -> running MET, from the Compendium of Physical Activities
+const MET_TABLE = [
+  [4.0, 6.0], [5.0, 8.3], [5.2, 9.0], [6.0, 9.8], [6.7, 10.5],
+  [7.0, 11.0], [7.5, 11.5], [8.0, 11.8], [8.6, 12.3], [9.0, 12.8],
+  [10.0, 14.5], [11.0, 16.0], [12.0, 19.0], [13.0, 19.8], [14.0, 23.0]
+];
+
+function metForSpeedMph(mph) {
+  if (mph <= MET_TABLE[0][0]) return MET_TABLE[0][1];
+  if (mph >= MET_TABLE[MET_TABLE.length - 1][0]) return MET_TABLE[MET_TABLE.length - 1][1];
+  for (let i = 0; i < MET_TABLE.length - 1; i++) {
+    const [s1, m1] = MET_TABLE[i], [s2, m2] = MET_TABLE[i + 1];
+    if (mph >= s1 && mph <= s2) {
+      const t = (mph - s1) / (s2 - s1);
+      return m1 + t * (m2 - m1);
+    }
+  }
+  return MET_TABLE[MET_TABLE.length - 1][1];
+}
+
+function parseTimeToHours(str) {
+  const parts = str.trim().split(':').map(p => p.trim());
+  if (parts.some(p => p === '' || isNaN(p))) return null;
+  let h = 0, m = 0, s = 0;
+  if (parts.length === 3) [h, m, s] = parts.map(Number);
+  else if (parts.length === 2) [m, s] = parts.map(Number);
+  else if (parts.length === 1) [s] = parts.map(Number);
+  else return null;
+  const totalHours = h + m / 60 + s / 3600;
+  return totalHours > 0 ? totalHours : null;
+}
+
+function fmtHMS(hours) {
+  const totalSec = Math.round(hours * 3600);
+  const h = Math.floor(totalSec / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  return [h, m, s].map((n, i) => i === 0 && n === 0 ? null : String(n).padStart(2, '0')).filter(x => x !== null).join(':') || '0:' + String(s).padStart(2,'0');
+}
+
+function fmtPace(minPerUnit) {
+  if (!isFinite(minPerUnit) || minPerUnit <= 0) return '—';
+  const m = Math.floor(minPerUnit);
+  const s = Math.round((minPerUnit - m) * 60);
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+const store = {
+  load() {
+    try {
+      return JSON.parse(localStorage.getItem('runCalc.entries') || '[]');
+    } catch { return []; }
+  },
+  save(entries) {
+    try { localStorage.setItem('runCalc.entries', JSON.stringify(entries)); } catch {}
+  },
+  loadWeight() {
+    try {
+      return JSON.parse(localStorage.getItem('runCalc.weight') || 'null');
+    } catch { return null; }
+  },
+  saveWeight(w) {
+    try { localStorage.setItem('runCalc.weight', JSON.stringify(w)); } catch {}
+  }
+};
+
+let entries = store.load();
+let weightUnit = 'kg';
+let distUnit = 'km';
+
+const weightInput = document.getElementById('weightInput');
+const wUnitKg = document.getElementById('wUnitKg');
+const wUnitLb = document.getElementById('wUnitLb');
+const dUnitKm = document.getElementById('dUnitKm');
+const dUnitMi = document.getElementById('dUnitMi');
+const distInput = document.getElementById('distInput');
+const timeInput = document.getElementById('timeInput');
+const labelInput = document.getElementById('labelInput');
+const dateInput = document.getElementById('dateInput');
+const addBtn = document.getElementById('addBtn');
+const entriesList = document.getElementById('entriesList');
+const summaryGrid = document.getElementById('summaryGrid');
+
+const savedWeight = store.loadWeight();
+if (savedWeight) {
+  weightInput.value = savedWeight.value;
+  weightUnit = savedWeight.unit;
+  setActiveToggle(weightUnit === 'kg' ? wUnitKg : wUnitLb, [wUnitKg, wUnitLb]);
+}
+dateInput.valueAsDate = new Date();
+
+function setActiveToggle(active, group) {
+  group.forEach(btn => btn.classList.toggle('active', btn === active));
+}
+
+wUnitKg.addEventListener('click', () => { weightUnit = 'kg'; setActiveToggle(wUnitKg, [wUnitKg, wUnitLb]); persistWeight(); });
+wUnitLb.addEventListener('click', () => { weightUnit = 'lb'; setActiveToggle(wUnitLb, [wUnitKg, wUnitLb]); persistWeight(); });
+dUnitKm.addEventListener('click', () => { distUnit = 'km'; setActiveToggle(dUnitKm, [dUnitKm, dUnitMi]); });
+dUnitMi.addEventListener('click', () => { distUnit = 'mi'; setActiveToggle(dUnitMi, [dUnitKm, dUnitMi]); });
+weightInput.addEventListener('input', persistWeight);
+
+function persistWeight() {
+  const v = parseFloat(weightInput.value);
+  if (v > 0) store.saveWeight({ value: v, unit: weightUnit });
+}
+
+function getWeightKg() {
+  const v = parseFloat(weightInput.value);
+  if (!(v > 0)) return null;
+  return weightUnit === 'kg' ? v : v * KG_PER_LB;
+}
+
+addBtn.addEventListener('click', () => {
+  const distVal = parseFloat(distInput.value);
+  const durationHours = parseTimeToHours(timeInput.value);
+  const weightKg = getWeightKg();
+
+  if (!(distVal > 0)) { flash(distInput); return; }
+  if (!durationHours) { flash(timeInput); return; }
+  if (!weightKg) { flash(weightInput); return; }
+
+  const km = distUnit === 'km' ? distVal : distVal * KM_PER_MI;
+  const mi = distUnit === 'mi' ? distVal : distVal / KM_PER_MI;
+  const mph = mi / durationHours;
+  const met = metForSpeedMph(mph);
+  const calories = met * weightKg * durationHours;
+
+  entries.push({
+    id: Date.now(),
+    label: labelInput.value.trim() || 'Run',
+    date: dateInput.value || null,
+    km, mi, durationHours, calories
+  });
+  store.save(entries);
+
+  distInput.value = '';
+  timeInput.value = '';
+  labelInput.value = '';
+  render();
+});
+
+function flash(el) {
+  el.style.borderColor = 'var(--danger)';
+  setTimeout(() => { el.style.borderColor = ''; }, 900);
+}
+
+function deleteEntry(id) {
+  entries = entries.filter(e => e.id !== id);
+  store.save(entries);
+  render();
+}
+
+function render() {
+  entriesList.innerHTML = '';
+  if (entries.length === 0) {
+    entriesList.innerHTML = '<div class="empty">No runs logged yet — add your first one above.</div>';
+  } else {
+    [...entries].sort((a, b) => b.id - a.id).forEach(e => {
+      const paceMinPerMi = e.durationHours * 60 / e.mi;
+      const paceMinPerKm = e.durationHours * 60 / e.km;
+      const mph = e.mi / e.durationHours;
+      const kmh = e.km / e.durationHours;
+
+      const div = document.createElement('div');
+      div.className = 'entry';
+      div.innerHTML = `
+        <div>
+          <div class="title">${escapeHtml(e.label)} ${e.date ? `<span class="date">${e.date}</span>` : ''} <span class="badge">${fmtHMS(e.durationHours)}</span></div>
+          <div class="metrics">
+            <div class="m"><div class="v">${e.km.toFixed(2)} km / ${e.mi.toFixed(2)} mi</div><div class="l">Distance</div></div>
+            <div class="m"><div class="v">${mph.toFixed(2)} mph / ${kmh.toFixed(2)} km/h</div><div class="l">Speed</div></div>
+            <div class="m"><div class="v">${fmtPace(paceMinPerMi)} /mi · ${fmtPace(paceMinPerKm)} /km</div><div class="l">Pace</div></div>
+            <div class="m"><div class="v">${Math.round(e.calories)} kcal</div><div class="l">Calories</div></div>
+          </div>
+        </div>
+        <button class="del" data-id="${e.id}">Delete</button>
+      `;
+      entriesList.appendChild(div);
+    });
+    entriesList.querySelectorAll('.del').forEach(btn => {
+      btn.addEventListener('click', () => deleteEntry(Number(btn.dataset.id)));
+    });
+  }
+
+  const totalKm = entries.reduce((s, e) => s + e.km, 0);
+  const totalMi = entries.reduce((s, e) => s + e.mi, 0);
+  const totalHours = entries.reduce((s, e) => s + e.durationHours, 0);
+  const totalCal = entries.reduce((s, e) => s + e.calories, 0);
+  const avgPaceMi = totalHours > 0 && totalMi > 0 ? totalHours * 60 / totalMi : 0;
+  const avgPaceKm = totalHours > 0 && totalKm > 0 ? totalHours * 60 / totalKm : 0;
+
+  summaryGrid.innerHTML = `
+    <div class="stat"><div class="val">${totalKm.toFixed(2)} km</div><div class="label">Distance</div></div>
+    <div class="stat"><div class="val">${totalMi.toFixed(2)} mi</div><div class="label">Distance</div></div>
+    <div class="stat"><div class="val">${fmtHMS(totalHours)}</div><div class="label">Total time</div></div>
+    <div class="stat"><div class="val">${fmtPace(avgPaceMi)} /mi</div><div class="label">Avg pace</div></div>
+    <div class="stat"><div class="val">${fmtPace(avgPaceKm)} /km</div><div class="label">Avg pace</div></div>
+    <div class="stat"><div class="val">${Math.round(totalCal)}</div><div class="label">Calories</div></div>
+  `;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+render();
+</script>
+</body>
+</html>
