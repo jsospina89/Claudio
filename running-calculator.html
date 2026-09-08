@@ -164,13 +164,21 @@
   .empty { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 14px; }
   footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 30px; }
 
+  .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .sort-row span { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .sort-btn {
+    border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+    border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
+  }
+  .sort-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+
   .records { display: flex; flex-direction: column; gap: 8px; }
   .record {
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 12px 16px;
     display: grid;
-    grid-template-columns: 90px 1fr auto;
+    grid-template-columns: 90px 1fr;
     gap: 10px;
     align-items: center;
   }
@@ -183,15 +191,7 @@
   .record .metrics .m .v { font-weight: 700; font-size: 13.5px; }
   .record .metrics .m .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .record .none { color: var(--muted); font-size: 13px; font-style: italic; }
-  .record .src { font-size: 10.5px; color: var(--muted); }
-  .record-actions { display: flex; gap: 6px; }
-  .record-actions button {
-    border: 1px solid var(--border); background: transparent; color: var(--muted);
-    border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 600; cursor: pointer;
-  }
-  .record-actions button:hover { border-color: var(--teal); color: var(--teal); }
-  .record-edit { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .record-edit input { width: 110px; }
+  .record .src { font-size: 10.5px; color: var(--muted); grid-column: 1 / -1; }
 </style>
 </head>
 <body>
@@ -203,23 +203,6 @@
       <div class="sub">Give it any two of distance, time, speed or pace — the rest, and calories, work themselves out.</div>
     </div>
   </header>
-
-  <div class="panel">
-    <h2>Your weight (used for calories)</h2>
-    <div class="row">
-      <div class="field">
-        <label for="weightInput">Weight</label>
-        <input type="number" id="weightInput" min="1" step="0.1" placeholder="e.g. 70">
-      </div>
-      <div class="field" style="max-width:140px;">
-        <label>Unit</label>
-        <div class="unit-toggle">
-          <button type="button" id="wUnitKg" class="active">kg</button>
-          <button type="button" id="wUnitLb">lb</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="panel">
     <h2>Add a run</h2>
@@ -281,8 +264,15 @@
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <label for="categorySelect">Standard distance (optional — feeds Records)</label>
-        <select id="categorySelect"></select>
+        <label for="weightInput">Weight (used for this run's calories)</label>
+        <input type="number" id="weightInput" min="1" step="0.1" placeholder="e.g. 70">
+      </div>
+      <div class="field" style="max-width:140px;">
+        <label>Unit</label>
+        <div class="unit-toggle">
+          <button type="button" id="wUnitKg" class="active">kg</button>
+          <button type="button" id="wUnitLb">lb</button>
+        </div>
       </div>
     </div>
 
@@ -297,8 +287,14 @@
   </div>
 
   <div class="panel">
-    <h2>Personal records</h2>
-    <div class="hint">Best time ever seen per distance — either tagged on a logged run, or entered directly for a race that isn't in your training log.</div>
+    <h2>Records</h2>
+    <div class="hint">For each standard distance, the average of what your pace on every long-enough run implies you'd run it in — not a single best time.</div>
+    <div class="sort-row">
+      <span>Sort by</span>
+      <button type="button" class="sort-btn" data-sort="distance">Distance</button>
+      <button type="button" class="sort-btn" data-sort="pace">Pace</button>
+      <button type="button" class="sort-btn" data-sort="speed">Speed</button>
+    </div>
     <div class="records" id="recordsList"></div>
   </div>
 
@@ -411,14 +407,24 @@ function attachDecimalMask(input) {
   });
 }
 
-const CATEGORIES = [
+// Distances short enough to be a "split within" a typical run — these back the Records average.
+const SPLIT_DISTANCES = [
   { key: '400m', label: '400 m', km: 0.4 },
   { key: '800m', label: '800 m', km: 0.8 },
+  { key: '1k', label: '1 km', km: 1 },
+  { key: '2k', label: '2 km', km: 2 },
   { key: 'mile', label: 'Mile', km: KM_PER_MI },
   { key: '2mile', label: '2 Mile', km: 2 * KM_PER_MI },
   { key: '5k', label: '5K', km: 5 },
+];
+
+// Superset used for the quick-fill distance chips (includes full race distances, not just splits).
+const QUICK_FILL_DISTANCES = [
+  ...SPLIT_DISTANCES,
   { key: '10k', label: '10K', km: 10 },
   { key: '10mile', label: '10 Mile', km: 10 * KM_PER_MI },
+  { key: 'half', label: 'Half Marathon', km: 21.0975 },
+  { key: 'marathon', label: 'Marathon', km: 42.195 },
 ];
 
 const store = {
@@ -437,19 +443,11 @@ const store = {
   },
   saveWeight(w) {
     try { localStorage.setItem('runCalc.weight', JSON.stringify(w)); } catch {}
-  },
-  loadRecords() {
-    try {
-      return JSON.parse(localStorage.getItem('runCalc.records') || '{}');
-    } catch { return {}; }
-  },
-  saveRecords(records) {
-    try { localStorage.setItem('runCalc.records', JSON.stringify(records)); } catch {}
   }
 };
 
 let entries = store.load();
-let manualRecords = store.loadRecords();
+let recordSort = 'distance';
 let weightUnit = 'kg';
 let distUnit = 'km';
 let speedUnit = 'kmh';
@@ -469,7 +467,6 @@ const sUnitMph = document.getElementById('sUnitMph');
 const paceInput = document.getElementById('paceInput');
 const pUnitKm = document.getElementById('pUnitKm');
 const pUnitMi = document.getElementById('pUnitMi');
-const categorySelect = document.getElementById('categorySelect');
 const labelInput = document.getElementById('labelInput');
 const dateInput = document.getElementById('dateInput');
 const addBtn = document.getElementById('addBtn');
@@ -481,16 +478,12 @@ attachDecimalMask(distInput);
 attachClockMask(timeInput, true);
 attachClockMask(paceInput, false);
 
-categorySelect.innerHTML = '<option value="">None</option>' +
-  CATEGORIES.map(c => `<option value="${c.key}">${c.label}</option>`).join('');
-
-distChips.innerHTML = CATEGORIES.map(c => `<button type="button" class="chip" data-key="${c.key}">${c.label}</button>`).join('');
+distChips.innerHTML = QUICK_FILL_DISTANCES.map(c => `<button type="button" class="chip" data-key="${c.key}">${c.label}</button>`).join('');
 distChips.querySelectorAll('.chip').forEach(btn => {
   btn.addEventListener('click', () => {
-    const cat = CATEGORIES.find(c => c.key === btn.dataset.key);
-    const val = distUnit === 'km' ? cat.km : cat.km / KM_PER_MI;
+    const dist = QUICK_FILL_DISTANCES.find(c => c.key === btn.dataset.key);
+    const val = distUnit === 'km' ? dist.km : dist.km / KM_PER_MI;
     distInput.value = val.toFixed(2);
-    categorySelect.value = cat.key;
   });
 });
 
@@ -605,7 +598,6 @@ addBtn.addEventListener('click', () => {
     id: Date.now(),
     label: labelInput.value.trim() || 'Run',
     date: dateInput.value || null,
-    category: categorySelect.value || null,
     km, mi, durationHours: hours, calories
   });
   store.save(entries);
@@ -615,7 +607,6 @@ addBtn.addEventListener('click', () => {
   speedInput.value = '';
   paceInput.value = '';
   labelInput.value = '';
-  categorySelect.value = '';
   render();
 });
 
@@ -630,108 +621,66 @@ function deleteEntry(id) {
   render();
 }
 
-function getAutoRecord(catKey) {
-  const candidates = entries.filter(e => e.category === catKey);
-  if (candidates.length === 0) return null;
-  const best = candidates.reduce((a, b) => (a.durationHours < b.durationHours ? a : b));
-  return { hours: best.durationHours, date: best.date, km: best.km, mi: best.mi };
+// For a split distance, average the time that every long-enough run's own pace implies for it.
+function getSplitAverage(split) {
+  const qualifying = entries.filter(e => e.km >= split.km);
+  if (qualifying.length === 0) return null;
+  const impliedHoursList = qualifying.map(e => (split.km / e.km) * e.durationHours);
+  const avgHours = impliedHoursList.reduce((a, b) => a + b, 0) / impliedHoursList.length;
+  const mi = split.km / KM_PER_MI;
+  return {
+    hours: avgHours,
+    mi,
+    paceMinPerKm: avgHours * 60 / split.km,
+    paceMinPerMi: avgHours * 60 / mi,
+    kmh: split.km / avgHours,
+    mph: mi / avgHours,
+    sampleSize: qualifying.length
+  };
 }
-
-function getManualRecord(catKey, cat) {
-  const m = manualRecords[catKey];
-  if (!m) return null;
-  return { hours: m.hours, date: m.date || null, km: cat.km, mi: cat.km / KM_PER_MI };
-}
-
-function getBestRecord(catKey, cat) {
-  const auto = getAutoRecord(catKey);
-  const manual = getManualRecord(catKey, cat);
-  if (auto && manual) return auto.hours <= manual.hours ? { ...auto, source: 'logged' } : { ...manual, source: 'manual' };
-  if (auto) return { ...auto, source: 'logged' };
-  if (manual) return { ...manual, source: 'manual' };
-  return null;
-}
-
-let editingRecord = null;
 
 function renderRecords() {
-  recordsList.innerHTML = CATEGORIES.map(cat => {
-    if (editingRecord === cat.key) {
-      const existing = manualRecords[cat.key];
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.sort === recordSort);
+  });
+
+  const rows = SPLIT_DISTANCES.map(split => ({ split, avg: getSplitAverage(split) }));
+  const withData = rows.filter(r => r.avg);
+  const withoutData = rows.filter(r => !r.avg);
+  if (recordSort === 'distance') withData.sort((a, b) => a.split.km - b.split.km);
+  else if (recordSort === 'pace') {
+    withData.sort((a, b) => (Math.round(a.avg.paceMinPerKm * 1000) - Math.round(b.avg.paceMinPerKm * 1000)) || (a.split.km - b.split.km));
+  } else if (recordSort === 'speed') {
+    withData.sort((a, b) => (Math.round(b.avg.kmh * 1000) - Math.round(a.avg.kmh * 1000)) || (a.split.km - b.split.km));
+  }
+  const ordered = [...withData, ...withoutData];
+
+  recordsList.innerHTML = ordered.map(({ split, avg }) => {
+    if (!avg) {
       return `
         <div class="record">
-          <div class="cat">${cat.label}</div>
-          <div class="record-edit">
-            <input type="text" inputmode="numeric" class="rec-time-input" placeholder="e.g. 2530 → 25:30" value="${existing ? fmtHMS(existing.hours) : ''}">
-            <input type="date" class="rec-date-input" value="${existing && existing.date ? existing.date : ''}">
-          </div>
-          <div class="record-actions">
-            <button type="button" class="rec-save" data-key="${cat.key}">Save</button>
-            <button type="button" class="rec-cancel">Cancel</button>
-          </div>
+          <div class="cat">${split.label}</div>
+          <div class="none">No run yet covers this distance</div>
         </div>
       `;
     }
-    const best = getBestRecord(cat.key, cat);
-    if (!best) {
-      return `
-        <div class="record">
-          <div class="cat">${cat.label}</div>
-          <div class="none">No record yet</div>
-          <div class="record-actions"><button type="button" class="rec-edit" data-key="${cat.key}">Add</button></div>
-        </div>
-      `;
-    }
-    const paceMinPerMi = best.hours * 60 / best.mi;
-    const paceMinPerKm = best.hours * 60 / best.km;
-    const mph = best.mi / best.hours;
-    const kmh = best.km / best.hours;
     return `
       <div class="record">
-        <div class="cat">${cat.label}</div>
+        <div class="cat">${split.label}</div>
         <div class="metrics">
-          <div class="m"><div class="v">${fmtHMS(best.hours)}</div><div class="l">Time</div></div>
-          <div class="m"><div class="v">${fmtPace(paceMinPerMi)} /mi · ${fmtPace(paceMinPerKm)} /km</div><div class="l">Pace</div></div>
-          <div class="m"><div class="v">${mph.toFixed(2)} mph / ${kmh.toFixed(2)} km/h</div><div class="l">Speed</div></div>
-          <div class="src">${best.source === 'manual' ? 'Manual entry' : 'From logged run'}${best.date ? ' · ' + best.date : ''}</div>
-        </div>
-        <div class="record-actions">
-          <button type="button" class="rec-edit" data-key="${cat.key}">Edit</button>
-          ${manualRecords[cat.key] ? `<button type="button" class="rec-clear" data-key="${cat.key}">Clear manual</button>` : ''}
+          <div class="m"><div class="v">${fmtHMS(avg.hours)}</div><div class="l">Avg time</div></div>
+          <div class="m"><div class="v">${fmtPace(avg.paceMinPerMi)} /mi · ${fmtPace(avg.paceMinPerKm)} /km</div><div class="l">Avg pace</div></div>
+          <div class="m"><div class="v">${avg.mph.toFixed(2)} mph / ${avg.kmh.toFixed(2)} km/h</div><div class="l">Avg speed</div></div>
+          <div class="src">Averaged from ${avg.sampleSize} run${avg.sampleSize === 1 ? '' : 's'} of ${split.label} or longer</div>
         </div>
       </div>
     `;
   }).join('');
-
-  recordsList.querySelectorAll('.rec-edit').forEach(btn => {
-    btn.addEventListener('click', () => { editingRecord = btn.dataset.key; renderRecords(); });
-  });
-  recordsList.querySelectorAll('.rec-cancel').forEach(btn => {
-    btn.addEventListener('click', () => { editingRecord = null; renderRecords(); });
-  });
-  recordsList.querySelectorAll('.rec-clear').forEach(btn => {
-    btn.addEventListener('click', () => {
-      delete manualRecords[btn.dataset.key];
-      store.saveRecords(manualRecords);
-      renderRecords();
-    });
-  });
-  const timeMaskInput = recordsList.querySelector('.rec-time-input');
-  if (timeMaskInput) attachClockMask(timeMaskInput, true);
-  recordsList.querySelectorAll('.rec-save').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const row = btn.closest('.record');
-      const timeStr = row.querySelector('.rec-time-input').value.trim();
-      const dateStr = row.querySelector('.rec-date-input').value || null;
-      const hours = parseTimeToHours(timeStr);
-      if (!hours) { flash(row.querySelector('.rec-time-input')); return; }
-      manualRecords[btn.dataset.key] = { hours, date: dateStr };
-      store.saveRecords(manualRecords);
-      editingRecord = null;
-      renderRecords();
-    });
-  });
 }
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => { recordSort = btn.dataset.sort; renderRecords(); });
+});
 
 function render() {
   entriesList.innerHTML = '';
@@ -748,7 +697,7 @@ function render() {
       div.className = 'entry';
       div.innerHTML = `
         <div>
-          <div class="title">${escapeHtml(e.label)} ${e.date ? `<span class="date">${e.date}</span>` : ''} <span class="badge">${fmtHMS(e.durationHours)}</span>${e.category ? `<span class="badge">${(CATEGORIES.find(c => c.key === e.category) || {}).label || e.category}</span>` : ''}</div>
+          <div class="title">${escapeHtml(e.label)} ${e.date ? `<span class="date">${e.date}</span>` : ''} <span class="badge">${fmtHMS(e.durationHours)}</span></div>
           <div class="metrics">
             <div class="m"><div class="v">${e.km.toFixed(2)} km / ${e.mi.toFixed(2)} mi</div><div class="l">Distance</div></div>
             <div class="m"><div class="v">${mph.toFixed(2)} mph / ${kmh.toFixed(2)} km/h</div><div class="l">Speed</div></div>
