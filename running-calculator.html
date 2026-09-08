@@ -309,7 +309,7 @@
     <div class="records" id="recordsList"></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="runsPanel">
     <h2>Runs</h2>
     <div class="sort-row">
       <span>Sort by</span>
@@ -627,6 +627,8 @@ addBtn.addEventListener('click', () => {
   paceInput.value = '';
   labelInput.value = '';
   render();
+
+  document.getElementById('runsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
 function flash(el) {
