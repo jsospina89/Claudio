@@ -368,7 +368,7 @@
 
   <div class="panel">
     <h2>Sync to GitHub</h2>
-    <div class="hint">Makes this repo your permanent database. Create a <strong>fine-grained personal access token</strong> at github.com → Settings → Developer settings → Personal access tokens, scoped to <strong>only this repository</strong> with <strong>Contents: Read and write</strong> permission — nothing more. The token is stored only in this browser and sent only to api.github.com directly from here; it never reaches me. Once set, every run you add or remove is committed automatically.</div>
+    <div class="hint">Makes this repo your permanent database — <code>running-data.json</code> already exists on the <code>claude/running-calculator-q9h1f8</code> branch (that's why Branch defaults to it below, not <code>main</code>). Create a <strong>fine-grained personal access token</strong> at github.com → Settings → Developer settings → Personal access tokens, scoped to <strong>only this repository</strong> with <strong>Contents: Read and write</strong> permission — nothing more. The token is stored only in this browser and sent only to api.github.com directly from here; it never reaches me. Once set, every run you add or remove is committed automatically. If this branch later merges into <code>main</code>, update the Branch field to match.</div>
     <div class="row">
       <div class="field">
         <label for="ghToken">Personal access token</label>
@@ -386,7 +386,7 @@
       </div>
       <div class="field">
         <label for="ghBranch">Branch</label>
-        <input type="text" id="ghBranch" placeholder="main">
+        <input type="text" id="ghBranch" placeholder="claude/running-calculator-q9h1f8">
       </div>
       <div class="field">
         <label for="ghPath">File path</label>
@@ -680,7 +680,7 @@ armConfirm(restoreTextBtn, () => {
 
 // --- GitHub sync: uses the Contents API directly from the browser with a user-supplied token.
 // No server involved — the token and every request go straight to api.github.com.
-const GH_DEFAULTS = { owner: 'jsospina89', repo: 'Claudio', branch: 'main', path: 'running-data.json' };
+const GH_DEFAULTS = { owner: 'jsospina89', repo: 'Claudio', branch: 'claude/running-calculator-q9h1f8', path: 'running-data.json' };
 
 function ghLoadSettings() {
   try { return JSON.parse(localStorage.getItem('runCalc.gh') || 'null') || {}; } catch { return {}; }
