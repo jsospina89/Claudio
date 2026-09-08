@@ -379,6 +379,16 @@
     <div class="hint" id="ghStatus" style="margin-top:12px; margin-bottom:0;">Not configured — paste a token above.</div>
   </div>
 
+  <div class="panel">
+    <h2>Local backup</h2>
+    <div class="hint">Download everything as a file, or import a file back in. Works when this page is opened normally (e.g. your GitHub Pages link) — downloads are blocked inside embedded previews.</div>
+    <div class="row">
+      <button type="button" class="btn secondary" id="downloadBtn">Download backup</button>
+      <button type="button" class="btn secondary" id="importBtn">Import backup</button>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+  </div>
+
   <footer>Stored locally in this browser, and in git once GitHub sync is set up. Calories are a MET-based estimate, not a medical measurement.</footer>
 </div>
 
@@ -671,6 +681,23 @@ async function syncToGitHub() {
 
 ghSyncBtn.addEventListener('click', syncToGitHub);
 
+// Shared by "Pull from GitHub" and "Import backup" — both hand it a {entries, weight} shape
+// (or a bare entries array) and it applies it as the current dataset.
+function applyRestoredData(parsed) {
+  const restoredEntries = Array.isArray(parsed) ? parsed : parsed.entries;
+  if (!Array.isArray(restoredEntries)) return false;
+  entries = restoredEntries;
+  store.save(entries);
+  if (parsed.weight && parsed.weight.value > 0) {
+    weightInput.value = parsed.weight.value;
+    weightUnit = parsed.weight.unit === 'lb' ? 'lb' : 'kg';
+    setActiveToggle(weightUnit === 'kg' ? wUnitKg : wUnitLb, [wUnitKg, wUnitLb]);
+    store.saveWeight(parsed.weight);
+  }
+  render();
+  return true;
+}
+
 armConfirm(ghPullBtn, async () => {
   const cfg = ghConfig();
   if (!cfg.token) { ghStatus.textContent = 'Add a token first.'; return; }
@@ -678,22 +705,44 @@ armConfirm(ghPullBtn, async () => {
   try {
     const existing = await ghGetFile(cfg);
     if (!existing) { ghStatus.textContent = 'No data file found in the repo yet — try Sync now first.'; return; }
-    const pulled = existing.json;
-    const pulledEntries = Array.isArray(pulled) ? pulled : pulled.entries;
-    if (!Array.isArray(pulledEntries)) { ghStatus.textContent = 'File found but not in the expected format.'; return; }
-    entries = pulledEntries;
-    store.save(entries);
-    if (pulled.weight && pulled.weight.value > 0) {
-      weightInput.value = pulled.weight.value;
-      weightUnit = pulled.weight.unit === 'lb' ? 'lb' : 'kg';
-      setActiveToggle(weightUnit === 'kg' ? wUnitKg : wUnitLb, [wUnitKg, wUnitLb]);
-      store.saveWeight(pulled.weight);
-    }
-    render();
-    ghStatus.textContent = `Pulled ${pulledEntries.length} run${pulledEntries.length === 1 ? '' : 's'} from GitHub.`;
+    if (!applyRestoredData(existing.json)) { ghStatus.textContent = 'File found but not in the expected format.'; return; }
+    ghStatus.textContent = `Pulled ${entries.length} run${entries.length === 1 ? '' : 's'} from GitHub.`;
   } catch (err) {
     ghStatus.textContent = `Pull failed: ${err.message}`;
   }
+});
+
+const downloadBtn = document.getElementById('downloadBtn');
+const importBtn = document.getElementById('importBtn');
+const importFile = document.getElementById('importFile');
+
+downloadBtn.addEventListener('click', () => {
+  const payload = JSON.stringify({ entries, weight: store.loadWeight() }, null, 2);
+  const blob = new Blob([payload], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `running-data-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+importBtn.addEventListener('click', () => importFile.click());
+
+importFile.addEventListener('change', () => {
+  const file = importFile.files[0];
+  importFile.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let parsed;
+    try { parsed = JSON.parse(reader.result); } catch { flash(importBtn); return; }
+    if (!applyRestoredData(parsed)) { flash(importBtn); return; }
+    syncToGitHub();
+  };
+  reader.readAsText(file);
 });
 
 attachDecimalMask(distInput);
