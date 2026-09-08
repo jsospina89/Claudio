@@ -380,11 +380,11 @@
   </div>
 
   <div class="panel">
-    <h2>Local backup</h2>
-    <div class="hint">Download everything as a file, or import a file back in. Works when this page is opened normally (e.g. your GitHub Pages link) — downloads are blocked inside embedded previews.</div>
+    <h2>Export / Import</h2>
+    <div class="hint">Export everything to a file, or import one back in. Works when this page is opened normally (e.g. your GitHub Pages link) — downloads are blocked inside embedded previews.</div>
     <div class="row">
-      <button type="button" class="btn secondary" id="downloadBtn">Download backup</button>
-      <button type="button" class="btn secondary" id="importBtn">Import backup</button>
+      <button type="button" class="btn secondary" id="downloadBtn">Export</button>
+      <button type="button" class="btn secondary" id="importBtn">Import</button>
       <input type="file" id="importFile" accept="application/json" hidden>
     </div>
   </div>
@@ -681,7 +681,7 @@ async function syncToGitHub() {
 
 ghSyncBtn.addEventListener('click', syncToGitHub);
 
-// Shared by "Pull from GitHub" and "Import backup" — both hand it a {entries, weight} shape
+// Shared by "Pull from GitHub" and "Import" — both hand it a {entries, weight} shape
 // (or a bare entries array) and it applies it as the current dataset.
 function applyRestoredData(parsed) {
   const restoredEntries = Array.isArray(parsed) ? parsed : parsed.entries;
