@@ -367,6 +367,41 @@
   </div>
 
   <div class="panel">
+    <h2>Sync to GitHub</h2>
+    <div class="hint">Makes this repo your permanent database. Create a <strong>fine-grained personal access token</strong> at github.com → Settings → Developer settings → Personal access tokens, scoped to <strong>only this repository</strong> with <strong>Contents: Read and write</strong> permission — nothing more. The token is stored only in this browser and sent only to api.github.com directly from here; it never reaches me. Once set, every run you add or remove is committed automatically.</div>
+    <div class="row">
+      <div class="field">
+        <label for="ghToken">Personal access token</label>
+        <input type="password" id="ghToken" placeholder="github_pat_...">
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="field">
+        <label for="ghOwner">Owner</label>
+        <input type="text" id="ghOwner" placeholder="jsospina89">
+      </div>
+      <div class="field">
+        <label for="ghRepo">Repo</label>
+        <input type="text" id="ghRepo" placeholder="Claudio">
+      </div>
+      <div class="field">
+        <label for="ghBranch">Branch</label>
+        <input type="text" id="ghBranch" placeholder="main">
+      </div>
+      <div class="field">
+        <label for="ghPath">File path</label>
+        <input type="text" id="ghPath" placeholder="running-data.json">
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <button type="button" class="btn secondary" id="ghSaveBtn">Save settings</button>
+      <button type="button" class="btn secondary" id="ghSyncBtn">Sync now (push)</button>
+      <button type="button" class="btn secondary" id="ghPullBtn">Pull from GitHub</button>
+    </div>
+    <div class="hint" id="ghStatus" style="margin-top:12px; margin-bottom:0;">Not configured — add a token above to enable git sync.</div>
+  </div>
+
+  <div class="panel">
     <h2>Backup your data</h2>
     <div class="hint">Runs live only in <strong>this browser's storage</strong> — never sent anywhere, including to me, and not shared across other browsers, devices, or private-browsing windows. Clearing site data or opening this page somewhere else means starting from empty. Back up regularly.</div>
     <div class="row">
@@ -622,6 +657,7 @@ armConfirm(restoreAutoBtn, () => {
   entries = backup;
   store.save(entries);
   render();
+  syncToGitHub();
 });
 
 armConfirm(restoreTextBtn, () => {
@@ -639,6 +675,137 @@ armConfirm(restoreTextBtn, () => {
   }
   restoreText.value = '';
   render();
+  syncToGitHub();
+});
+
+// --- GitHub sync: uses the Contents API directly from the browser with a user-supplied token.
+// No server involved — the token and every request go straight to api.github.com.
+const GH_DEFAULTS = { owner: 'jsospina89', repo: 'Claudio', branch: 'main', path: 'running-data.json' };
+
+function ghLoadSettings() {
+  try { return JSON.parse(localStorage.getItem('runCalc.gh') || 'null') || {}; } catch { return {}; }
+}
+function ghSaveSettings(s) {
+  try { localStorage.setItem('runCalc.gh', JSON.stringify(s)); } catch {}
+}
+
+const ghTokenInput = document.getElementById('ghToken');
+const ghOwnerInput = document.getElementById('ghOwner');
+const ghRepoInput = document.getElementById('ghRepo');
+const ghBranchInput = document.getElementById('ghBranch');
+const ghPathInput = document.getElementById('ghPath');
+const ghSaveBtn = document.getElementById('ghSaveBtn');
+const ghSyncBtn = document.getElementById('ghSyncBtn');
+const ghPullBtn = document.getElementById('ghPullBtn');
+const ghStatus = document.getElementById('ghStatus');
+
+const savedGh = ghLoadSettings();
+ghTokenInput.value = savedGh.token || '';
+ghOwnerInput.value = savedGh.owner || GH_DEFAULTS.owner;
+ghRepoInput.value = savedGh.repo || GH_DEFAULTS.repo;
+ghBranchInput.value = savedGh.branch || GH_DEFAULTS.branch;
+ghPathInput.value = savedGh.path || GH_DEFAULTS.path;
+if (savedGh.token) ghStatus.textContent = 'Configured. Not yet synced this session.';
+
+function ghConfig() {
+  return {
+    token: ghTokenInput.value.trim(),
+    owner: ghOwnerInput.value.trim() || GH_DEFAULTS.owner,
+    repo: ghRepoInput.value.trim() || GH_DEFAULTS.repo,
+    branch: ghBranchInput.value.trim() || GH_DEFAULTS.branch,
+    path: ghPathInput.value.trim() || GH_DEFAULTS.path
+  };
+}
+
+function utf8ToBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function base64ToUtf8(b64) {
+  return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+}
+
+async function ghGetFile(cfg) {
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIComponent(cfg.path)}?ref=${encodeURIComponent(cfg.branch)}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${cfg.token}`, Accept: 'application/vnd.github+json' }
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`GET ${res.status}`);
+  const data = await res.json();
+  return { sha: data.sha, json: JSON.parse(base64ToUtf8(data.content)) };
+}
+
+async function ghPutFile(cfg, payload, sha) {
+  const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${encodeURIComponent(cfg.path)}`;
+  const body = {
+    message: `Update running data (${payload.entries.length} run${payload.entries.length === 1 ? '' : 's'})`,
+    content: utf8ToBase64(JSON.stringify(payload, null, 2)),
+    branch: cfg.branch
+  };
+  if (sha) body.sha = sha;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${cfg.token}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`PUT ${res.status}${errText ? ' — ' + errText.slice(0, 200) : ''}`);
+  }
+  return res.json();
+}
+
+async function syncToGitHub() {
+  const cfg = ghConfig();
+  if (!cfg.token) return;
+  ghStatus.textContent = 'Syncing…';
+  try {
+    const existing = await ghGetFile(cfg);
+    const payload = { entries, weight: store.loadWeight() };
+    await ghPutFile(cfg, payload, existing ? existing.sha : null);
+    ghStatus.textContent = `Synced at ${new Date().toLocaleTimeString()} — ${entries.length} run${entries.length === 1 ? '' : 's'} committed to ${cfg.branch}.`;
+  } catch (err) {
+    ghStatus.textContent = `Sync failed: ${err.message}`;
+  }
+}
+
+ghSaveBtn.addEventListener('click', () => {
+  ghSaveSettings(ghConfig());
+  ghStatus.textContent = 'Settings saved.';
+});
+
+ghSyncBtn.addEventListener('click', () => {
+  ghSaveSettings(ghConfig());
+  syncToGitHub();
+});
+
+armConfirm(ghPullBtn, async () => {
+  const cfg = ghConfig();
+  if (!cfg.token) { ghStatus.textContent = 'Add a token first.'; return; }
+  ghStatus.textContent = 'Pulling…';
+  try {
+    const existing = await ghGetFile(cfg);
+    if (!existing) { ghStatus.textContent = 'No data file found in the repo yet — try Sync now first.'; return; }
+    const pulled = existing.json;
+    const pulledEntries = Array.isArray(pulled) ? pulled : pulled.entries;
+    if (!Array.isArray(pulledEntries)) { ghStatus.textContent = 'File found but not in the expected format.'; return; }
+    entries = pulledEntries;
+    store.save(entries);
+    if (pulled.weight && pulled.weight.value > 0) {
+      weightInput.value = pulled.weight.value;
+      weightUnit = pulled.weight.unit === 'lb' ? 'lb' : 'kg';
+      setActiveToggle(weightUnit === 'kg' ? wUnitKg : wUnitLb, [wUnitKg, wUnitLb]);
+      store.saveWeight(pulled.weight);
+    }
+    render();
+    ghStatus.textContent = `Pulled ${pulledEntries.length} run${pulledEntries.length === 1 ? '' : 's'} from GitHub.`;
+  } catch (err) {
+    ghStatus.textContent = `Pull failed: ${err.message}`;
+  }
 });
 
 attachDecimalMask(distInput);
@@ -778,6 +945,7 @@ addBtn.addEventListener('click', () => {
   paceInput.value = '';
   labelInput.value = '';
   render();
+  syncToGitHub();
 
   document.getElementById('runsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
@@ -791,6 +959,7 @@ function deleteEntry(id) {
   entries = entries.filter(e => e.id !== id);
   store.save(entries);
   render();
+  syncToGitHub();
 }
 
 // For a split distance, average the time that every long-enough run's own pace implies for it.
