@@ -77,7 +77,7 @@
   .row { display: flex; flex-wrap: wrap; gap: 12px; }
   .field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 120px; }
   .field label { font-size: 12px; color: var(--muted); font-weight: 600; }
-  input, select {
+  input, select, textarea {
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -86,8 +86,9 @@
     color: var(--ink);
     outline: none;
     font-family: inherit;
+    resize: vertical;
   }
-  input:focus, select:focus { border-color: var(--teal); }
+  input:focus, select:focus, textarea:focus { border-color: var(--teal); }
 
   .unit-toggle { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .unit-toggle button {
@@ -123,6 +124,9 @@
   .btn.secondary {
     background: transparent; color: var(--muted); border: 1px solid var(--border);
     font-weight: 600;
+  }
+  .btn.confirm-armed {
+    background: var(--danger); color: white; border-color: var(--danger);
   }
 
   .add-row { display: flex; justify-content: flex-end; margin-top: 14px; }
@@ -238,6 +242,24 @@
       <div class="sub">Give it any two of distance, time, speed or pace — the rest, and calories, work themselves out.</div>
     </div>
   </header>
+
+  <div class="panel">
+    <h2>Backup your data</h2>
+    <div class="hint">Runs live only in <strong>this browser's storage</strong> — never sent anywhere, including to me, and not shared across other browsers, devices, or private-browsing windows. Clearing site data or opening this page somewhere else means starting from empty. Back up regularly.</div>
+    <div class="row">
+      <button type="button" class="btn secondary" id="copyBackupBtn">Copy backup to clipboard</button>
+      <button type="button" class="btn secondary" id="restoreAutoBtn">Restore last auto-backup</button>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="field">
+        <label for="restoreText">Paste a backup here to restore it</label>
+        <textarea id="restoreText" rows="3" placeholder="Paste a previously copied backup"></textarea>
+      </div>
+    </div>
+    <div class="add-row">
+      <button type="button" class="btn" id="restoreTextBtn">Restore from pasted text</button>
+    </div>
+  </div>
 
   <div class="panel">
     <h2>Add a run</h2>
@@ -492,7 +514,18 @@ const store = {
     } catch { return []; }
   },
   save(entries) {
-    try { localStorage.setItem('runCalc.entries', JSON.stringify(entries)); } catch {}
+    try {
+      // Roll the pre-write state into a one-deep backup before overwriting, so an accidental
+      // wipe or bad paste can be undone even though nothing here is ever sent off this browser.
+      const prevRaw = localStorage.getItem('runCalc.entries');
+      if (prevRaw) localStorage.setItem('runCalc.entries.backup', prevRaw);
+      localStorage.setItem('runCalc.entries', JSON.stringify(entries));
+    } catch {}
+  },
+  loadBackup() {
+    try {
+      return JSON.parse(localStorage.getItem('runCalc.entries.backup') || 'null');
+    } catch { return null; }
   },
   loadWeight() {
     try {
@@ -537,6 +570,76 @@ const addBtn = document.getElementById('addBtn');
 const entriesList = document.getElementById('entriesList');
 const summaryGrid = document.getElementById('summaryGrid');
 const recordsList = document.getElementById('recordsList');
+const copyBackupBtn = document.getElementById('copyBackupBtn');
+const restoreAutoBtn = document.getElementById('restoreAutoBtn');
+const restoreText = document.getElementById('restoreText');
+const restoreTextBtn = document.getElementById('restoreTextBtn');
+
+copyBackupBtn.addEventListener('click', async () => {
+  const payload = JSON.stringify({ entries, weight: store.loadWeight() }, null, 2);
+  const original = copyBackupBtn.textContent;
+  try {
+    await navigator.clipboard.writeText(payload);
+    copyBackupBtn.textContent = 'Copied!';
+  } catch {
+    restoreText.value = payload;
+    restoreText.focus();
+    restoreText.select();
+    copyBackupBtn.textContent = 'Clipboard blocked — copy from the box below';
+  }
+  setTimeout(() => { copyBackupBtn.textContent = original; }, 2500);
+});
+
+// Arms a destructive button on first click (shows a confirm state) and only fires on the second —
+// avoids relying on window.confirm(), which sandboxed embeds can silently swallow.
+function armConfirm(btn, action) {
+  const original = btn.textContent;
+  let armed = false;
+  let timer = null;
+  btn.addEventListener('click', () => {
+    if (!armed) {
+      armed = true;
+      btn.textContent = 'Click again to confirm — replaces current data';
+      btn.classList.add('confirm-armed');
+      timer = setTimeout(() => {
+        armed = false;
+        btn.textContent = original;
+        btn.classList.remove('confirm-armed');
+      }, 4000);
+    } else {
+      clearTimeout(timer);
+      armed = false;
+      btn.textContent = original;
+      btn.classList.remove('confirm-armed');
+      action();
+    }
+  });
+}
+
+armConfirm(restoreAutoBtn, () => {
+  const backup = store.loadBackup();
+  if (!Array.isArray(backup)) { flash(restoreAutoBtn); return; }
+  entries = backup;
+  store.save(entries);
+  render();
+});
+
+armConfirm(restoreTextBtn, () => {
+  let parsed;
+  try { parsed = JSON.parse(restoreText.value); } catch { flash(restoreText); return; }
+  const restoredEntries = Array.isArray(parsed) ? parsed : parsed.entries;
+  if (!Array.isArray(restoredEntries)) { flash(restoreText); return; }
+  entries = restoredEntries;
+  store.save(entries);
+  if (parsed.weight && parsed.weight.value > 0) {
+    weightInput.value = parsed.weight.value;
+    weightUnit = parsed.weight.unit === 'lb' ? 'lb' : 'kg';
+    setActiveToggle(weightUnit === 'kg' ? wUnitKg : wUnitLb, [wUnitKg, wUnitLb]);
+    store.saveWeight(parsed.weight);
+  }
+  restoreText.value = '';
+  render();
+});
 
 attachDecimalMask(distInput);
 attachClockMask(timeInput, true);
