@@ -96,11 +96,20 @@
   }
   .unit-toggle button.active { background: var(--teal); color: white; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .chips {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    gap: 8px;
+    margin-top: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
   .chip {
     border: 1px solid var(--border); background: var(--bg); color: var(--ink);
     border-radius: 999px; padding: 6px 13px; font-size: 12.5px; font-weight: 600;
-    cursor: pointer;
+    cursor: pointer; white-space: nowrap;
   }
   .chip:hover { border-color: var(--teal); color: var(--teal); }
 
@@ -149,7 +158,7 @@
   }
   .entry .metrics .m .v { font-weight: 700; font-size: 14px; }
   .entry .metrics .m .l { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-  .entry .title { font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 8px; color: var(--orange-dark); }
+  .entry .title { font-weight: 800; font-size: 18px; display: flex; align-items: center; gap: 8px; color: var(--orange-dark); }
   .entry .date { font-size: 12px; color: var(--muted); font-weight: 400; }
   .split-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .split-chip {
@@ -171,32 +180,51 @@
 
   .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .sort-row span { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .sort-btn, .run-sort-btn, .surface-filter-btn {
+  .run-sort-btn, .surface-filter-btn {
     border: 1px solid var(--border); background: var(--bg); color: var(--muted);
     border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
   }
-  .sort-btn.active, .run-sort-btn.active, .surface-filter-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+  .run-sort-btn.active, .surface-filter-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
   .badge.surface { background: var(--teal-light); color: var(--teal); }
 
-  .records { display: flex; flex-direction: column; gap: 8px; }
+  .records-table { overflow-x: auto; padding-bottom: 4px; }
+  .records-inner { width: max-content; min-width: 100%; }
+  .records-header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 90px repeat(6, minmax(90px, 1fr));
+    gap: 10px;
+    padding: 0 16px 8px;
+    border: 1px solid transparent;
+    border-bottom-width: 0;
+  }
+  .col-sort-btn, .col-label {
+    background: none; border: none; padding: 0; text-align: left;
+    font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--muted); font-family: inherit;
+  }
+  .col-sort-btn { cursor: pointer; }
+  .col-sort-btn:hover, .col-sort-btn.active { color: var(--teal); }
+  .col-distance { grid-column: 1; }
+  .col-time { grid-column: 2 / span 2; }
+  .col-pace { grid-column: 4 / span 2; }
+  .col-speed { grid-column: 6 / span 2; }
+
+  .records { display: flex; flex-direction: column; gap: 8px; width: 100%; }
   .record {
+    width: 100%;
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 12px 16px;
     display: grid;
-    grid-template-columns: 90px 1fr;
+    grid-template-columns: 90px repeat(6, minmax(90px, 1fr));
     gap: 10px;
     align-items: center;
   }
-  .record .cat { font-weight: 800; font-size: 14px; }
-  .record .metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 4px 16px;
-  }
-  .record .metrics .m .v { font-weight: 700; font-size: 13.5px; }
-  .record .metrics .m .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-  .record .none { color: var(--muted); font-size: 13px; font-style: italic; }
+  .record .cat { font-weight: 800; font-size: 17px; }
+  .record .m .v { font-weight: 700; font-size: 13.5px; }
+  .record .m .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .record .none { color: var(--muted); font-size: 13px; font-style: italic; grid-column: 2 / -1; }
   .record .src { font-size: 10.5px; color: var(--muted); grid-column: 1 / -1; }
   .record .m .v.fast { color: var(--orange-dark); }
 </style>
@@ -309,13 +337,17 @@
       <button type="button" class="surface-filter-btn" data-surface="treadmill">Treadmill</button>
       <button type="button" class="surface-filter-btn" data-surface="all">Combined</button>
     </div>
-    <div class="sort-row">
-      <span>Sort by</span>
-      <button type="button" class="sort-btn" data-sort="distance">Distance</button>
-      <button type="button" class="sort-btn" data-sort="pace">Pace</button>
-      <button type="button" class="sort-btn" data-sort="speed">Speed</button>
+    <div class="records-table">
+      <div class="records-inner">
+        <div class="records-header">
+          <button type="button" class="col-sort-btn col-distance" data-sort="distance">Distance<span class="arrow"></span></button>
+          <div class="col-label col-time">Time</div>
+          <button type="button" class="col-sort-btn col-pace" data-sort="pace">Pace<span class="arrow"></span></button>
+          <button type="button" class="col-sort-btn col-speed" data-sort="speed">Speed<span class="arrow"></span></button>
+        </div>
+        <div class="records" id="recordsList"></div>
+      </div>
     </div>
-    <div class="records" id="recordsList"></div>
   </div>
 
   <div class="panel" id="runsPanel">
@@ -451,7 +483,6 @@ const QUICK_FILL_DISTANCES = [
   { key: '10k', label: '10K', km: 10 },
   { key: '10mile', label: '10 Mile', km: 10 * KM_PER_MI },
   { key: 'half', label: 'Half Marathon', km: 21.0975 },
-  { key: 'marathon', label: 'Marathon', km: 42.195 },
 ];
 
 const store = {
@@ -475,6 +506,7 @@ const store = {
 
 let entries = store.load();
 let recordSort = 'distance';
+let recordSortDir = 'asc';
 let runSort = 'date';
 let recordSurface = 'all';
 let runSurface = 'street';
@@ -699,23 +731,27 @@ function getSplitBest(split, pool) {
 }
 
 function renderRecords() {
-  document.querySelectorAll('.sort-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.sort === recordSort);
+  document.querySelectorAll('.col-sort-btn').forEach(btn => {
+    const isActive = btn.dataset.sort === recordSort;
+    btn.classList.toggle('active', isActive);
+    const arrow = btn.querySelector('.arrow');
+    if (arrow) arrow.textContent = isActive ? (recordSortDir === 'asc' ? ' ▲' : ' ▼') : '';
   });
   document.querySelectorAll('.surface-filter-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.surface === recordSurface);
   });
 
   const pool = recordSurface === 'all' ? entries : entries.filter(e => (e.surface || 'street') === recordSurface);
+  const dir = recordSortDir === 'asc' ? 1 : -1;
 
   const rows = SPLIT_DISTANCES.map(split => ({ split, avg: getSplitAverage(split, pool) }));
   const withData = rows.filter(r => r.avg);
   const withoutData = rows.filter(r => !r.avg);
-  if (recordSort === 'distance') withData.sort((a, b) => a.split.km - b.split.km);
+  if (recordSort === 'distance') withData.sort((a, b) => dir * (a.split.km - b.split.km));
   else if (recordSort === 'pace') {
-    withData.sort((a, b) => (Math.round(a.avg.paceMinPerKm * 1000) - Math.round(b.avg.paceMinPerKm * 1000)) || (a.split.km - b.split.km));
+    withData.sort((a, b) => dir * (Math.round(a.avg.paceMinPerKm * 1000) - Math.round(b.avg.paceMinPerKm * 1000)) || (a.split.km - b.split.km));
   } else if (recordSort === 'speed') {
-    withData.sort((a, b) => (Math.round(b.avg.kmh * 1000) - Math.round(a.avg.kmh * 1000)) || (a.split.km - b.split.km));
+    withData.sort((a, b) => dir * (Math.round(a.avg.kmh * 1000) - Math.round(b.avg.kmh * 1000)) || (a.split.km - b.split.km));
   }
   const ordered = [...withData, ...withoutData];
 
@@ -732,22 +768,28 @@ function renderRecords() {
     return `
       <div class="record">
         <div class="cat">${split.label}</div>
-        <div class="metrics">
-          <div class="m"><div class="v">${fmtHMS(avg.hours)}</div><div class="l">Avg time</div></div>
-          <div class="m"><div class="v fast">${fmtHMS(best.hours)}</div><div class="l">Best time</div></div>
-          <div class="m"><div class="v">${fmtPace(avg.paceMinPerMi)} /mi · ${fmtPace(avg.paceMinPerKm)} /km</div><div class="l">Avg pace</div></div>
-          <div class="m"><div class="v fast">${fmtPace(best.paceMinPerMi)} /mi · ${fmtPace(best.paceMinPerKm)} /km</div><div class="l">Best pace</div></div>
-          <div class="m"><div class="v">${avg.mph.toFixed(2)} mph / ${avg.kmh.toFixed(2)} km/h</div><div class="l">Avg speed</div></div>
-          <div class="m"><div class="v fast">${best.mph.toFixed(2)} mph / ${best.kmh.toFixed(2)} km/h</div><div class="l">Best speed</div></div>
-        </div>
+        <div class="m"><div class="v">${fmtHMS(avg.hours)}</div><div class="l">Avg time</div></div>
+        <div class="m"><div class="v fast">${fmtHMS(best.hours)}</div><div class="l">Best time</div></div>
+        <div class="m"><div class="v">${fmtPace(avg.paceMinPerMi)} /mi · ${fmtPace(avg.paceMinPerKm)} /km</div><div class="l">Avg pace</div></div>
+        <div class="m"><div class="v fast">${fmtPace(best.paceMinPerMi)} /mi · ${fmtPace(best.paceMinPerKm)} /km</div><div class="l">Best pace</div></div>
+        <div class="m"><div class="v">${avg.mph.toFixed(2)} mph / ${avg.kmh.toFixed(2)} km/h</div><div class="l">Avg speed</div></div>
+        <div class="m"><div class="v fast">${best.mph.toFixed(2)} mph / ${best.kmh.toFixed(2)} km/h</div><div class="l">Best speed</div></div>
         <div class="src">Averaged from ${avg.sampleSize} run${avg.sampleSize === 1 ? '' : 's'} of ${split.label} or longer · best by "${escapeHtml(best.entry.label)}"${best.entry.date ? ' (' + best.entry.date + ')' : ''}</div>
       </div>
     `;
   }).join('');
 }
 
-document.querySelectorAll('.sort-btn').forEach(btn => {
-  btn.addEventListener('click', () => { recordSort = btn.dataset.sort; renderRecords(); });
+document.querySelectorAll('.col-sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (recordSort === btn.dataset.sort) {
+      recordSortDir = recordSortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      recordSort = btn.dataset.sort;
+      recordSortDir = 'asc';
+    }
+    renderRecords();
+  });
 });
 
 document.querySelectorAll('.surface-filter-btn').forEach(btn => {
