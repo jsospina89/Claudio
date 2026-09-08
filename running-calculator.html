@@ -365,7 +365,7 @@
 
   <div class="panel">
     <h2>Sync to GitHub</h2>
-    <div class="hint">Paste a <strong>fine-grained personal access token</strong> (github.com → Settings → Developer settings → Personal access tokens), scoped to just this repo with <strong>Contents: Read and write</strong>. It's stored only in this browser and sent only to api.github.com — never to me. Once pasted, every run you add or remove is committed automatically.</div>
+    <div class="hint">Paste a <strong>fine-grained personal access token</strong> (github.com → Settings → Developer settings → Personal access tokens), scoped to just this repo with <strong>Contents: Read and write</strong>, and set the shortest expiration GitHub allows. It's kept in memory for this page load only — not saved anywhere — and sent only to api.github.com, never to me. Paste it again next time you visit; for real one-time use, revoke it on GitHub right after you're done syncing.</div>
     <div class="row">
       <div class="field">
         <label for="ghToken">Personal access token</label>
@@ -586,11 +586,16 @@ function armConfirm(btn, action) {
 // Owner/repo/branch/path are fixed to this app's own repo rather than exposed as settings.
 const GH_DEFAULTS = { owner: 'jsospina89', repo: 'Claudio', branch: 'claude/running-calculator-q9h1f8', path: 'running-data.json' };
 
-function ghLoadToken() {
-  try { return localStorage.getItem('runCalc.ghToken') || ''; } catch { return ''; }
-}
-function ghSaveToken(token) {
-  try { localStorage.setItem('runCalc.ghToken', token); } catch {}
+// The token is kept in memory only for this page load — never written to localStorage —
+// so it doesn't linger in the browser. Paste it again each time you come back to sync.
+// (One old exception: if a token from before this change is still sitting in storage from
+// an earlier version of this app, it's read once here and immediately erased.)
+function ghConsumePreviouslyStoredToken() {
+  try {
+    const t = localStorage.getItem('runCalc.ghToken');
+    if (t) localStorage.removeItem('runCalc.ghToken');
+    return t || '';
+  } catch { return ''; }
 }
 
 const ghTokenInput = document.getElementById('ghToken');
@@ -598,10 +603,11 @@ const ghSyncBtn = document.getElementById('ghSyncBtn');
 const ghPullBtn = document.getElementById('ghPullBtn');
 const ghStatus = document.getElementById('ghStatus');
 
-const savedToken = ghLoadToken();
-ghTokenInput.value = savedToken;
-if (savedToken) ghStatus.textContent = 'Configured. Not yet synced this session.';
-ghTokenInput.addEventListener('input', () => ghSaveToken(ghTokenInput.value.trim()));
+const carriedOverToken = ghConsumePreviouslyStoredToken();
+if (carriedOverToken) {
+  ghTokenInput.value = carriedOverToken;
+  ghStatus.textContent = 'Loaded a token saved by an earlier version, one last time — it will not be remembered going forward.';
+}
 
 function ghConfig() {
   return { token: ghTokenInput.value.trim(), ...GH_DEFAULTS };
