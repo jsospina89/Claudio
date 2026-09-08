@@ -149,8 +149,13 @@
   }
   .entry .metrics .m .v { font-weight: 700; font-size: 14px; }
   .entry .metrics .m .l { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-  .entry .title { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .entry .title { font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 8px; color: var(--orange-dark); }
   .entry .date { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .split-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .split-chip {
+    background: var(--teal-light); color: var(--teal);
+    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+  }
   .badge {
     background: var(--orange-light); color: var(--orange-dark);
     font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
@@ -166,11 +171,11 @@
 
   .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .sort-row span { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .sort-btn {
+  .sort-btn, .run-sort-btn {
     border: 1px solid var(--border); background: var(--bg); color: var(--muted);
     border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
   }
-  .sort-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+  .sort-btn.active, .run-sort-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
 
   .records { display: flex; flex-direction: column; gap: 8px; }
   .record {
@@ -300,6 +305,13 @@
 
   <div class="panel">
     <h2>Runs</h2>
+    <div class="sort-row">
+      <span>Sort by</span>
+      <button type="button" class="run-sort-btn" data-sort="date">Date</button>
+      <button type="button" class="run-sort-btn" data-sort="distance">Distance</button>
+      <button type="button" class="run-sort-btn" data-sort="pace">Pace</button>
+      <button type="button" class="run-sort-btn" data-sort="speed">Speed</button>
+    </div>
     <div class="entries" id="entriesList"></div>
   </div>
 
@@ -448,6 +460,7 @@ const store = {
 
 let entries = store.load();
 let recordSort = 'distance';
+let runSort = 'date';
 let weightUnit = 'kg';
 let distUnit = 'km';
 let speedUnit = 'kmh';
@@ -639,6 +652,19 @@ function getSplitAverage(split) {
   };
 }
 
+// The single run whose own pace implies the fastest time for a split distance — the actual record holder.
+function getSplitBest(split) {
+  const qualifying = entries.filter(e => e.km >= split.km);
+  if (qualifying.length === 0) return null;
+  let best = null;
+  let bestHours = Infinity;
+  qualifying.forEach(e => {
+    const implied = (split.km / e.km) * e.durationHours;
+    if (implied < bestHours) { bestHours = implied; best = e; }
+  });
+  return { hours: bestHours, entry: best };
+}
+
 function renderRecords() {
   document.querySelectorAll('.sort-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.sort === recordSort);
@@ -664,6 +690,7 @@ function renderRecords() {
         </div>
       `;
     }
+    const best = getSplitBest(split);
     return `
       <div class="record">
         <div class="cat">${split.label}</div>
@@ -672,6 +699,7 @@ function renderRecords() {
           <div class="m"><div class="v">${fmtPace(avg.paceMinPerMi)} /mi · ${fmtPace(avg.paceMinPerKm)} /km</div><div class="l">Avg pace</div></div>
           <div class="m"><div class="v">${avg.mph.toFixed(2)} mph / ${avg.kmh.toFixed(2)} km/h</div><div class="l">Avg speed</div></div>
           <div class="src">Averaged from ${avg.sampleSize} run${avg.sampleSize === 1 ? '' : 's'} of ${split.label} or longer</div>
+          ${best ? `<div class="src">Record: ${fmtHMS(best.hours)} implied by "${escapeHtml(best.entry.label)}"${best.entry.date ? ' · ' + best.entry.date : ''}</div>` : ''}
         </div>
       </div>
     `;
@@ -682,16 +710,38 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => { recordSort = btn.dataset.sort; renderRecords(); });
 });
 
+document.querySelectorAll('.run-sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => { runSort = btn.dataset.sort; render(); });
+});
+
+function sortedEntries() {
+  const list = [...entries];
+  if (runSort === 'date') list.sort((a, b) => b.id - a.id);
+  else if (runSort === 'distance') list.sort((a, b) => b.km - a.km);
+  else if (runSort === 'pace') list.sort((a, b) => (a.durationHours * 60 / a.km) - (b.durationHours * 60 / b.km));
+  else if (runSort === 'speed') list.sort((a, b) => (b.km / b.durationHours) - (a.km / a.durationHours));
+  return list;
+}
+
 function render() {
+  document.querySelectorAll('.run-sort-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.sort === runSort);
+  });
+
   entriesList.innerHTML = '';
   if (entries.length === 0) {
     entriesList.innerHTML = '<div class="empty">No runs logged yet — add your first one above.</div>';
   } else {
-    [...entries].sort((a, b) => b.id - a.id).forEach(e => {
+    sortedEntries().forEach(e => {
       const paceMinPerMi = e.durationHours * 60 / e.mi;
       const paceMinPerKm = e.durationHours * 60 / e.km;
       const mph = e.mi / e.durationHours;
       const kmh = e.km / e.durationHours;
+      const coveredSplits = SPLIT_DISTANCES.filter(s => e.km >= s.km);
+      const splitChips = coveredSplits.map(s => {
+        const avg = getSplitAverage(s);
+        return `<span class="split-chip">${s.label}: ${fmtHMS(avg.hours)} avg</span>`;
+      }).join('');
 
       const div = document.createElement('div');
       div.className = 'entry';
@@ -704,6 +754,7 @@ function render() {
             <div class="m"><div class="v">${fmtPace(paceMinPerMi)} /mi · ${fmtPace(paceMinPerKm)} /km</div><div class="l">Pace</div></div>
             <div class="m"><div class="v">${Math.round(e.calories)} kcal</div><div class="l">Calories</div></div>
           </div>
+          ${splitChips ? `<div class="split-chips">${splitChips}</div>` : ''}
         </div>
         <button class="del" data-id="${e.id}">Delete</button>
       `;
