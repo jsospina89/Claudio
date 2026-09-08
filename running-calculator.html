@@ -197,6 +197,12 @@
   .record .metrics .m .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .record .none { color: var(--muted); font-size: 13px; font-style: italic; }
   .record .src { font-size: 10.5px; color: var(--muted); grid-column: 1 / -1; }
+  .metrics-group { margin-bottom: 10px; }
+  .metrics-group:last-child { margin-bottom: 0; }
+  .metrics-label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 4px; }
+  .metrics-group.fastest { padding-top: 8px; border-top: 1px dashed var(--border); }
+  .metrics-group.fastest .metrics-label { color: var(--orange-dark); }
+  .metrics-group.fastest .m .v { color: var(--orange-dark); }
 </style>
 </head>
 <body>
@@ -293,7 +299,7 @@
 
   <div class="panel">
     <h2>Records</h2>
-    <div class="hint">For each standard distance, the average of what your pace on every long-enough run implies you'd run it in — not a single best time.</div>
+    <div class="hint">For each standard distance: the average of what your pace on every long-enough run implies you'd run it in, plus your fastest ever implied time and which run set it.</div>
     <div class="sort-row">
       <span>Sort by</span>
       <button type="button" class="sort-btn" data-sort="distance">Distance</button>
@@ -662,7 +668,16 @@ function getSplitBest(split) {
     const implied = (split.km / e.km) * e.durationHours;
     if (implied < bestHours) { bestHours = implied; best = e; }
   });
-  return { hours: bestHours, entry: best };
+  const mi = split.km / KM_PER_MI;
+  return {
+    hours: bestHours,
+    mi,
+    paceMinPerKm: bestHours * 60 / split.km,
+    paceMinPerMi: bestHours * 60 / mi,
+    kmh: split.km / bestHours,
+    mph: mi / bestHours,
+    entry: best
+  };
 }
 
 function renderRecords() {
@@ -694,13 +709,26 @@ function renderRecords() {
     return `
       <div class="record">
         <div class="cat">${split.label}</div>
-        <div class="metrics">
-          <div class="m"><div class="v">${fmtHMS(avg.hours)}</div><div class="l">Avg time</div></div>
-          <div class="m"><div class="v">${fmtPace(avg.paceMinPerMi)} /mi · ${fmtPace(avg.paceMinPerKm)} /km</div><div class="l">Avg pace</div></div>
-          <div class="m"><div class="v">${avg.mph.toFixed(2)} mph / ${avg.kmh.toFixed(2)} km/h</div><div class="l">Avg speed</div></div>
+        <div class="metrics-group">
+          <div class="metrics-label">Average</div>
+          <div class="metrics">
+            <div class="m"><div class="v">${fmtHMS(avg.hours)}</div><div class="l">Time</div></div>
+            <div class="m"><div class="v">${fmtPace(avg.paceMinPerMi)} /mi · ${fmtPace(avg.paceMinPerKm)} /km</div><div class="l">Pace</div></div>
+            <div class="m"><div class="v">${avg.mph.toFixed(2)} mph / ${avg.kmh.toFixed(2)} km/h</div><div class="l">Speed</div></div>
+          </div>
           <div class="src">Averaged from ${avg.sampleSize} run${avg.sampleSize === 1 ? '' : 's'} of ${split.label} or longer</div>
-          ${best ? `<div class="src">Record: ${fmtHMS(best.hours)} implied by "${escapeHtml(best.entry.label)}"${best.entry.date ? ' · ' + best.entry.date : ''}</div>` : ''}
         </div>
+        ${best ? `
+        <div class="metrics-group fastest">
+          <div class="metrics-label">Fastest 🏆</div>
+          <div class="metrics">
+            <div class="m"><div class="v">${fmtHMS(best.hours)}</div><div class="l">Time</div></div>
+            <div class="m"><div class="v">${fmtPace(best.paceMinPerMi)} /mi · ${fmtPace(best.paceMinPerKm)} /km</div><div class="l">Pace</div></div>
+            <div class="m"><div class="v">${best.mph.toFixed(2)} mph / ${best.kmh.toFixed(2)} km/h</div><div class="l">Speed</div></div>
+          </div>
+          <div class="src">"${escapeHtml(best.entry.label)}"${best.entry.date ? ' · ' + best.entry.date : ''}</div>
+        </div>
+        ` : ''}
       </div>
     `;
   }).join('');
