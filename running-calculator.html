@@ -244,24 +244,6 @@
   </header>
 
   <div class="panel">
-    <h2>Backup your data</h2>
-    <div class="hint">Runs live only in <strong>this browser's storage</strong> — never sent anywhere, including to me, and not shared across other browsers, devices, or private-browsing windows. Clearing site data or opening this page somewhere else means starting from empty. Back up regularly.</div>
-    <div class="row">
-      <button type="button" class="btn secondary" id="copyBackupBtn">Copy backup to clipboard</button>
-      <button type="button" class="btn secondary" id="restoreAutoBtn">Restore last auto-backup</button>
-    </div>
-    <div class="row" style="margin-top:12px;">
-      <div class="field">
-        <label for="restoreText">Paste a backup here to restore it</label>
-        <textarea id="restoreText" rows="3" placeholder="Paste a previously copied backup"></textarea>
-      </div>
-    </div>
-    <div class="add-row">
-      <button type="button" class="btn" id="restoreTextBtn">Restore from pasted text</button>
-    </div>
-  </div>
-
-  <div class="panel">
     <h2>Add a run</h2>
     <div class="hint">Fill in any <strong>two</strong> of Distance / Time / Speed / Pace — the rest work themselves out.</div>
     <div class="row">
@@ -382,6 +364,24 @@
       <button type="button" class="run-sort-btn" data-sort="speed">Speed</button>
     </div>
     <div class="entries" id="entriesList"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Backup your data</h2>
+    <div class="hint">Runs live only in <strong>this browser's storage</strong> — never sent anywhere, including to me, and not shared across other browsers, devices, or private-browsing windows. Clearing site data or opening this page somewhere else means starting from empty. Back up regularly.</div>
+    <div class="row">
+      <button type="button" class="btn secondary" id="copyBackupBtn">Copy backup to clipboard</button>
+      <button type="button" class="btn secondary" id="restoreAutoBtn">Restore last auto-backup</button>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="field">
+        <label for="restoreText">Paste a backup here to restore it</label>
+        <textarea id="restoreText" rows="3" placeholder="Paste a previously copied backup"></textarea>
+      </div>
+    </div>
+    <div class="add-row">
+      <button type="button" class="btn" id="restoreTextBtn">Restore from pasted text</button>
+    </div>
   </div>
 
   <footer>Stored locally in this browser. Calories are a MET-based estimate, not a medical measurement.</footer>
