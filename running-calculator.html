@@ -171,11 +171,12 @@
 
   .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .sort-row span { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .sort-btn, .run-sort-btn {
+  .sort-btn, .run-sort-btn, .surface-filter-btn {
     border: 1px solid var(--border); background: var(--bg); color: var(--muted);
     border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
   }
-  .sort-btn.active, .run-sort-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+  .sort-btn.active, .run-sort-btn.active, .surface-filter-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+  .badge.surface { background: var(--teal-light); color: var(--teal); }
 
   .records { display: flex; flex-direction: column; gap: 8px; }
   .record {
@@ -221,6 +222,13 @@
       <div class="field">
         <label for="dateInput">Date</label>
         <input type="date" id="dateInput">
+      </div>
+      <div class="field" style="max-width:200px;">
+        <label>Surface</label>
+        <div class="unit-toggle">
+          <button type="button" id="surfaceStreet" class="active">Street</button>
+          <button type="button" id="surfaceTreadmill">Treadmill</button>
+        </div>
       </div>
     </div>
 
@@ -294,7 +302,13 @@
 
   <div class="panel">
     <h2>Records</h2>
-    <div class="hint">For each standard distance: the average of what your pace on every long-enough run implies you'd run it in, plus your fastest ever implied time and which run set it.</div>
+    <div class="hint">For each standard distance: the average of what your pace on every long-enough run implies you'd run it in, plus your fastest ever implied time and which run set it. Treadmill and street are tracked separately — they're not the same effort.</div>
+    <div class="sort-row">
+      <span>Surface</span>
+      <button type="button" class="surface-filter-btn" data-surface="street">Street</button>
+      <button type="button" class="surface-filter-btn" data-surface="treadmill">Treadmill</button>
+      <button type="button" class="surface-filter-btn" data-surface="all">Combined</button>
+    </div>
     <div class="sort-row">
       <span>Sort by</span>
       <button type="button" class="sort-btn" data-sort="distance">Distance</button>
@@ -462,6 +476,8 @@ const store = {
 let entries = store.load();
 let recordSort = 'distance';
 let runSort = 'date';
+let recordSurface = 'all';
+let runSurface = 'street';
 let weightUnit = 'kg';
 let distUnit = 'km';
 let speedUnit = 'kmh';
@@ -481,6 +497,8 @@ const sUnitMph = document.getElementById('sUnitMph');
 const paceInput = document.getElementById('paceInput');
 const pUnitKm = document.getElementById('pUnitKm');
 const pUnitMi = document.getElementById('pUnitMi');
+const surfaceStreet = document.getElementById('surfaceStreet');
+const surfaceTreadmill = document.getElementById('surfaceTreadmill');
 const labelInput = document.getElementById('labelInput');
 const dateInput = document.getElementById('dateInput');
 const addBtn = document.getElementById('addBtn');
@@ -521,6 +539,8 @@ sUnitKmh.addEventListener('click', () => { speedUnit = 'kmh'; setActiveToggle(sU
 sUnitMph.addEventListener('click', () => { speedUnit = 'mph'; setActiveToggle(sUnitMph, [sUnitKmh, sUnitMph]); });
 pUnitKm.addEventListener('click', () => { paceUnit = 'km'; setActiveToggle(pUnitKm, [pUnitKm, pUnitMi]); });
 pUnitMi.addEventListener('click', () => { paceUnit = 'mi'; setActiveToggle(pUnitMi, [pUnitKm, pUnitMi]); });
+surfaceStreet.addEventListener('click', () => { runSurface = 'street'; setActiveToggle(surfaceStreet, [surfaceStreet, surfaceTreadmill]); });
+surfaceTreadmill.addEventListener('click', () => { runSurface = 'treadmill'; setActiveToggle(surfaceTreadmill, [surfaceStreet, surfaceTreadmill]); });
 weightInput.addEventListener('input', persistWeight);
 
 function persistWeight() {
@@ -612,6 +632,7 @@ addBtn.addEventListener('click', () => {
     id: Date.now(),
     label: labelInput.value.trim() || 'Run',
     date: dateInput.value || null,
+    surface: runSurface,
     km, mi, durationHours: hours, calories
   });
   store.save(entries);
@@ -638,8 +659,8 @@ function deleteEntry(id) {
 }
 
 // For a split distance, average the time that every long-enough run's own pace implies for it.
-function getSplitAverage(split) {
-  const qualifying = entries.filter(e => e.km >= split.km);
+function getSplitAverage(split, pool) {
+  const qualifying = pool.filter(e => e.km >= split.km);
   if (qualifying.length === 0) return null;
   const impliedHoursList = qualifying.map(e => (split.km / e.km) * e.durationHours);
   const avgHours = impliedHoursList.reduce((a, b) => a + b, 0) / impliedHoursList.length;
@@ -656,8 +677,8 @@ function getSplitAverage(split) {
 }
 
 // The single run whose own pace implies the fastest time for a split distance — the actual record holder.
-function getSplitBest(split) {
-  const qualifying = entries.filter(e => e.km >= split.km);
+function getSplitBest(split, pool) {
+  const qualifying = pool.filter(e => e.km >= split.km);
   if (qualifying.length === 0) return null;
   let best = null;
   let bestHours = Infinity;
@@ -681,8 +702,13 @@ function renderRecords() {
   document.querySelectorAll('.sort-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.sort === recordSort);
   });
+  document.querySelectorAll('.surface-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.surface === recordSurface);
+  });
 
-  const rows = SPLIT_DISTANCES.map(split => ({ split, avg: getSplitAverage(split) }));
+  const pool = recordSurface === 'all' ? entries : entries.filter(e => (e.surface || 'street') === recordSurface);
+
+  const rows = SPLIT_DISTANCES.map(split => ({ split, avg: getSplitAverage(split, pool) }));
   const withData = rows.filter(r => r.avg);
   const withoutData = rows.filter(r => !r.avg);
   if (recordSort === 'distance') withData.sort((a, b) => a.split.km - b.split.km);
@@ -702,7 +728,7 @@ function renderRecords() {
         </div>
       `;
     }
-    const best = getSplitBest(split);
+    const best = getSplitBest(split, pool);
     return `
       <div class="record">
         <div class="cat">${split.label}</div>
@@ -722,6 +748,10 @@ function renderRecords() {
 
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => { recordSort = btn.dataset.sort; renderRecords(); });
+});
+
+document.querySelectorAll('.surface-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => { recordSurface = btn.dataset.surface; renderRecords(); });
 });
 
 document.querySelectorAll('.run-sort-btn').forEach(btn => {
@@ -761,7 +791,7 @@ function render() {
       div.className = 'entry';
       div.innerHTML = `
         <div>
-          <div class="title">${escapeHtml(e.label)} ${e.date ? `<span class="date">${e.date}</span>` : ''} <span class="badge">${fmtHMS(e.durationHours)}</span></div>
+          <div class="title">${escapeHtml(e.label)} ${e.date ? `<span class="date">${e.date}</span>` : ''} <span class="badge">${fmtHMS(e.durationHours)}</span> <span class="badge surface">${(e.surface || 'street') === 'treadmill' ? 'Treadmill' : 'Street'}</span></div>
           <div class="metrics">
             <div class="m"><div class="v">${e.km.toFixed(2)} km / ${e.mi.toFixed(2)} mi</div><div class="l">Distance</div></div>
             <div class="m"><div class="v">${mph.toFixed(2)} mph / ${kmh.toFixed(2)} km/h</div><div class="l">Speed</div></div>
