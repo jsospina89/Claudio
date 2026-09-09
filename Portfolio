@@ -24,3 +24,28 @@ _Last updated: 2026-09-09_
 **Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW
 
 **Not on this list yet:** other positions the user hasn't specified.
+
+## Proposed consolidated portfolio (reduce overlap, keep highest-ranked)
+
+Your 16 positions cluster into 4 overlapping themes. Trimming to the top performer(s) per cluster:
+
+| Cluster | Names in it | Kept (top-ranked) | Cut (redundant/weaker) |
+|---|---|---|---|
+| AI compute / datacenter infra | AMD, MRVL, AVGO, ANET, VRT, DRAM | **AMD** (+5.90%), **VRT** (+3.67%) | MRVL, ANET, AVGO, DRAM |
+| Mega-cap tech | VOO, MAGS, GOOG, META | **VOO** (core), **META** (+0.48%) | MAGS, GOOG |
+| Sector / dividend ETFs | XLF, XLV, XLE, VYM | **XLF** (+1.56%) | XLV, XLE, VYM |
+| Standalone (no overlap) | DE, BTC/USD | **DE**, **BTC/USD** | — |
+
+**Result — 7 positions, one per theme, lowest correlation:**
+
+| Symbol | Role | Chg % |
+|---|---|---:|
+| VOO | Core broad market | +1.25% |
+| AMD | AI compute leader | +5.90% |
+| VRT | AI power/cooling infra (diversifies AMD without chip overlap) | +3.67% |
+| META | Highest-conviction mega-cap single name | +0.48% |
+| XLF | Financials tilt (sector VOO underweights) | +1.56% |
+| DE | Industrials, uncorrelated | +0.57% |
+| BTC/USD | Alt asset, uncorrelated | +0.15% |
+
+Cut list (kept for reference, not sold): MRVL, ANET, AVGO, DRAM, MAGS, GOOG, XLV, XLE, VYM — each was redundant with a stronger name in its own cluster.
