@@ -191,7 +191,9 @@
 
   .empty { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 14px; }
   footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 30px; }
-  .section-spacer { height: 1px; background: var(--border); margin: 8px 0 28px; }
+  .section-spacer { height: 3px; background: var(--border); border-radius: 3px; margin: 16px 0 40px; }
+  .data-panels-row { display: flex; flex-wrap: wrap; gap: 20px; }
+  .data-panels-row .panel { flex: 1 1 340px; }
 
   .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .sort-row span { font-size: 12px; color: var(--muted); font-weight: 600; }
@@ -429,29 +431,31 @@
 
   <div class="section-spacer"></div>
 
-  <div class="panel">
-    <h2>Sync to GitHub</h2>
-    <div class="hint">Paste a <strong>fine-grained personal access token</strong> (github.com → Settings → Developer settings → Personal access tokens), scoped to just this repo with <strong>Contents: Read and write</strong>, and set the shortest expiration GitHub allows. It's kept in memory for this page load only — not saved anywhere — and sent only to api.github.com, never to me. Paste it again next time you visit; for real one-time use, revoke it on GitHub right after you're done syncing.</div>
-    <div class="row">
-      <div class="field">
-        <label for="ghToken">Personal access token</label>
-        <input type="password" id="ghToken" placeholder="github_pat_...">
+  <div class="data-panels-row">
+    <div class="panel">
+      <h2>Sync to GitHub</h2>
+      <div class="hint">Paste a <strong>fine-grained personal access token</strong> (github.com → Settings → Developer settings → Personal access tokens), scoped to just this repo with <strong>Contents: Read and write</strong>, and set the shortest expiration GitHub allows. It's kept in memory for this page load only — not saved anywhere — and sent only to api.github.com, never to me. Paste it again next time you visit; for real one-time use, revoke it on GitHub right after you're done syncing.</div>
+      <div class="row">
+        <div class="field">
+          <label for="ghToken">Personal access token</label>
+          <input type="password" id="ghToken" placeholder="github_pat_...">
+        </div>
       </div>
+      <div class="row" style="margin-top:12px;">
+        <button type="button" class="btn secondary" id="ghSyncBtn">Sync now</button>
+        <button type="button" class="btn secondary" id="ghPullBtn">Pull from GitHub</button>
+      </div>
+      <div class="hint" id="ghStatus" style="margin-top:12px; margin-bottom:0;">Not configured — paste a token above.</div>
     </div>
-    <div class="row" style="margin-top:12px;">
-      <button type="button" class="btn secondary" id="ghSyncBtn">Sync now</button>
-      <button type="button" class="btn secondary" id="ghPullBtn">Pull from GitHub</button>
-    </div>
-    <div class="hint" id="ghStatus" style="margin-top:12px; margin-bottom:0;">Not configured — paste a token above.</div>
-  </div>
 
-  <div class="panel">
-    <h2>Export / Import</h2>
-    <div class="hint">Export everything to a file, or import one back in. Works when this page is opened normally (e.g. your GitHub Pages link) — downloads are blocked inside embedded previews.</div>
-    <div class="row">
-      <button type="button" class="btn secondary" id="downloadBtn">Export</button>
-      <button type="button" class="btn secondary" id="importBtn">Import</button>
-      <input type="file" id="importFile" accept="application/json" hidden>
+    <div class="panel">
+      <h2>Export / Import</h2>
+      <div class="hint">Export everything to a file, or import one back in. Works when this page is opened normally (e.g. your GitHub Pages link) — downloads are blocked inside embedded previews.</div>
+      <div class="row">
+        <button type="button" class="btn secondary" id="downloadBtn">Export</button>
+        <button type="button" class="btn secondary" id="importBtn">Import</button>
+        <input type="file" id="importFile" accept="application/json" hidden>
+      </div>
     </div>
   </div>
 
