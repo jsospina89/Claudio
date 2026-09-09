@@ -97,9 +97,9 @@
   }
   .unit-toggle button.active { background: var(--teal); color: white; }
 
-  .big-toggle { display: flex; border: 2px solid var(--border); border-radius: 14px; overflow: hidden; margin: 14px 0; }
-  .big-toggle-btn { flex: 1; border: none; background: var(--bg); color: var(--muted); padding: 14px; font-size: 15px; font-weight: 800; cursor: pointer; }
-  .big-toggle-btn.active { background: var(--teal); color: white; }
+  .panel-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .panel-head-row h2 { margin: 0; }
+  .input-mode-toggle { width: 140px; flex-shrink: 0; }
   .value-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
   .value-select {
     background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
@@ -243,13 +243,14 @@
   </header>
 
   <div class="panel">
-    <h2>Add a run</h2>
-    <div class="hint">Fill in any <strong>two</strong> of Distance / Time / Speed / Pace — the rest work themselves out.</div>
-
-    <div class="big-toggle">
-      <button type="button" class="big-toggle-btn active" data-mode="type">⌨️ Type</button>
-      <button type="button" class="big-toggle-btn" data-mode="pick">📋 Pick</button>
+    <div class="panel-head-row">
+      <h2>Add a run</h2>
+      <div class="unit-toggle input-mode-toggle">
+        <button type="button" class="active" data-mode="type">Type</button>
+        <button type="button" data-mode="pick">Pick</button>
+      </div>
     </div>
+    <div class="hint">Fill in any <strong>two</strong> of Distance / Time / Speed / Pace — the rest work themselves out.</div>
 
     <div class="row">
       <div class="field">
@@ -645,11 +646,11 @@ function getFieldMode() { return inputMode; }
 const fieldSyncs = []; // { toPick, toTypeInput } — populated below, run together on toggle.
 function registerFieldSync(sync) { fieldSyncs.push(sync); }
 
-document.querySelectorAll('.big-toggle-btn').forEach(btn => {
+document.querySelectorAll('.input-mode-toggle button').forEach(btn => {
   btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) return;
     const mode = btn.dataset.mode;
-    document.querySelectorAll('.big-toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.input-mode-toggle button').forEach(b => b.classList.toggle('active', b === btn));
     document.querySelectorAll('.mode-panel').forEach(p => { p.hidden = p.dataset.mode !== mode; });
     inputMode = mode;
     fieldSyncs.forEach(sync => {
