@@ -246,6 +246,9 @@
   table.rubric th { color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
   table.rubric tr:last-child td { border-bottom: none; }
   table.rubric td.weight { text-align: right; font-variant-numeric: tabular-nums; }
+  table.rubric td.rank { font-variant-numeric: tabular-nums; color: var(--text-muted); width: 40px; }
+  table.rubric td.rank-ticker { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.rubric td.rank-score { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
   table.rubric tr.changed td { color: var(--text-primary); }
   table.rubric tr.changed td.weight { font-weight: 700; }
   table.rubric tr.removed td { color: var(--text-muted); text-decoration: line-through; }
@@ -272,6 +275,51 @@
   <div class="banner">
     <strong>Rev. 4.</strong> "AI purity" stays gone — rewarding concentration in one theme was backwards no matter the weight. Momentum's weight came back down too (35% felt too dominant) — all five remaining dimensions now sit at an even <strong>20% each</strong>. This is a scoring tool, not a recommendation to buy — adjust the weights to match your own priorities. You make the final call.
   </div>
+
+  <!-- ============ FULL RANKINGS ============ -->
+  <section class="group">
+    <h2 class="section-title">All 32, Ranked</h2>
+    <p class="section-sub">Every fund on this page, one list, sorted by overall score. Ties keep their tied rank. Full detail (holdings, live data, per-dimension breakdown) is in the sections below.</p>
+    <table class="rubric">
+      <thead>
+        <tr><th>Rank</th><th>Ticker</th><th>Category</th><th>Score</th><th>Grade</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank">1</td><td class="rank-ticker">XLF</td><td>Sector SPDR — Financials</td><td class="rank-score">96%</td><td><span class="grade-badge good">A+</span></td></tr>
+        <tr><td class="rank">2</td><td class="rank-ticker">VOO</td><td>Whole Market — S&amp;P 500</td><td class="rank-score">92%</td><td><span class="grade-badge good">A</span></td></tr>
+        <tr><td class="rank">2</td><td class="rank-ticker">SPY</td><td>Whole Market — S&amp;P 500</td><td class="rank-score">92%</td><td><span class="grade-badge good">A</span></td></tr>
+        <tr><td class="rank">2</td><td class="rank-ticker">SCHB</td><td>Whole Market — Total US</td><td class="rank-score">92%</td><td><span class="grade-badge good">A</span></td></tr>
+        <tr><td class="rank">5</td><td class="rank-ticker">VTI</td><td>Whole Market — Total US</td><td class="rank-score">88%</td><td><span class="grade-badge good">A-</span></td></tr>
+        <tr><td class="rank">6</td><td class="rank-ticker">XLI</td><td>Sector SPDR — Industrials</td><td class="rank-score">84%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">6</td><td class="rank-ticker">XLV</td><td>Sector SPDR — Health Care</td><td class="rank-score">84%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">6</td><td class="rank-ticker">XLP</td><td>Sector SPDR — Staples</td><td class="rank-score">84%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">6</td><td class="rank-ticker">QQQ</td><td>Broad Tech / Growth</td><td class="rank-score">84%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">6</td><td class="rank-ticker">VGT</td><td>Broad Tech / Growth</td><td class="rank-score">84%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">11</td><td class="rank-ticker">XLE</td><td>Sector SPDR — Energy</td><td class="rank-score">80%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">11</td><td class="rank-ticker">XLB</td><td>Sector SPDR — Materials</td><td class="rank-score">80%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">11</td><td class="rank-ticker">PAVE</td><td>Industrial Buildout</td><td class="rank-score">80%</td><td><span class="grade-badge good">B+</span></td></tr>
+        <tr><td class="rank">14</td><td class="rank-ticker">SMH</td><td>Semiconductors</td><td class="rank-score">76%</td><td><span class="grade-badge warning">B</span></td></tr>
+        <tr><td class="rank">14</td><td class="rank-ticker">XLK</td><td>Sector SPDR — Technology</td><td class="rank-score">76%</td><td><span class="grade-badge warning">B</span></td></tr>
+        <tr><td class="rank">14</td><td class="rank-ticker">XLU</td><td>Sector SPDR — Utilities</td><td class="rank-score">76%</td><td><span class="grade-badge warning">B</span></td></tr>
+        <tr><td class="rank">14</td><td class="rank-ticker">XLRE</td><td>Sector SPDR — Real Estate</td><td class="rank-score">76%</td><td><span class="grade-badge warning">B</span></td></tr>
+        <tr><td class="rank">18</td><td class="rank-ticker">XLY</td><td>Sector SPDR — Cons. Discretionary</td><td class="rank-score">72%</td><td><span class="grade-badge warning">B-</span></td></tr>
+        <tr><td class="rank">19</td><td class="rank-ticker">MAGS</td><td>Broad Tech / Growth</td><td class="rank-score">68%</td><td><span class="grade-badge serious">C+</span></td></tr>
+        <tr><td class="rank">19</td><td class="rank-ticker">GRID</td><td>AI Power-Demand</td><td class="rank-score">68%</td><td><span class="grade-badge serious">C+</span></td></tr>
+        <tr><td class="rank">19</td><td class="rank-ticker">XLC</td><td>Sector SPDR — Comm. Services</td><td class="rank-score">68%</td><td><span class="grade-badge serious">C+</span></td></tr>
+        <tr><td class="rank">22</td><td class="rank-ticker">SOXX</td><td>Semiconductors</td><td class="rank-score">64%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">22</td><td class="rank-ticker">SKYY</td><td>Cloud / AI Software</td><td class="rank-score">64%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">22</td><td class="rank-ticker">AIQ</td><td>Cloud / AI Software</td><td class="rank-score">64%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">25</td><td class="rank-ticker">DTCR</td><td>Data-Center REITs</td><td class="rank-score">60%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">25</td><td class="rank-ticker">CIBR</td><td>Cybersecurity</td><td class="rank-score">60%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">25</td><td class="rank-ticker">BUG</td><td>Cybersecurity</td><td class="rank-score">60%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">25</td><td class="rank-ticker">IHAK</td><td>Cybersecurity</td><td class="rank-score">60%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">25</td><td class="rank-ticker">XSD</td><td>Semiconductors</td><td class="rank-score">60%</td><td><span class="grade-badge serious">C</span></td></tr>
+        <tr><td class="rank">30</td><td class="rank-ticker">SRVR</td><td>Data-Center REITs</td><td class="rank-score">48%</td><td><span class="grade-badge critical">D</span></td></tr>
+        <tr><td class="rank">30</td><td class="rank-ticker">AIRR</td><td>Industrial (off-theme)</td><td class="rank-score">48%</td><td><span class="grade-badge critical">D</span></td></tr>
+        <tr><td class="rank">32</td><td class="rank-ticker">NLR</td><td>AI Power-Demand</td><td class="rank-score">40%</td><td><span class="grade-badge critical">D</span></td></tr>
+      </tbody>
+    </table>
+  </section>
 
   <!-- ============ GROUP 1: SEMICONDUCTOR PURE-PLAYS ============ -->
   <section class="group">
