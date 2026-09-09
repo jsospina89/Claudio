@@ -1,4 +1,4 @@
-# Watchlist — AI Thematic ETFs
+# Watchlist — AI Thematic ETFs & Data-Center Infrastructure Stocks
 
 Tickers discussed and confirmed live as candidates for the AI-related sleeve. For monitoring only — no positions taken yet.
 
@@ -46,7 +46,51 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 |---|---|---|
 | MAGS | Roundhill Magnificent Seven ETF | Steadier-but-still-AI middle tier; NOT a hedge |
 
+## Data-center infrastructure ETFs
+| Ticker | Name | Notes |
+|---|---|---|
+| DTCR | Global X Data Center & Digital Infrastructure ETF | Wraps the whole build-out layer |
+| SRVR | Pacer Data & Infrastructure Real Estate ETF | Data-center REITs + infrastructure |
+
+## Data-center infrastructure — individual stocks
+
+### Power & cooling (inside the data center)
+| Ticker | Name | Notes |
+|---|---|---|
+| VRT | Vertiv Holdings | Power/thermal management, purpose-built for data centers |
+| ETN | Eaton | Electrical power management equipment |
+| NVT | nVent Electric | Electrical connection & thermal management |
+| TT | Trane Technologies | HVAC/cooling |
+| CARR | Carrier Global | HVAC/cooling |
+| MOD | Modine Manufacturing | Thermal management, increasingly data-center-focused |
+
+### Building it (construction/electrical contractors)
+| Ticker | Name | Notes |
+|---|---|---|
+| PWR | Quanta Services | Electrical infrastructure & grid construction |
+| EME | EMCOR Group | Electrical/mechanical construction services |
+
+### Connecting it (networking, cabling, interconnects)
+| Ticker | Name | Notes |
+|---|---|---|
+| ANET | Arista Networks | Data-center networking switches |
+| ALAB | Astera Labs | Data-center connectivity chips/interconnects |
+| GLW | Corning | Fiber optic cabling |
+| APH | Amphenol | Connectors/interconnects |
+| AAOI | Applied Optoelectronics | Fiber-optic transceivers (rack-to-rack data speed) |
+
+### Owning/operating the buildings (REITs)
+| Ticker | Name | Notes |
+|---|---|---|
+| DLR | Digital Realty Trust | Data-center REIT |
+| EQIX | Equinix | Data-center REIT |
+
+### AI/GPU cloud compute (pivoted businesses)
+| Ticker | Name | Notes |
+|---|---|---|
+| IREN | IREN Limited | Former Bitcoin miner, pivoted to AI/GPU cloud compute |
+
 ## Caution
-SMH, DRAM, CIBR, SOXX, SKYY, BOTZ, AIQ tend to move together in an AI-sentiment scare — same underlying risk factor, different tickers. Real diversification within the AI thesis comes more from the power/materials layer (GRID, NLR, COPX).
+SMH, DRAM, CIBR, SOXX, SKYY, BOTZ, AIQ tend to move together in an AI-sentiment scare — same underlying risk factor, different tickers. Real diversification within the AI thesis comes more from the power/materials layer (GRID, NLR, COPX) and the physical build-out names above.
 
 _Last updated: 2026-09-09_
