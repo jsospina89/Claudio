@@ -250,50 +250,6 @@
   table.rubric tr.changed td.weight { font-weight: 700; }
   table.rubric tr.removed td { color: var(--text-muted); text-decoration: line-through; }
 
-  .portfolio-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.88rem;
-    background: var(--surface-1);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 22px;
-  }
-  .portfolio-table th, .portfolio-table td {
-    text-align: left;
-    padding: 12px 14px;
-    border-bottom: 1px solid var(--gridline);
-    vertical-align: top;
-  }
-  .portfolio-table th { color: var(--text-muted); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
-  .portfolio-table tr:last-child td { border-bottom: none; }
-  .portfolio-table .pt-ticker { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .portfolio-table .pt-weight-cell { width: 160px; }
-  .pt-weight-row { display: flex; align-items: center; gap: 8px; }
-  .pt-weight-row .pt-track { flex: 1; height: 8px; border-radius: 4px; background: var(--gridline); overflow: hidden; }
-  .pt-weight-row .pt-fill { height: 100%; border-radius: 4px; background: var(--slot-1); }
-  .pt-weight-row .pt-pct { font-variant-numeric: tabular-nums; font-weight: 700; width: 38px; text-align: right; }
-
-  .cut-list {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-  }
-  .cut-list b { color: var(--text-primary); }
-
-  .overlap-box {
-    background: var(--surface-1);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--serious);
-    border-radius: 8px;
-    padding: 14px 18px;
-    font-size: 0.86rem;
-    color: var(--text-secondary);
-    margin-top: 18px;
-  }
-  .overlap-box strong { color: var(--text-primary); }
-
   footer.page-foot {
     margin-top: 50px;
     padding-top: 20px;
@@ -309,7 +265,7 @@
 
   <header class="page-head">
     <h1>ETF Comparison &amp; Grading Scorecard</h1>
-    <p>Semiconductor pure-plays, broad-tech/concentrated-growth, data-center/AI-infrastructure ETFs, and all 11 sector SPDRs compared to each other — all scored on the same rubric so they're comparable side by side.</p>
+    <p>Semiconductor pure-plays, broad-tech/concentrated-growth, data-center/AI-infrastructure ETFs, and all 11 sector SPDRs plus whole-stock-market funds compared to each other — all scored on the same rubric so they're comparable side by side.</p>
     <p class="asof">Live price data as of 2026-09-08 market close (Twelve Data). Fund facts and holdings marked <span class="tag-est">est.</span> are general knowledge, not pulled live — expense ratios/methodology/top holdings rarely shift fast, but verify before trading.</p>
   </header>
 
@@ -911,8 +867,8 @@
 
   <!-- ============ GROUP 4: SECTOR SPDR SHOWDOWN ============ -->
   <section class="group">
-    <h2 class="section-title">Sector SPDR Showdown — All 11 Sectors</h2>
-    <p class="section-sub">The full "XL" Select Sector SPDR lineup, compared to each other rather than against anything thematic. All eleven charge the identical 0.08% expense ratio — the cheapest on this whole page — so Cost is a dead tie throughout; momentum, diversification, and how calm the ride has been do all the differentiating.</p>
+    <h2 class="section-title">Sector SPDRs vs. Whole-Market ETFs — All 15, Ranked</h2>
+    <p class="section-sub">The full "XL" Select Sector SPDR lineup plus four whole-stock-market funds (VTI, VOO, SPY, SCHB), all graded on the same rubric and ranked together. Cards below are sorted by score, highest first.</p>
 
     <div class="cards">
 
@@ -943,6 +899,122 @@
           <div class="meter-row"><span class="label">Risk, calmer <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
         </div>
         <div class="overall"><span class="num">4.80<small>/5</small></span><span class="grade-badge good">A+</span></div>
+      </div>
+
+      <div class="card neutral">
+        <div class="card-head">
+          <div><span class="ticker">VOO</span><br><span class="name">Vanguard S&amp;P 500 ETF</span></div>
+          <span class="grade-badge good">A · 92%</span>
+        </div>
+        <div class="price-row">Price <span class="price">$704.07</span> &middot; 52w $578.46–$716.39</div>
+        <div class="facts">
+          <dl>
+            <dt>Expense ratio</dt><dd>0.03% <span class="tag-est">est.</span></dd>
+            <dt>Holdings</dt><dd>~500 <span class="tag-est">est.</span></dd>
+            <dt>Avg volume</dt><dd>6.95M <span class="tag-live">live</span></dd>
+            <dt>52w swing</dt><dd>24% <span class="tag-live">live</span></dd>
+          </dl>
+        </div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          <b>NVDA</b>, <b>AAPL</b>, <b>MSFT</b>, <b>AMZN</b>, <b>GOOGL</b> — the whole S&amp;P 500
+          <span class="h-total">The "boring baseline" from earlier in this conversation — cheapest S&amp;P 500 fund here</span>
+        </div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Momentum <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Diversification <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--baseline)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--baseline)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">4.60<small>/5</small></span><span class="grade-badge good">A</span></div>
+      </div>
+
+      <div class="card neutral">
+        <div class="card-head">
+          <div><span class="ticker">SPY</span><br><span class="name">SPDR S&amp;P 500 ETF Trust</span></div>
+          <span class="grade-badge good">A · 92%</span>
+        </div>
+        <div class="price-row">Price <span class="price">$765.96</span> &middot; 52w $629.28–$779.37</div>
+        <div class="facts">
+          <dl>
+            <dt>Expense ratio</dt><dd>0.0945% <span class="tag-est">est.</span></dd>
+            <dt>Holdings</dt><dd>~500 <span class="tag-est">est.</span></dd>
+            <dt>Avg volume</dt><dd>35.93M <span class="tag-live">live</span></dd>
+            <dt>52w swing</dt><dd>24% <span class="tag-live">live</span></dd>
+          </dl>
+        </div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          Same S&amp;P 500 as VOO, older unit-trust structure
+          <span class="h-total">Most liquid ETF in the world (35.9M avg volume) — pricier than VOO for identical exposure</span>
+        </div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Momentum <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Diversification <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--baseline)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--baseline)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">4.60<small>/5</small></span><span class="grade-badge good">A</span></div>
+      </div>
+
+      <div class="card neutral">
+        <div class="card-head">
+          <div><span class="ticker">SCHB</span><br><span class="name">Schwab U.S. Broad Market ETF</span></div>
+          <span class="grade-badge good">A · 92%</span>
+        </div>
+        <div class="price-row">Price <span class="price">$29.57</span> &middot; 52w $24.28–$30.15</div>
+        <div class="facts">
+          <dl>
+            <dt>Expense ratio</dt><dd>0.03% <span class="tag-est">est.</span></dd>
+            <dt>Holdings</dt><dd>~2,500+ <span class="tag-est">est.</span></dd>
+            <dt>Avg volume</dt><dd>5.57M <span class="tag-live">live</span></dd>
+            <dt>52w swing</dt><dd>24% <span class="tag-live">live</span></dd>
+          </dl>
+        </div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          Whole US market, large-cap through small-cap
+          <span class="h-total">Cheapest whole-market fund tied with VOO, broader holdings count than either S&amp;P 500 fund</span>
+        </div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Momentum <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Diversification <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--baseline)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">4.60<small>/5</small></span><span class="grade-badge good">A</span></div>
+      </div>
+
+      <div class="card neutral">
+        <div class="card-head">
+          <div><span class="ticker">VTI</span><br><span class="name">Vanguard Total Stock Market ETF</span></div>
+          <span class="grade-badge good">A- · 88%</span>
+        </div>
+        <div class="price-row">Price <span class="price">$377.60</span> &middot; 52w $310.40–$385.12</div>
+        <div class="facts">
+          <dl>
+            <dt>Expense ratio</dt><dd>0.03% <span class="tag-est">est.</span></dd>
+            <dt>Holdings</dt><dd>~3,600+ <span class="tag-est">est.</span></dd>
+            <dt>Avg volume</dt><dd>2.88M <span class="tag-live">live</span></dd>
+            <dt>52w swing</dt><dd>24% <span class="tag-live">live</span></dd>
+          </dl>
+        </div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          Entire US stock market — large, mid, small, and micro-cap
+          <span class="h-total">Most diversified fund on this entire page by holdings count — the only thing holding it back is lighter trading volume</span>
+        </div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Momentum <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Diversification <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:40%;background:var(--baseline)"></div></div><span class="score">2/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">20%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--baseline)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">4.40<small>/5</small></span><span class="grade-badge good">A-</span></div>
       </div>
 
       <div class="card neutral">
@@ -1238,73 +1310,8 @@
     </div>
 
     <div class="verdict">
-      <h3>How the eleven stack up</h3>
-      <p class="note" style="margin-top:0"><b>XLF</b> tops the entire lineup (96%, A+) — strong momentum, broad holdings, and the calmest large-cap ride of the group. <b>XLI, XLV, and XLP</b> tie for second (84%, B+) — three very different sectors (industrials, health care, staples) landing in the same place for different reasons. <b>XLC</b> comes in last (68%, C+): weak momentum plus the most concentrated top-2 holdings (Meta + Alphabet) of any sector here. Every fund ties on cost (0.08%) and scores at least a 3/5 on liquidity — this comparison is really about concentration and timing, not price.</p>
-    </div>
-  </section>
-
-  <!-- ============ SUGGESTED PORTFOLIO ============ -->
-  <section class="group">
-    <h2 class="section-title">Suggested Portfolio — Reduced Overlap</h2>
-    <p class="section-sub">One ETF per theme, picking the top-graded (or clearly-differentiated) fund from each comparison above and cutting everything that mostly duplicates it. Six funds, six distinct layers of the AI stack.</p>
-
-    <table class="portfolio-table">
-      <thead>
-        <tr><th>Ticker</th><th>Role</th><th>Weight</th><th>Grade</th><th>Why this one</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="pt-ticker">QQQ</td>
-          <td>Core — broad tech-heavy base</td>
-          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:25%"></div></div><span class="pt-pct">25%</span></div></td>
-          <td><span class="grade-badge good" style="font-size:0.72rem">B+</span></td>
-          <td>Tied VGT at 84%, but spans sectors beyond pure tech (~40% non-tech) — less redundant with everything else here, which already leans tech-heavy.</td>
-        </tr>
-        <tr>
-          <td class="pt-ticker">PAVE</td>
-          <td>Core — industrial buildout</td>
-          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:20%"></div></div><span class="pt-pct">20%</span></div></td>
-          <td><span class="grade-badge good" style="font-size:0.72rem">B+</span></td>
-          <td>Highest grade on the entire page (80%). Broad, cheap, liquid — beat AIRR outright and made GRID redundant (both lean on Eaton-type industrial names).</td>
-        </tr>
-        <tr>
-          <td class="pt-ticker">SMH</td>
-          <td>Satellite — semiconductors</td>
-          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:20%"></div></div><span class="pt-pct">20%</span></div></td>
-          <td><span class="grade-badge warning" style="font-size:0.72rem">B</span></td>
-          <td>Best of the three pure-play chip funds (76% vs. SOXX's 64%, XSD's 60%) — SOXX and XSD dropped as near-duplicates.</td>
-        </tr>
-        <tr>
-          <td class="pt-ticker">SKYY</td>
-          <td>Satellite — cloud infrastructure</td>
-          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:15%"></div></div><span class="pt-pct">15%</span></div></td>
-          <td><span class="grade-badge serious" style="font-size:0.72rem">C</span></td>
-          <td>Tied AIQ at 64%, but lighter on Nvidia — AIQ's holdings would have piled more weight onto a name SMH and QQQ already carry.</td>
-        </tr>
-        <tr>
-          <td class="pt-ticker">DTCR</td>
-          <td>Satellite — data-center REITs</td>
-          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:10%"></div></div><span class="pt-pct">10%</span></div></td>
-          <td><span class="grade-badge serious" style="font-size:0.72rem">C</span></td>
-          <td>The only fund here that's genuinely "the data center itself" (REITs) rather than the equipment or software around it. Beat SRVR on liquidity; sized smaller since it's the weakest grade of the cores.</td>
-        </tr>
-        <tr>
-          <td class="pt-ticker">CIBR</td>
-          <td>Satellite — cybersecurity</td>
-          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:10%"></div></div><span class="pt-pct">10%</span></div></td>
-          <td><span class="grade-badge serious" style="font-size:0.72rem">C</span></td>
-          <td>Tied BUG and IHAK at 60% — picked for liquidity (1.64M avg volume vs. IHAK's 159K) since this is the smallest, most tradability-sensitive slice.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p class="cut-list">
-      <b>Cut as duplicates or weaker versions of what's already in:</b> SOXX, XSD (same thesis as SMH), VGT (near-duplicate of QQQ), MAGS (same names as QQQ with none of the diversification), AIQ (redundant Nvidia weight vs. SKYY), BUG, IHAK, HACK (redundant vs. CIBR), GRID (redundant vs. PAVE, weaker grade).<br>
-      <b>Cut on grade alone (D range):</b> SRVR, NLR, AIRR.
-    </p>
-
-    <div class="overlap-box">
-      <strong>Overlap isn't fully gone, and can't be</strong> — these are six lenses on one buildout, so some of the same companies show up more than once: Eaton sits in both DTCR and PAVE, Cisco in both SKYY and CIBR, Broadcom in both SMH and CIBR, and Nvidia in SMH, QQQ, and SKYY's broader tech tilt. That's structural, not a mistake to fix — the alternative (avoiding it completely) would mean not holding the sector at all. What this cut actually reduced is <em>redundant</em> overlap — funds that were 80%+ the same holdings under a different ticker.
+      <h3>How all 15 stack up</h3>
+      <p class="note" style="margin-top:0"><b>XLF</b> still tops the whole set (96%, A+). But right behind it, the whole-market funds dominate the top half of the ranking: <b>VOO, SPY, and SCHB tie at 92% (A)</b>, and <b>VTI</b> lands at 88% (A-) — only held back by lighter trading volume relative to its size. That means four of the top five funds on this entire page are generic market-cap-weighted baskets, not sector bets. <b>XLI, XLV, and XLP</b> follow at 84% (B+). <b>XLC</b> is still last (68%, C+). Every one of the fifteen scores well on cost (0.03–0.09%) — the real spread is concentration and recent momentum, not price.</p>
     </div>
   </section>
 
@@ -1313,7 +1320,7 @@
   <!-- ============ METHODOLOGY ============ -->
   <section class="group">
     <h2 class="section-title">Grading Rubric</h2>
-    <p class="section-sub">All 28 ETFs on this page are scored 1–5 on the same five dimensions, weighted, and summed to a percentage. Rev. 4: momentum's weight came back down to match the rest — every remaining dimension sits at an even 20%. Disagree with a weight? The raw 1–5 scores are shown on every card — re-weight by eye.</p>
+    <p class="section-sub">All 32 ETFs on this page are scored 1–5 on the same five dimensions, weighted, and summed to a percentage. Rev. 4: momentum's weight came back down to match the rest — every remaining dimension sits at an even 20%. Disagree with a weight? The raw 1–5 scores are shown on every card — re-weight by eye.</p>
     <table class="rubric">
       <thead>
         <tr><th>Dimension</th><th>Weight</th><th>What it measures</th></tr>
