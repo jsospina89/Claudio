@@ -250,6 +250,50 @@
   table.rubric tr.changed td.weight { font-weight: 700; }
   table.rubric tr.removed td { color: var(--text-muted); text-decoration: line-through; }
 
+  .portfolio-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 22px;
+  }
+  .portfolio-table th, .portfolio-table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--gridline);
+    vertical-align: top;
+  }
+  .portfolio-table th { color: var(--text-muted); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .portfolio-table tr:last-child td { border-bottom: none; }
+  .portfolio-table .pt-ticker { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .portfolio-table .pt-weight-cell { width: 160px; }
+  .pt-weight-row { display: flex; align-items: center; gap: 8px; }
+  .pt-weight-row .pt-track { flex: 1; height: 8px; border-radius: 4px; background: var(--gridline); overflow: hidden; }
+  .pt-weight-row .pt-fill { height: 100%; border-radius: 4px; background: var(--slot-1); }
+  .pt-weight-row .pt-pct { font-variant-numeric: tabular-nums; font-weight: 700; width: 38px; text-align: right; }
+
+  .cut-list {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .cut-list b { color: var(--text-primary); }
+
+  .overlap-box {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--serious);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    margin-top: 18px;
+  }
+  .overlap-box strong { color: var(--text-primary); }
+
   footer.page-foot {
     margin-top: 50px;
     padding-top: 20px;
@@ -862,6 +906,71 @@
     <div class="verdict">
       <h3>Across all five comparisons</h3>
       <p class="note" style="margin-top:0">The pattern holds throughout: the broader, cheaper, more liquid fund beats the narrower/pricier one almost every time (DTCR&gt;SRVR, GRID&gt;NLR, PAVE&gt;AIRR) — SKYY vs. AIQ and the entire cybersecurity trio are the genuine toss-ups, where the rubric can't pick a winner and it comes down to which single dimension (cost, liquidity, breadth) matters most to you. And every fund in this section costs more (0.46–0.70% expense ratio) than the broad-market/semis ETFs graded above (0.09–0.35%) — thematic niche investing has a real, ongoing price tag baked in before a single dollar of return.</p>
+    </div>
+  </section>
+
+  <!-- ============ SUGGESTED PORTFOLIO ============ -->
+  <section class="group">
+    <h2 class="section-title">Suggested Portfolio — Reduced Overlap</h2>
+    <p class="section-sub">One ETF per theme, picking the top-graded (or clearly-differentiated) fund from each comparison above and cutting everything that mostly duplicates it. Six funds, six distinct layers of the AI stack.</p>
+
+    <table class="portfolio-table">
+      <thead>
+        <tr><th>Ticker</th><th>Role</th><th>Weight</th><th>Grade</th><th>Why this one</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pt-ticker">QQQ</td>
+          <td>Core — broad tech-heavy base</td>
+          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:25%"></div></div><span class="pt-pct">25%</span></div></td>
+          <td><span class="grade-badge good" style="font-size:0.72rem">B+</span></td>
+          <td>Tied VGT at 84%, but spans sectors beyond pure tech (~40% non-tech) — less redundant with everything else here, which already leans tech-heavy.</td>
+        </tr>
+        <tr>
+          <td class="pt-ticker">PAVE</td>
+          <td>Core — industrial buildout</td>
+          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:20%"></div></div><span class="pt-pct">20%</span></div></td>
+          <td><span class="grade-badge good" style="font-size:0.72rem">B+</span></td>
+          <td>Highest grade on the entire page (80%). Broad, cheap, liquid — beat AIRR outright and made GRID redundant (both lean on Eaton-type industrial names).</td>
+        </tr>
+        <tr>
+          <td class="pt-ticker">SMH</td>
+          <td>Satellite — semiconductors</td>
+          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:20%"></div></div><span class="pt-pct">20%</span></div></td>
+          <td><span class="grade-badge warning" style="font-size:0.72rem">B</span></td>
+          <td>Best of the three pure-play chip funds (76% vs. SOXX's 64%, XSD's 60%) — SOXX and XSD dropped as near-duplicates.</td>
+        </tr>
+        <tr>
+          <td class="pt-ticker">SKYY</td>
+          <td>Satellite — cloud infrastructure</td>
+          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:15%"></div></div><span class="pt-pct">15%</span></div></td>
+          <td><span class="grade-badge serious" style="font-size:0.72rem">C</span></td>
+          <td>Tied AIQ at 64%, but lighter on Nvidia — AIQ's holdings would have piled more weight onto a name SMH and QQQ already carry.</td>
+        </tr>
+        <tr>
+          <td class="pt-ticker">DTCR</td>
+          <td>Satellite — data-center REITs</td>
+          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:10%"></div></div><span class="pt-pct">10%</span></div></td>
+          <td><span class="grade-badge serious" style="font-size:0.72rem">C</span></td>
+          <td>The only fund here that's genuinely "the data center itself" (REITs) rather than the equipment or software around it. Beat SRVR on liquidity; sized smaller since it's the weakest grade of the cores.</td>
+        </tr>
+        <tr>
+          <td class="pt-ticker">CIBR</td>
+          <td>Satellite — cybersecurity</td>
+          <td class="pt-weight-cell"><div class="pt-weight-row"><div class="pt-track"><div class="pt-fill" style="width:10%"></div></div><span class="pt-pct">10%</span></div></td>
+          <td><span class="grade-badge serious" style="font-size:0.72rem">C</span></td>
+          <td>Tied BUG and IHAK at 60% — picked for liquidity (1.64M avg volume vs. IHAK's 159K) since this is the smallest, most tradability-sensitive slice.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="cut-list">
+      <b>Cut as duplicates or weaker versions of what's already in:</b> SOXX, XSD (same thesis as SMH), VGT (near-duplicate of QQQ), MAGS (same names as QQQ with none of the diversification), AIQ (redundant Nvidia weight vs. SKYY), BUG, IHAK, HACK (redundant vs. CIBR), GRID (redundant vs. PAVE, weaker grade).<br>
+      <b>Cut on grade alone (D range):</b> SRVR, NLR, AIRR.
+    </p>
+
+    <div class="overlap-box">
+      <strong>Overlap isn't fully gone, and can't be</strong> — these are six lenses on one buildout, so some of the same companies show up more than once: Eaton sits in both DTCR and PAVE, Cisco in both SKYY and CIBR, Broadcom in both SMH and CIBR, and Nvidia in SMH, QQQ, and SKYY's broader tech tilt. That's structural, not a mistake to fix — the alternative (avoiding it completely) would mean not holding the sector at all. What this cut actually reduced is <em>redundant</em> overlap — funds that were 80%+ the same holdings under a different ticker.
     </div>
   </section>
 
