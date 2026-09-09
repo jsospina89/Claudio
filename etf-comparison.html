@@ -129,6 +129,7 @@
     font-size: 0.8rem;
     font-weight: 700;
     width: fit-content;
+    white-space: nowrap;
   }
   .grade-badge.good     { background: color-mix(in srgb, var(--good) 16%, transparent);     color: var(--good); }
   .grade-badge.warning  { background: color-mix(in srgb, var(--warning) 22%, transparent);  color: color-mix(in srgb, var(--warning) 70%, black); }
@@ -145,11 +146,24 @@
   .tag-live { color: var(--good); font-size: 0.68rem; font-weight: 700; margin-left: 4px; }
   .tag-est  { color: var(--text-muted); font-size: 0.68rem; margin-left: 4px; }
 
+  .holdings {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border-top: 1px dashed var(--gridline);
+    padding-top: 10px;
+    line-height: 1.5;
+  }
+  .holdings .h-label { color: var(--text-muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 4px; }
+  .holdings b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .holdings .h-total { display: block; margin-top: 6px; color: var(--text-muted); font-size: 0.76rem; }
+
   .meters { display: flex; flex-direction: column; gap: 8px; border-top: 1px dashed var(--gridline); padding-top: 12px; }
-  .meter-row { display: grid; grid-template-columns: 96px 1fr 20px; align-items: center; gap: 8px; font-size: 0.78rem; }
+  .meter-row { display: grid; grid-template-columns: 128px 1fr 20px; align-items: center; gap: 8px; font-size: 0.76rem; }
   .meter-row .label { color: var(--text-secondary); }
+  .meter-row .label .w { color: var(--text-muted); font-size: 0.68rem; }
   .meter-track { height: 6px; border-radius: 4px; background: var(--gridline); overflow: hidden; }
   .meter-fill { height: 100%; border-radius: 4px; }
+  .meter-row.emph .meter-track { height: 9px; }
   .meter-row .score { text-align: right; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
   .overall {
@@ -194,6 +208,8 @@
   table.rubric th { color: var(--text-muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
   table.rubric tr:last-child td { border-bottom: none; }
   table.rubric td.weight { text-align: right; font-variant-numeric: tabular-nums; }
+  table.rubric tr.changed td { color: var(--text-primary); }
+  table.rubric tr.changed td.weight { font-weight: 700; }
 
   footer.page-foot {
     margin-top: 50px;
@@ -211,11 +227,11 @@
   <header class="page-head">
     <h1>ETF Comparison &amp; Grading Scorecard</h1>
     <p>Semiconductor pure-plays vs. broad-tech/concentrated-growth — scored on the same rubric so they're comparable side by side.</p>
-    <p class="asof">Live price data as of 2026-09-08 market close (Twelve Data). Fund facts marked <span class="tag-est">est.</span> are general knowledge, not pulled live — expense ratios/methodology rarely change, but verify before trading.</p>
+    <p class="asof">Live price data as of 2026-09-08 market close (Twelve Data). Fund facts and holdings marked <span class="tag-est">est.</span> are general knowledge, not pulled live — expense ratios/methodology/top holdings rarely shift fast, but verify before trading.</p>
   </header>
 
   <div class="banner">
-    <strong>This is a scoring tool, not a recommendation to buy.</strong> The weights below reflect one reasonable way to balance cost, risk, and AI-theme exposure — adjust them to match your own priorities. You make the final call.
+    <strong>Rev. 2 — reweighted.</strong> "AI purity" was rewarding concentration in the theme, which is a risk, not a virtue — its weight dropped from 20% to 5%. <strong>Diversification</strong> now carries the most weight (35%) instead, since spreading across names is what actually protects you if the AI theme cools. This is a scoring tool, not a recommendation to buy — adjust the weights to match your own priorities. You make the final call.
   </div>
 
   <!-- ============ GROUP 1: SEMICONDUCTOR PURE-PLAYS ============ -->
@@ -229,7 +245,7 @@
       <div class="card" data-slot="1">
         <div class="card-head">
           <div><span class="ticker" style="color:var(--slot-1)">SMH</span><br><span class="name">VanEck Semiconductor ETF</span></div>
-          <span class="grade-badge good">B+ · 80%</span>
+          <span class="grade-badge warning">B- · 74%</span>
         </div>
         <div class="price-row">Price <span class="price">$573.73</span> &middot; 52w $294.80–$671.83</div>
         <div class="facts">
@@ -237,28 +253,31 @@
             <dt>Expense ratio</dt><dd>0.35% <span class="tag-est">est.</span></dd>
             <dt>Weighting</dt><dd>Modified cap-weight <span class="tag-est">est.</span></dd>
             <dt>Holdings</dt><dd>~25 <span class="tag-est">est.</span></dd>
-            <dt>Inception</dt><dd>2000 <span class="tag-est">est.</span></dd>
             <dt>Avg volume</dt><dd>6.19M <span class="tag-live">live</span></dd>
             <dt>52w swing</dt><dd>128% <span class="tag-live">live</span></dd>
-            <dt>Range position</dt><dd>74% <span class="tag-live">live</span></dd>
           </dl>
         </div>
-        <div class="meters">
-          <div class="meter-row"><span class="label">Cost</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-1)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">Liquidity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-1)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Diversification</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-1)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">AI purity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-1)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Risk (calmer)</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Momentum</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          <b>NVDA</b> ~20%, <b>TSM</b> ~10%, <b>AVGO</b> ~7%, <b>AMD</b> ~5%, <b>ASML</b> ~4%
+          <span class="h-total">Top 5 ≈ 46% of the fund</span>
         </div>
-        <div class="overall"><span class="num">4.00<small>/5</small></span><span class="grade-badge good">B+</span></div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Diversification <span class="w">35%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-1)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-1)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-1)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Momentum <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">AI purity <span class="w">5%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-1)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">3.70<small>/5</small></span><span class="grade-badge warning">B-</span></div>
       </div>
 
       <!-- SOXX -->
       <div class="card" data-slot="2">
         <div class="card-head">
           <div><span class="ticker" style="color:var(--slot-2)">SOXX</span><br><span class="name">iShares Semiconductor ETF</span></div>
-          <span class="grade-badge warning">B- · 71%</span>
+          <span class="grade-badge serious">C+ · 65%</span>
         </div>
         <div class="price-row">Price <span class="price">$528.40</span> &middot; 52w $247.23–$655.95</div>
         <div class="facts">
@@ -266,28 +285,31 @@
             <dt>Expense ratio</dt><dd>0.35% <span class="tag-est">est.</span></dd>
             <dt>Weighting</dt><dd>Modified cap-weight <span class="tag-est">est.</span></dd>
             <dt>Holdings</dt><dd>~30 <span class="tag-est">est.</span></dd>
-            <dt>Inception</dt><dd>2001 <span class="tag-est">est.</span></dd>
             <dt>Avg volume</dt><dd>7.29M <span class="tag-live">live</span></dd>
             <dt>52w swing</dt><dd>165% <span class="tag-live">live</span></dd>
-            <dt>Range position</dt><dd>69% <span class="tag-live">live</span></dd>
           </dl>
         </div>
-        <div class="meters">
-          <div class="meter-row"><span class="label">Cost</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">Liquidity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Diversification</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">AI purity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Risk (calmer)</span><div class="meter-track"><div class="meter-fill" style="width:40%;background:var(--slot-2)"></div></div><span class="score">2/5</span></div>
-          <div class="meter-row"><span class="label">Momentum</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          <b>NVDA</b> ~9%, <b>AVGO</b> ~8%, <b>AMD</b> ~8%, <b>TXN</b> ~4%, <b>QCOM</b> ~4%
+          <span class="h-total">Top 5 ≈ 33% — more evenly capped than SMH</span>
         </div>
-        <div class="overall"><span class="num">3.55<small>/5</small></span><span class="grade-badge warning">B-</span></div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Diversification <span class="w">35%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:40%;background:var(--slot-2)"></div></div><span class="score">2/5</span></div>
+          <div class="meter-row"><span class="label">Momentum <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">AI purity <span class="w">5%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">3.25<small>/5</small></span><span class="grade-badge serious">C+</span></div>
       </div>
 
       <!-- XSD -->
       <div class="card" data-slot="3">
         <div class="card-head">
           <div><span class="ticker" style="color:var(--slot-3)">XSD</span><br><span class="name">SPDR S&amp;P Semiconductor ETF</span></div>
-          <span class="grade-badge serious">C+ · 66%</span>
+          <span class="grade-badge serious">C+ · 69%</span>
         </div>
         <div class="price-row">Price <span class="price">$495.98</span> &middot; 52w $280.83–$658.14</div>
         <div class="facts">
@@ -295,40 +317,43 @@
             <dt>Expense ratio</dt><dd>0.35% <span class="tag-est">est.</span></dd>
             <dt>Weighting</dt><dd>Equal-weight, quarterly <span class="tag-est">est.</span></dd>
             <dt>Holdings</dt><dd>~40 <span class="tag-est">est.</span></dd>
-            <dt>Inception</dt><dd>2006 <span class="tag-est">est.</span></dd>
             <dt>Avg volume</dt><dd>92K <span class="tag-live">live</span></dd>
             <dt>52w swing</dt><dd>134% <span class="tag-live">live</span></dd>
-            <dt>Range position</dt><dd>57% <span class="tag-live">live</span></dd>
           </dl>
         </div>
-        <div class="meters">
-          <div class="meter-row"><span class="label">Cost</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-3)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">Liquidity</span><div class="meter-track"><div class="meter-fill" style="width:20%;background:var(--slot-3)"></div></div><span class="score">1/5</span></div>
-          <div class="meter-row"><span class="label">Diversification</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">AI purity</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-3)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Risk (calmer)</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-3)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">Momentum</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-3)"></div></div><span class="score">3/5</span></div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          <b>NVDA</b>, <b>AMD</b>, <b>ON Semi</b>, <b>Skyworks</b>, <b>Qorvo</b> — ~2.5% each
+          <span class="h-total">No name above ~3% — that's the whole point of it</span>
         </div>
-        <div class="overall"><span class="num">3.30<small>/5</small></span><span class="grade-badge serious">C+</span></div>
+        <div class="meters">
+          <div class="meter-row emph"><span class="label">Diversification <span class="w">35%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-3)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:20%;background:var(--slot-3)"></div></div><span class="score">1/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-3)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Momentum <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-3)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">AI purity <span class="w">5%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-3)"></div></div><span class="score">4/5</span></div>
+        </div>
+        <div class="overall"><span class="num">3.45<small>/5</small></span><span class="grade-badge serious">C+</span></div>
       </div>
 
     </div>
 
     <div class="verdict">
-      <h3>How they stack up</h3>
+      <h3>How they stack up — now that diversification dominates the score</h3>
       <ol>
-        <li><span class="rank1">SMH</span> — best balance: same AI purity as SOXX, but calmer 52-week swing (128% vs. 165%) and stronger momentum right now. The modest concentration in Nvidia/TSM-type names cuts both ways — it's also why it isn't a 5/5 on diversification.</li>
-        <li><span class="rank1">SOXX</span> — near-identical thesis to SMH with the widest 52-week swing of the three. If you already hold SMH, this doesn't add much diversification — it's close to a duplicate.</li>
-        <li><span class="rank1">XSD</span> — the genuine diversification play (equal-weight, no single mega-cap dominance) but its average daily volume (92K vs. millions for the other two) means wider bid-ask spreads and tougher fills at size. Worth it only if the equal-weight exposure specifically matters to you.</li>
+        <li><span class="rank1">SMH</span> still edges out front (74%), but its lead over XSD shrank a lot compared to the old rubric — its Nvidia/TSM-heavy top 5 (~46% of the fund) costs it now that concentration is weighted so much more heavily.</li>
+        <li><span class="rank1">XSD</span> jumped past SOXX (69% vs. 65%) — its equal-weighting is exactly what the new rubric rewards. The tradeoff hasn't changed: 92K average volume is still thin, so fills can be worse than the price suggests.</li>
+        <li><span class="rank1">SOXX</span> drops to the back — nearly identical thesis to SMH, wider 52-week swing, no diversification edge to compensate.</li>
       </ol>
-      <p class="note">Practical note: SMH and SOXX are close enough in construction that holding both adds cost without much real diversification — pick one.</p>
+      <p class="note">The ordering flipped because the score now punishes concentration directly instead of rewarding "how AI-exposed" a fund is — SMH/SOXX no longer get a free pass for being pure-play just because the theme is the point.</p>
     </div>
   </section>
 
   <!-- ============ GROUP 2: BROAD TECH / CONCENTRATED GROWTH ============ -->
   <section class="group">
     <h2 class="section-title">Broad Tech vs. Concentrated Growth</h2>
-    <p class="section-sub">QQQ vs. VGT vs. MAGS — same mega-cap tech names underneath, very different concentration. This is the "how much do I want to bet on 7 companies" question made explicit.</p>
+    <p class="section-sub">QQQ vs. VGT vs. MAGS — same mega-cap tech names underneath, very different concentration. This is the "how much do I want to bet on a handful of companies" question made explicit.</p>
 
     <div class="cards">
 
@@ -343,20 +368,23 @@
           <dl>
             <dt>Expense ratio</dt><dd>0.18% <span class="tag-live">live</span></dd>
             <dt>Weighting</dt><dd>Cap-weight, ~100 hldgs <span class="tag-live">live</span></dd>
-            <dt>Top holding</dt><dd>NVDA 8.5% <span class="tag-live">live</span></dd>
-            <dt>Inception</dt><dd>1999 <span class="tag-live">live</span></dd>
             <dt>YTD return</dt><dd>17.0% <span class="tag-live">live</span></dd>
             <dt>3yr Sharpe</dt><dd>1.07 <span class="tag-live">live</span></dd>
             <dt>52w swing</dt><dd>35% <span class="tag-live">live</span></dd>
           </dl>
         </div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-live">live</span></span>
+          <b>NVDA</b> 8.5%, <b>AAPL</b> 7.4%, <b>MSFT</b> 6.0%, <b>MU</b> 4.8%, <b>AMZN</b> 4.4%
+          <span class="h-total">Top 5 ≈ 31% — ~100 holdings total, spans non-tech names too (Costco, Pepsi, etc.)</span>
+        </div>
         <div class="meters">
-          <div class="meter-row"><span class="label">Cost</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Liquidity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-1)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Diversification</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">AI purity</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Risk (calmer)</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Momentum</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Diversification <span class="w">35%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-1)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Momentum <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">AI purity <span class="w">5%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-1)"></div></div><span class="score">4/5</span></div>
         </div>
         <div class="overall"><span class="num">4.15<small>/5</small></span><span class="grade-badge good">B+</span></div>
       </div>
@@ -365,7 +393,7 @@
       <div class="card" data-slot="2">
         <div class="card-head">
           <div><span class="ticker" style="color:var(--slot-2)">VGT</span><br><span class="name">Vanguard Information Technology ETF</span></div>
-          <span class="grade-badge good">A- · 87%</span>
+          <span class="grade-badge good">B+ · 84%</span>
         </div>
         <div class="price-row">Price <span class="price">$121.05</span> &middot; 52w $83.09–$126.00</div>
         <div class="facts">
@@ -373,28 +401,31 @@
             <dt>Expense ratio</dt><dd>0.09% <span class="tag-est">est.</span></dd>
             <dt>Weighting</dt><dd>Cap-weight, ~300+ hldgs <span class="tag-est">est.</span></dd>
             <dt>Sector focus</dt><dd>100% Technology <span class="tag-est">est.</span></dd>
-            <dt>Inception</dt><dd>2004 <span class="tag-est">est.</span></dd>
             <dt>Avg volume</dt><dd>3.01M <span class="tag-live">live</span></dd>
             <dt>52w swing</dt><dd>52% <span class="tag-live">live</span></dd>
-            <dt>Range position</dt><dd>89% <span class="tag-live">live</span></dd>
           </dl>
         </div>
-        <div class="meters">
-          <div class="meter-row"><span class="label">Cost</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Liquidity</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-2)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Diversification</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-2)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">AI purity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Risk (calmer)</span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
-          <div class="meter-row"><span class="label">Momentum</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          <b>NVDA</b> ~16%, <b>AAPL</b> ~15%, <b>MSFT</b> ~13%, <b>AVGO</b> ~5%, then a long tail under 2% each
+          <span class="h-total">Top 4 ≈ 49% of 300+ holdings — GICS tech-only, so no AMZN/GOOGL/META/TSLA at all</span>
         </div>
-        <div class="overall"><span class="num">4.35<small>/5</small></span><span class="grade-badge good">A-</span></div>
+        <div class="meters">
+          <div class="meter-row"><span class="label">Diversification <span class="w">35%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-2)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-2)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--slot-2)"></div></div><span class="score">3/5</span></div>
+          <div class="meter-row"><span class="label">Momentum <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">AI purity <span class="w">5%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-2)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">4.20<small>/5</small></span><span class="grade-badge good">B+</span></div>
       </div>
 
       <!-- MAGS -->
       <div class="card" data-slot="3">
         <div class="card-head">
           <div><span class="ticker" style="color:var(--slot-3)">MAGS</span><br><span class="name">Roundhill Magnificent Seven ETF</span></div>
-          <span class="grade-badge warning">B- · 72%</span>
+          <span class="grade-badge serious">C · 60%</span>
         </div>
         <div class="price-row">Price <span class="price">$69.07</span> &middot; 52w $55.08–$71.16</div>
         <div class="facts">
@@ -402,57 +433,59 @@
             <dt>Expense ratio</dt><dd>0.29% <span class="tag-est">est.</span></dd>
             <dt>Weighting</dt><dd>Equal-weight, monthly <span class="tag-est">est.</span></dd>
             <dt>Holdings</dt><dd>Exactly 7 <span class="tag-est">est.</span></dd>
-            <dt>Inception</dt><dd>Apr 2023 <span class="tag-est">est.</span></dd>
             <dt>Avg volume</dt><dd>3.02M <span class="tag-live">live</span></dd>
             <dt>52w swing</dt><dd>29% <span class="tag-live">live</span></dd>
-            <dt>Range position</dt><dd>87% <span class="tag-live">live</span></dd>
           </dl>
         </div>
-        <div class="meters">
-          <div class="meter-row"><span class="label">Cost</span><div class="meter-track"><div class="meter-fill" style="width:40%;background:var(--slot-3)"></div></div><span class="score">2/5</span></div>
-          <div class="meter-row"><span class="label">Liquidity</span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-3)"></div></div><span class="score">4/5</span></div>
-          <div class="meter-row"><span class="label">Diversification</span><div class="meter-track"><div class="meter-fill" style="width:20%;background:var(--slot-3)"></div></div><span class="score">1/5</span></div>
-          <div class="meter-row"><span class="label">AI purity</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Risk (calmer)</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
-          <div class="meter-row"><span class="label">Momentum</span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
+        <div class="holdings">
+          <span class="h-label">Contains <span class="tag-est">est.</span></span>
+          <b>AAPL</b>, <b>MSFT</b>, <b>GOOGL</b>, <b>AMZN</b>, <b>NVDA</b>, <b>META</b>, <b>TSLA</b> — ~14% each
+          <span class="h-total">Top 4 ≈ 57% — this is the entire fund, seven names, nothing else</span>
         </div>
-        <div class="overall"><span class="num">3.60<small>/5</small></span><span class="grade-badge warning">B-</span></div>
+        <div class="meters">
+          <div class="meter-row emph"><span class="label">Diversification <span class="w">35%</span></span><div class="meter-track"><div class="meter-fill" style="width:20%;background:var(--slot-3)"></div></div><span class="score">1/5</span></div>
+          <div class="meter-row"><span class="label">Cost <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:40%;background:var(--slot-3)"></div></div><span class="score">2/5</span></div>
+          <div class="meter-row"><span class="label">Liquidity <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:80%;background:var(--slot-3)"></div></div><span class="score">4/5</span></div>
+          <div class="meter-row"><span class="label">Risk, calmer <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">Momentum <span class="w">15%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
+          <div class="meter-row"><span class="label">AI purity <span class="w">5%</span></span><div class="meter-track"><div class="meter-fill" style="width:100%;background:var(--slot-3)"></div></div><span class="score">5/5</span></div>
+        </div>
+        <div class="overall"><span class="num">3.00<small>/5</small></span><span class="grade-badge serious">C</span></div>
       </div>
 
     </div>
 
     <div class="verdict">
-      <h3>How they stack up</h3>
+      <h3>How they stack up — now that diversification dominates the score</h3>
       <ol>
-        <li><span class="rank1">VGT</span> — cheapest, purest tech exposure, and currently the strongest momentum of the three. The tradeoff is a wider 52-week swing than QQQ or MAGS — it's 100% tech, with no non-tech Nasdaq names (Costco, Pepsi, etc.) to smooth things out.</li>
-        <li><span class="rank1">QQQ</span> — the steadiest all-rounder: cheap, extremely liquid, real historical track record (3yr Sharpe 1.07). Slightly diluted AI exposure since ~40% of it isn't tech.</li>
-        <li><span class="rank1">MAGS</span> — this is the one where the grade undersells the concentration risk: 1/5 on diversification is doing a lot of work. It scores well on "calmness" and "AI purity" specifically because these seven companies have been remarkably stable lately, but a single-name blowup (one bad earnings call from any of the seven) moves 1/7 of the whole fund at once. Fits the "steadier than individual picks, but not steady in the way QQQ or VGT are" framing from earlier.</li>
+        <li><span class="rank1">VGT</span> and <span class="rank1">QQQ</span> are now essentially tied (84% vs. 83%) — both get real credit for spreading risk across many names, VGT still wins on cost.</li>
+        <li><span class="rank1">MAGS</span> falls hard, from B- to a flat C (72% → 60%). Its old score leaned entirely on "calm + pure AI" — once purity barely counts and concentration is punished directly, a 7-stock equal-weight fund can't outscore a 100+ or 300+ name basket, no matter how steady the ride has been lately.</li>
       </ol>
-      <p class="note">Note the surprise: MAGS currently shows the narrowest 52-week swing of these three. Equal-weighting seven mega-caps has been calm recently — that's a snapshot of the last year, not a permanent trait of concentrated bets.</p>
+      <p class="note">Worth restating since it's easy to miss in the numbers: MAGS's "Top 4 ≈ 57%" line means four earnings calls move more than half the fund. VGT's "Top 4 ≈ 49%" is close behind — diversified in name (300+ holdings) more than in practice.</p>
     </div>
   </section>
 
   <!-- ============ METHODOLOGY ============ -->
   <section class="group">
     <h2 class="section-title">Grading Rubric</h2>
-    <p class="section-sub">Each ETF is scored 1–5 on six dimensions, weighted, and summed to a percentage. Disagree with a weight? The raw 1–5 scores are shown on every card — re-weight by eye.</p>
+    <p class="section-sub">Each ETF is scored 1–5 on six dimensions, weighted, and summed to a percentage. Rev. 2: diversification now carries the most weight; AI-theme purity carries the least. Disagree with a weight? The raw 1–5 scores are shown on every card — re-weight by eye.</p>
     <table class="rubric">
       <thead>
         <tr><th>Dimension</th><th>Weight</th><th>What it measures</th></tr>
       </thead>
       <tbody>
+        <tr class="changed"><td>Diversification</td><td class="weight">35% <span class="tag-est" style="color:var(--good)">↑ was 20%</span></td><td>Holdings count &amp; weighting method — how much rides on any single company. Now the dominant factor.</td></tr>
         <tr><td>Cost</td><td class="weight">15%</td><td>Expense ratio — lower is better, compounds over a 2–3yr hold</td></tr>
         <tr><td>Liquidity</td><td class="weight">15%</td><td>Average daily volume — thin volume means wider spreads, worse fills</td></tr>
-        <tr><td>Diversification</td><td class="weight">20%</td><td>Holdings count &amp; weighting method — how much rides on any single company</td></tr>
-        <tr><td>AI purity</td><td class="weight">20%</td><td>How directly the fund is exposed to the AI-buildout thesis</td></tr>
-        <tr><td>Risk (calmer)</td><td class="weight">15%</td><td>52-week price swing — narrower range scores higher (easier to hold through)</td></tr>
+        <tr><td>Risk, calmer</td><td class="weight">15%</td><td>52-week price swing — narrower range scores higher (easier to hold through)</td></tr>
         <tr><td>Momentum</td><td class="weight">15%</td><td>Current price's position within its 52-week range — closer to the high scores higher</td></tr>
+        <tr class="changed"><td>AI purity</td><td class="weight">5% <span class="tag-est" style="color:var(--critical)">↓ was 20%</span></td><td>How directly the fund is exposed to the AI-buildout thesis. Demoted — concentration in one theme is a risk to weigh elsewhere (diversification), not a score booster.</td></tr>
       </tbody>
     </table>
   </section>
 
   <footer class="page-foot">
-    <p>Data sources: live quotes (price, 52-week range, average volume) pulled from Twelve Data on 2026-09-08. Fund facts marked "est." (expense ratio, holdings count, weighting methodology, inception date) are general public knowledge about these funds, not pulled from a live feed — Twelve Data's fund-analytics endpoint (expense ratio, historical performance, risk stats, composition) requires an Ultra/Enterprise plan not currently active. QQQ's facts are the exception — full live data was available for it.</p>
+    <p>Data sources: live quotes (price, 52-week range, average volume) pulled from Twelve Data on 2026-09-08. Fund facts and holdings marked "est." (expense ratio, holdings count, weighting methodology, top holdings &amp; weights) are general public knowledge about these funds, not pulled from a live feed — Twelve Data's fund-analytics endpoint (expense ratio, historical performance, risk stats, composition) requires an Ultra/Enterprise plan not currently active. QQQ's facts and holdings are the exception — full live data was available for it.</p>
     <p>This is a personal research tool, not investment advice. Grades reflect one weighting scheme applied consistently across funds, not a claim about future performance.</p>
   </footer>
 
