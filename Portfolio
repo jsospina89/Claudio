@@ -1,6 +1,6 @@
 # Portfolio
 
-_Last updated: 2026-09-04_
+_Last updated: 2026-09-09_
 
 | Symbol  | Entry       | Worth Today | Chg %   |
 |---------|------------:|------------:|--------:|
@@ -24,3 +24,24 @@ _Last updated: 2026-09-04_
 **Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW
 
 **Not on this list yet:** other positions the user hasn't specified.
+
+## Proposed consolidated portfolio — ETFs only, no VOO
+
+Restricting to the ETFs in the list (excludes all individual stocks, BTC, and VOO per instruction). ETFs held: XLV, MAGS, DRAM, VYM, XLF, XLE.
+
+| Cluster | ETFs in it | Kept (top-ranked) | Cut (redundant/weaker) |
+|---|---|---|---|
+| Tech/growth thematic | MAGS, DRAM | **DRAM** (+2.36%) | MAGS (-0.53%) |
+| Broad dividend/value | VYM | **VYM** (+0.90%) | — |
+| Sector cyclicals | XLF, XLE, XLV | **XLF** (+1.56%), **XLE** (+0.27%) | XLV (-2.52%, weakest) |
+
+**Result — 4 ETFs, no overlap, no VOO:**
+
+| Symbol | Role | Chg % |
+|---|---|---:|
+| DRAM | Memory/AI-chip thematic growth | +2.36% |
+| VYM | Broad dividend/value core | +0.90% |
+| XLF | Financials sector | +1.56% |
+| XLE | Energy sector | +0.27% |
+
+Cut (kept for reference, not sold): MAGS, XLV, VOO — plus all individual stocks (AMD, VRT, META, DE, MRVL, ANET, AVGO, GOOG) and BTC/USD, excluded per "ETFs only."
