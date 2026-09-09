@@ -97,24 +97,9 @@
   }
   .unit-toggle button.active { background: var(--teal); color: white; }
 
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .chip {
-    border: 1px solid var(--border); background: var(--bg); color: var(--ink);
-    border-radius: 999px; padding: 6px 13px; font-size: 12.5px; font-weight: 600;
-    cursor: pointer; white-space: nowrap;
-  }
-  .chip:hover { border-color: var(--teal); color: var(--teal); }
-
-  .field-label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
-  .field-label-row label { margin: 0; }
-  .mode-toggle { display: flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
-  .mode-btn { border: none; background: var(--bg); color: var(--muted); padding: 3px 10px; font-size: 10.5px; font-weight: 700; cursor: pointer; }
-  .mode-btn.active { background: var(--teal); color: white; }
+  .big-toggle { display: flex; border: 2px solid var(--border); border-radius: 14px; overflow: hidden; margin: 14px 0; }
+  .big-toggle-btn { flex: 1; border: none; background: var(--bg); color: var(--muted); padding: 14px; font-size: 15px; font-weight: 800; cursor: pointer; }
+  .big-toggle-btn.active { background: var(--teal); color: white; }
   .value-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
   .value-select {
     background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
@@ -260,6 +245,12 @@
   <div class="panel">
     <h2>Add a run</h2>
     <div class="hint">Fill in any <strong>two</strong> of Distance / Time / Speed / Pace — the rest work themselves out.</div>
+
+    <div class="big-toggle">
+      <button type="button" class="big-toggle-btn active" data-mode="type">⌨️ Type</button>
+      <button type="button" class="big-toggle-btn" data-mode="pick">📋 Pick</button>
+    </div>
+
     <div class="row">
       <div class="field">
         <label for="labelInput">Label (optional)</label>
@@ -280,16 +271,9 @@
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <div class="field-label-row">
-          <label for="distInput">Distance</label>
-          <div class="mode-toggle" data-mode-field="distance">
-            <button type="button" class="mode-btn active" data-mode="type">Type</button>
-            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
-          </div>
-        </div>
+        <label for="distInput">Distance</label>
         <div class="mode-panel" data-mode-field="distance" data-mode="type">
           <input type="text" inputmode="numeric" id="distInput" placeholder="e.g. 500 → 5.00">
-          <div class="chips" id="distChips"></div>
         </div>
         <div class="mode-panel" data-mode-field="distance" data-mode="pick" hidden>
           <div class="value-row">
@@ -308,13 +292,7 @@
         </div>
       </div>
       <div class="field">
-        <div class="field-label-row">
-          <label for="timeInput">Time</label>
-          <div class="mode-toggle" data-mode-field="time">
-            <button type="button" class="mode-btn active" data-mode="type">Type</button>
-            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
-          </div>
-        </div>
+        <label for="timeInput">Time</label>
         <div class="mode-panel" data-mode-field="time" data-mode="type">
           <input type="text" inputmode="numeric" id="timeInput" placeholder="e.g. 2530 → 25:30">
         </div>
@@ -333,13 +311,7 @@
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <div class="field-label-row">
-          <label for="speedInput">Speed</label>
-          <div class="mode-toggle" data-mode-field="speed">
-            <button type="button" class="mode-btn active" data-mode="type">Type</button>
-            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
-          </div>
-        </div>
+        <label for="speedInput">Speed</label>
         <div class="mode-panel" data-mode-field="speed" data-mode="type">
           <input type="number" id="speedInput" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 12">
         </div>
@@ -360,13 +332,7 @@
         </div>
       </div>
       <div class="field">
-        <div class="field-label-row">
-          <label for="paceInput">Pace</label>
-          <div class="mode-toggle" data-mode-field="pace">
-            <button type="button" class="mode-btn active" data-mode="type">Type</button>
-            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
-          </div>
-        </div>
+        <label for="paceInput">Pace</label>
         <div class="mode-panel" data-mode-field="pace" data-mode="type">
           <input type="text" inputmode="numeric" id="paceInput" placeholder="e.g. 500 → 5:00">
         </div>
@@ -390,13 +356,7 @@
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <div class="field-label-row">
-          <label for="weightInput">Weight (used for this run's calories)</label>
-          <div class="mode-toggle" data-mode-field="weight">
-            <button type="button" class="mode-btn active" data-mode="type">Type</button>
-            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
-          </div>
-        </div>
+        <label for="weightInput">Weight (used for this run's calories)</label>
         <div class="mode-panel" data-mode-field="weight" data-mode="type">
           <input type="number" id="weightInput" min="1" step="0.1" placeholder="e.g. 70">
         </div>
@@ -613,13 +573,6 @@ const SPLIT_DISTANCES = [
 ];
 
 // Superset used for the quick-fill distance chips (includes full race distances, not just splits).
-const QUICK_FILL_DISTANCES = [
-  ...SPLIT_DISTANCES,
-  { key: '10k', label: '10K', km: 10 },
-  { key: '10mile', label: '10 Mile', km: 10 * KM_PER_MI },
-  { key: 'half', label: 'Half Marathon', km: 21.0975 },
-];
-
 const store = {
   load() {
     try {
@@ -656,7 +609,6 @@ const wUnitLb = document.getElementById('wUnitLb');
 const dUnitKm = document.getElementById('dUnitKm');
 const dUnitMi = document.getElementById('dUnitMi');
 const distInput = document.getElementById('distInput');
-const distChips = document.getElementById('distChips');
 const timeInput = document.getElementById('timeInput');
 const speedInput = document.getElementById('speedInput');
 const sUnitKmh = document.getElementById('sUnitKmh');
@@ -686,23 +638,26 @@ const paceSPick = createListPicker(document.getElementById('paceSSel'), { min: 0
 const wWholePick = createListPicker(document.getElementById('wWholeSel'), { min: 30, max: 200, pad: 1, initial: 70 });
 const wDecPick = createListPicker(document.getElementById('wDecSel'), { min: 0, max: 9, pad: 1, initial: 0 });
 
-function getFieldMode(key) {
-  return document.querySelector(`.mode-toggle[data-mode-field="${key}"] .mode-btn.active`).dataset.mode;
-}
+// One global Type/Pick switch drives every field at once (not per-field).
+let inputMode = 'type';
+function getFieldMode() { return inputMode; }
 
-function setupModeToggle(key, { toTypeInput, toPick } = {}) {
-  const toggle = document.querySelector(`.mode-toggle[data-mode-field="${key}"]`);
-  const panels = document.querySelectorAll(`.mode-panel[data-mode-field="${key}"]`);
-  const btns = [...toggle.querySelectorAll('.mode-btn')];
-  btns.forEach(btn => btn.addEventListener('click', () => {
+const fieldSyncs = []; // { toPick, toTypeInput } — populated below, run together on toggle.
+function registerFieldSync(sync) { fieldSyncs.push(sync); }
+
+document.querySelectorAll('.big-toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) return;
     const mode = btn.dataset.mode;
-    btns.forEach(b => b.classList.toggle('active', b === btn));
-    panels.forEach(p => { p.hidden = p.dataset.mode !== mode; });
-    if (mode === 'pick' && toPick) toPick();
-    if (mode === 'type' && toTypeInput) toTypeInput();
-  }));
-}
+    document.querySelectorAll('.big-toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.mode-panel').forEach(p => { p.hidden = p.dataset.mode !== mode; });
+    inputMode = mode;
+    fieldSyncs.forEach(sync => {
+      if (mode === 'pick' && sync.toPick) sync.toPick();
+      if (mode === 'type' && sync.toTypeInput) sync.toTypeInput();
+    });
+  });
+});
 
 // Arms a destructive button on first click (shows a confirm state) and only fires on the second —
 // avoids relying on window.confirm(), which sandboxed embeds can silently swallow.
@@ -896,15 +851,6 @@ function setDistanceValue(val) {
   distDecPick.set(Math.min(95, dec));
 }
 
-distChips.innerHTML = QUICK_FILL_DISTANCES.map(c => `<button type="button" class="chip" data-key="${c.key}">${c.label}</button>`).join('');
-distChips.querySelectorAll('.chip').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const dist = QUICK_FILL_DISTANCES.find(c => c.key === btn.dataset.key);
-    const val = distUnit === 'km' ? dist.km : dist.km / KM_PER_MI;
-    setDistanceValue(val);
-  });
-});
-
 const savedWeight = store.loadWeight();
 if (savedWeight) {
   weightInput.value = savedWeight.value;
@@ -916,8 +862,9 @@ if (savedWeight) {
 }
 dateInput.valueAsDate = new Date();
 
-// --- Type <-> Pick sync: best-effort carry the current value across when switching modes. ---
-setupModeToggle('distance', {
+// --- Type <-> Pick sync: best-effort carry each field's current value across when the
+// global toggle switches mode. ---
+registerFieldSync({
   toPick: () => {
     const v = parseFloat(distInput.value);
     if (v > 0) setDistanceValue(v);
@@ -925,7 +872,7 @@ setupModeToggle('distance', {
   toTypeInput: () => { distInput.value = (distWholePick.get() + distDecPick.get() / 100).toFixed(2); }
 });
 
-setupModeToggle('time', {
+registerFieldSync({
   toPick: () => {
     const hours = parseTimeToHours(timeInput.value);
     if (hours) {
@@ -941,7 +888,7 @@ setupModeToggle('time', {
   }
 });
 
-setupModeToggle('speed', {
+registerFieldSync({
   toPick: () => {
     const v = parseFloat(speedInput.value);
     if (v >= 0) {
@@ -952,7 +899,7 @@ setupModeToggle('speed', {
   toTypeInput: () => { speedInput.value = (speedWholePick.get() + speedDecPick.get() / 10).toFixed(1); }
 });
 
-setupModeToggle('pace', {
+registerFieldSync({
   toPick: () => {
     const min = parsePaceToMinutes(paceInput.value);
     if (min) {
@@ -964,7 +911,7 @@ setupModeToggle('pace', {
   toTypeInput: () => { paceInput.value = `${paceMPick.get()}:${String(paceSPick.get()).padStart(2, '0')}`; }
 });
 
-setupModeToggle('weight', {
+registerFieldSync({
   toPick: () => {
     const v = parseFloat(weightInput.value);
     if (v > 0) {
