@@ -99,7 +99,12 @@
 
   .panel-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
   .panel-head-row h2 { margin: 0; }
-  .input-mode-toggle { width: 140px; flex-shrink: 0; }
+  .mode-single-btn {
+    border: 1px solid var(--teal); background: var(--teal-light); color: var(--teal);
+    border-radius: 999px; padding: 8px 16px; font-size: 13px; font-weight: 700;
+    cursor: pointer; flex-shrink: 0; white-space: nowrap;
+  }
+  .mode-single-btn:hover { background: var(--teal); color: white; }
   .value-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
   .value-select {
     background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
@@ -245,10 +250,7 @@
   <div class="panel">
     <div class="panel-head-row">
       <h2>Add a run</h2>
-      <div class="unit-toggle input-mode-toggle">
-        <button type="button" class="active" data-mode="type">Type</button>
-        <button type="button" data-mode="pick">Pick</button>
-      </div>
+      <button type="button" id="inputModeBtn" class="mode-single-btn" data-mode="type">⌨️ Type</button>
     </div>
     <div class="hint">Fill in any <strong>two</strong> of Distance / Time / Speed / Pace — the rest work themselves out.</div>
 
@@ -646,17 +648,16 @@ function getFieldMode() { return inputMode; }
 const fieldSyncs = []; // { toPick, toTypeInput } — populated below, run together on toggle.
 function registerFieldSync(sync) { fieldSyncs.push(sync); }
 
-document.querySelectorAll('.input-mode-toggle button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (btn.classList.contains('active')) return;
-    const mode = btn.dataset.mode;
-    document.querySelectorAll('.input-mode-toggle button').forEach(b => b.classList.toggle('active', b === btn));
-    document.querySelectorAll('.mode-panel').forEach(p => { p.hidden = p.dataset.mode !== mode; });
-    inputMode = mode;
-    fieldSyncs.forEach(sync => {
-      if (mode === 'pick' && sync.toPick) sync.toPick();
-      if (mode === 'type' && sync.toTypeInput) sync.toTypeInput();
-    });
+const inputModeBtn = document.getElementById('inputModeBtn');
+inputModeBtn.addEventListener('click', () => {
+  const mode = inputMode === 'type' ? 'pick' : 'type';
+  inputMode = mode;
+  inputModeBtn.dataset.mode = mode;
+  inputModeBtn.textContent = mode === 'type' ? '⌨️ Type' : '📋 Pick';
+  document.querySelectorAll('.mode-panel').forEach(p => { p.hidden = p.dataset.mode !== mode; });
+  fieldSyncs.forEach(sync => {
+    if (mode === 'pick' && sync.toPick) sync.toPick();
+    if (mode === 'type' && sync.toTypeInput) sync.toTypeInput();
   });
 });
 
