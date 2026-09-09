@@ -110,6 +110,23 @@
   }
   .chip:hover { border-color: var(--teal); color: var(--teal); }
 
+  .field-label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .field-label-row label { margin: 0; }
+  .mode-toggle { display: flex; border: 1px solid var(--border); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+  .mode-btn { border: none; background: var(--bg); color: var(--muted); padding: 3px 10px; font-size: 10.5px; font-weight: 700; cursor: pointer; }
+  .mode-btn.active { background: var(--teal); color: white; }
+  .value-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .value-select {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 6px; font-size: 15px; font-weight: 700; color: var(--ink);
+    text-align: center; text-align-last: center; font-variant-numeric: tabular-nums;
+    cursor: pointer; width: 58px;
+  }
+  .value-sep { font-weight: 800; color: var(--muted); font-size: 14px; }
+  .use-toggle { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); font-weight: 700; cursor: pointer; user-select: none; margin-left: 4px; }
+  .use-toggle input { width: 14px; height: 14px; accent-color: var(--teal); cursor: pointer; }
+  .value-row.flash-error { outline: 2px solid var(--danger); border-radius: 10px; }
+
   .btn {
     border: none; border-radius: 10px; padding: 11px 20px;
     font-size: 14px; font-weight: 700; cursor: pointer;
@@ -263,9 +280,25 @@
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <label for="distInput">Distance (type digits, last two are decimals)</label>
-        <input type="text" inputmode="numeric" id="distInput" placeholder="e.g. 500 → 5.00">
-        <div class="chips" id="distChips"></div>
+        <div class="field-label-row">
+          <label for="distInput">Distance</label>
+          <div class="mode-toggle" data-mode-field="distance">
+            <button type="button" class="mode-btn active" data-mode="type">Type</button>
+            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
+          </div>
+        </div>
+        <div class="mode-panel" data-mode-field="distance" data-mode="type">
+          <input type="text" inputmode="numeric" id="distInput" placeholder="e.g. 500 → 5.00">
+          <div class="chips" id="distChips"></div>
+        </div>
+        <div class="mode-panel" data-mode-field="distance" data-mode="pick" hidden>
+          <div class="value-row">
+            <select class="value-select" id="distWholeSel"></select>
+            <span class="value-sep">.</span>
+            <select class="value-select" id="distDecSel"></select>
+            <label class="use-toggle"><input type="checkbox" class="use-cb" checked> Use</label>
+          </div>
+        </div>
       </div>
       <div class="field" style="max-width:140px;">
         <label>Unit</label>
@@ -275,15 +308,49 @@
         </div>
       </div>
       <div class="field">
-        <label for="timeInput">Time (type digits, right-to-left)</label>
-        <input type="text" inputmode="numeric" id="timeInput" placeholder="e.g. 2530 → 25:30">
+        <div class="field-label-row">
+          <label for="timeInput">Time</label>
+          <div class="mode-toggle" data-mode-field="time">
+            <button type="button" class="mode-btn active" data-mode="type">Type</button>
+            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
+          </div>
+        </div>
+        <div class="mode-panel" data-mode-field="time" data-mode="type">
+          <input type="text" inputmode="numeric" id="timeInput" placeholder="e.g. 2530 → 25:30">
+        </div>
+        <div class="mode-panel" data-mode-field="time" data-mode="pick" hidden>
+          <div class="value-row">
+            <select class="value-select" id="hSel"></select>
+            <span class="value-sep">:</span>
+            <select class="value-select" id="mSel"></select>
+            <span class="value-sep">:</span>
+            <select class="value-select" id="sSel"></select>
+            <label class="use-toggle"><input type="checkbox" class="use-cb" checked> Use</label>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <label for="speedInput">Speed</label>
-        <input type="number" id="speedInput" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 12">
+        <div class="field-label-row">
+          <label for="speedInput">Speed</label>
+          <div class="mode-toggle" data-mode-field="speed">
+            <button type="button" class="mode-btn active" data-mode="type">Type</button>
+            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
+          </div>
+        </div>
+        <div class="mode-panel" data-mode-field="speed" data-mode="type">
+          <input type="number" id="speedInput" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 12">
+        </div>
+        <div class="mode-panel" data-mode-field="speed" data-mode="pick" hidden>
+          <div class="value-row">
+            <select class="value-select" id="speedWholeSel"></select>
+            <span class="value-sep">.</span>
+            <select class="value-select" id="speedDecSel"></select>
+            <label class="use-toggle"><input type="checkbox" class="use-cb"> Use</label>
+          </div>
+        </div>
       </div>
       <div class="field" style="max-width:140px;">
         <label>Unit</label>
@@ -293,8 +360,24 @@
         </div>
       </div>
       <div class="field">
-        <label for="paceInput">Pace (type digits, right-to-left)</label>
-        <input type="text" inputmode="numeric" id="paceInput" placeholder="e.g. 500 → 5:00">
+        <div class="field-label-row">
+          <label for="paceInput">Pace</label>
+          <div class="mode-toggle" data-mode-field="pace">
+            <button type="button" class="mode-btn active" data-mode="type">Type</button>
+            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
+          </div>
+        </div>
+        <div class="mode-panel" data-mode-field="pace" data-mode="type">
+          <input type="text" inputmode="numeric" id="paceInput" placeholder="e.g. 500 → 5:00">
+        </div>
+        <div class="mode-panel" data-mode-field="pace" data-mode="pick" hidden>
+          <div class="value-row">
+            <select class="value-select" id="paceMSel"></select>
+            <span class="value-sep">:</span>
+            <select class="value-select" id="paceSSel"></select>
+            <label class="use-toggle"><input type="checkbox" class="use-cb"> Use</label>
+          </div>
+        </div>
       </div>
       <div class="field" style="max-width:140px;">
         <label>Unit</label>
@@ -307,8 +390,23 @@
 
     <div class="row" style="margin-top:12px;">
       <div class="field">
-        <label for="weightInput">Weight (used for this run's calories)</label>
-        <input type="number" id="weightInput" min="1" step="0.1" placeholder="e.g. 70">
+        <div class="field-label-row">
+          <label for="weightInput">Weight (used for this run's calories)</label>
+          <div class="mode-toggle" data-mode-field="weight">
+            <button type="button" class="mode-btn active" data-mode="type">Type</button>
+            <button type="button" class="mode-btn" data-mode="pick">Pick</button>
+          </div>
+        </div>
+        <div class="mode-panel" data-mode-field="weight" data-mode="type">
+          <input type="number" id="weightInput" min="1" step="0.1" placeholder="e.g. 70">
+        </div>
+        <div class="mode-panel" data-mode-field="weight" data-mode="pick" hidden>
+          <div class="value-row">
+            <select class="value-select" id="wWholeSel"></select>
+            <span class="value-sep">.</span>
+            <select class="value-select" id="wDecSel"></select>
+          </div>
+        </div>
       </div>
       <div class="field" style="max-width:140px;">
         <label>Unit</label>
@@ -493,6 +591,16 @@ function attachDecimalMask(input) {
   });
 }
 
+// Pick-mode alternative to typing: a plain <select> populated with a numeric range — a real
+// dropdown on desktop, the OS's own wheel/list picker on phones.
+function createListPicker(el, { min, max, step = 1, pad = 2, initial = min }) {
+  const opts = [];
+  for (let v = min; v <= max; v += step) opts.push(`<option value="${v}">${String(v).padStart(pad, '0')}</option>`);
+  el.innerHTML = opts.join('');
+  el.value = String(initial);
+  return { get: () => Number(el.value), set: (v) => { el.value = String(v); } };
+}
+
 // Distances short enough to be a "split within" a typical run — these back the Records average.
 const SPLIT_DISTANCES = [
   { key: '400m', label: '400 m', km: 0.4 },
@@ -564,6 +672,37 @@ const addBtn = document.getElementById('addBtn');
 const entriesList = document.getElementById('entriesList');
 const summaryGrid = document.getElementById('summaryGrid');
 const recordsList = document.getElementById('recordsList');
+
+// --- Pick-mode pickers (alternative to typing) for Distance / Time / Speed / Pace / Weight ---
+const distWholePick = createListPicker(document.getElementById('distWholeSel'), { min: 0, max: 99, pad: 1, initial: 0 });
+const distDecPick = createListPicker(document.getElementById('distDecSel'), { min: 0, max: 95, step: 5, pad: 2, initial: 0 });
+const hPick = createListPicker(document.getElementById('hSel'), { min: 0, max: 23, pad: 2, initial: 0 });
+const mPick = createListPicker(document.getElementById('mSel'), { min: 0, max: 59, pad: 2, initial: 0 });
+const sPick = createListPicker(document.getElementById('sSel'), { min: 0, max: 59, pad: 2, initial: 0 });
+const speedWholePick = createListPicker(document.getElementById('speedWholeSel'), { min: 0, max: 30, pad: 1, initial: 0 });
+const speedDecPick = createListPicker(document.getElementById('speedDecSel'), { min: 0, max: 9, pad: 1, initial: 0 });
+const paceMPick = createListPicker(document.getElementById('paceMSel'), { min: 0, max: 30, pad: 1, initial: 0 });
+const paceSPick = createListPicker(document.getElementById('paceSSel'), { min: 0, max: 59, pad: 2, initial: 0 });
+const wWholePick = createListPicker(document.getElementById('wWholeSel'), { min: 30, max: 200, pad: 1, initial: 70 });
+const wDecPick = createListPicker(document.getElementById('wDecSel'), { min: 0, max: 9, pad: 1, initial: 0 });
+
+function getFieldMode(key) {
+  return document.querySelector(`.mode-toggle[data-mode-field="${key}"] .mode-btn.active`).dataset.mode;
+}
+
+function setupModeToggle(key, { toTypeInput, toPick } = {}) {
+  const toggle = document.querySelector(`.mode-toggle[data-mode-field="${key}"]`);
+  const panels = document.querySelectorAll(`.mode-panel[data-mode-field="${key}"]`);
+  const btns = [...toggle.querySelectorAll('.mode-btn')];
+  btns.forEach(btn => btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) return;
+    const mode = btn.dataset.mode;
+    btns.forEach(b => b.classList.toggle('active', b === btn));
+    panels.forEach(p => { p.hidden = p.dataset.mode !== mode; });
+    if (mode === 'pick' && toPick) toPick();
+    if (mode === 'type' && toTypeInput) toTypeInput();
+  }));
+}
 
 // Arms a destructive button on first click (shows a confirm state) and only fires on the second —
 // avoids relying on window.confirm(), which sandboxed embeds can silently swallow.
@@ -749,12 +888,20 @@ attachDecimalMask(distInput);
 attachClockMask(timeInput, true);
 attachClockMask(paceInput, false);
 
+function setDistanceValue(val) {
+  distInput.value = val.toFixed(2);
+  const whole = Math.floor(val);
+  const dec = Math.round((val - whole) * 100 / 5) * 5;
+  distWholePick.set(whole);
+  distDecPick.set(Math.min(95, dec));
+}
+
 distChips.innerHTML = QUICK_FILL_DISTANCES.map(c => `<button type="button" class="chip" data-key="${c.key}">${c.label}</button>`).join('');
 distChips.querySelectorAll('.chip').forEach(btn => {
   btn.addEventListener('click', () => {
     const dist = QUICK_FILL_DISTANCES.find(c => c.key === btn.dataset.key);
     const val = distUnit === 'km' ? dist.km : dist.km / KM_PER_MI;
-    distInput.value = val.toFixed(2);
+    setDistanceValue(val);
   });
 });
 
@@ -763,8 +910,73 @@ if (savedWeight) {
   weightInput.value = savedWeight.value;
   weightUnit = savedWeight.unit;
   setActiveToggle(weightUnit === 'kg' ? wUnitKg : wUnitLb, [wUnitKg, wUnitLb]);
+  const w = savedWeight.value;
+  wWholePick.set(Math.floor(w));
+  wDecPick.set(Math.round((w - Math.floor(w)) * 10));
 }
 dateInput.valueAsDate = new Date();
+
+// --- Type <-> Pick sync: best-effort carry the current value across when switching modes. ---
+setupModeToggle('distance', {
+  toPick: () => {
+    const v = parseFloat(distInput.value);
+    if (v > 0) setDistanceValue(v);
+  },
+  toTypeInput: () => { distInput.value = (distWholePick.get() + distDecPick.get() / 100).toFixed(2); }
+});
+
+setupModeToggle('time', {
+  toPick: () => {
+    const hours = parseTimeToHours(timeInput.value);
+    if (hours) {
+      const totalSec = Math.round(hours * 3600);
+      hPick.set(Math.floor(totalSec / 3600));
+      mPick.set(Math.floor((totalSec % 3600) / 60));
+      sPick.set(totalSec % 60);
+    }
+  },
+  toTypeInput: () => {
+    const hours = hPick.get() + mPick.get() / 60 + sPick.get() / 3600;
+    timeInput.value = fmtHMS(hours);
+  }
+});
+
+setupModeToggle('speed', {
+  toPick: () => {
+    const v = parseFloat(speedInput.value);
+    if (v >= 0) {
+      speedWholePick.set(Math.floor(v));
+      speedDecPick.set(Math.round((v - Math.floor(v)) * 10));
+    }
+  },
+  toTypeInput: () => { speedInput.value = (speedWholePick.get() + speedDecPick.get() / 10).toFixed(1); }
+});
+
+setupModeToggle('pace', {
+  toPick: () => {
+    const min = parsePaceToMinutes(paceInput.value);
+    if (min) {
+      const totalSec = Math.round(min * 60);
+      paceMPick.set(Math.floor(totalSec / 60));
+      paceSPick.set(totalSec % 60);
+    }
+  },
+  toTypeInput: () => { paceInput.value = `${paceMPick.get()}:${String(paceSPick.get()).padStart(2, '0')}`; }
+});
+
+setupModeToggle('weight', {
+  toPick: () => {
+    const v = parseFloat(weightInput.value);
+    if (v > 0) {
+      wWholePick.set(Math.floor(v));
+      wDecPick.set(Math.round((v - Math.floor(v)) * 10));
+    }
+  },
+  toTypeInput: () => { weightInput.value = (wWholePick.get() + wDecPick.get() / 10).toFixed(1); }
+});
+
+document.getElementById('wWholeSel').addEventListener('change', persistWeight);
+document.getElementById('wDecSel').addEventListener('change', persistWeight);
 
 function setActiveToggle(active, group) {
   group.forEach(btn => btn.classList.toggle('active', btn === active));
@@ -782,13 +994,18 @@ surfaceStreet.addEventListener('click', () => { runSurface = 'street'; setActive
 surfaceTreadmill.addEventListener('click', () => { runSurface = 'treadmill'; setActiveToggle(surfaceTreadmill, [surfaceStreet, surfaceTreadmill]); });
 weightInput.addEventListener('input', persistWeight);
 
+function currentWeightValue() {
+  if (getFieldMode('weight') === 'pick') return wWholePick.get() + wDecPick.get() / 10;
+  return parseFloat(weightInput.value);
+}
+
 function persistWeight() {
-  const v = parseFloat(weightInput.value);
+  const v = currentWeightValue();
   if (v > 0) store.saveWeight({ value: v, unit: weightUnit });
 }
 
 function getWeightKg() {
-  const v = parseFloat(weightInput.value);
+  const v = currentWeightValue();
   if (!(v > 0)) return null;
   return weightUnit === 'kg' ? v : v * KG_PER_LB;
 }
@@ -831,24 +1048,51 @@ function solveDistanceAndTime({ distVal, distUnit, durationHours, speedVal, spee
   return { km, mi, hours };
 }
 
+function pickUseCb(key) {
+  return document.querySelector(`.mode-panel[data-mode-field="${key}"][data-mode="pick"] .use-cb`);
+}
+
+function flashField(key, typeEl) {
+  if (getFieldMode(key) === 'pick') {
+    const row = document.querySelector(`.mode-panel[data-mode-field="${key}"][data-mode="pick"] .value-row`);
+    row.classList.add('flash-error');
+    setTimeout(() => row.classList.remove('flash-error'), 900);
+  } else {
+    flash(typeEl);
+  }
+}
+
 addBtn.addEventListener('click', () => {
-  const distValRaw = distInput.value.trim();
-  const timeValRaw = timeInput.value.trim();
-  const speedValRaw = speedInput.value.trim();
-  const paceValRaw = paceInput.value.trim();
+  const distMode = getFieldMode('distance');
+  const timeMode = getFieldMode('time');
+  const speedMode = getFieldMode('speed');
+  const paceMode = getFieldMode('pace');
 
-  const distVal = distValRaw ? parseFloat(distValRaw) : NaN;
-  const durationHours = timeValRaw ? parseTimeToHours(timeValRaw) : null;
-  const speedVal = speedValRaw ? parseFloat(speedValRaw) : NaN;
-  const paceMin = paceValRaw ? parsePaceToMinutes(paceValRaw) : null;
+  const distValRaw = distMode === 'pick' ? (pickUseCb('distance').checked ? 'pick' : '') : distInput.value.trim();
+  const timeValRaw = timeMode === 'pick' ? (pickUseCb('time').checked ? 'pick' : '') : timeInput.value.trim();
+  const speedValRaw = speedMode === 'pick' ? (pickUseCb('speed').checked ? 'pick' : '') : speedInput.value.trim();
+  const paceValRaw = paceMode === 'pick' ? (pickUseCb('pace').checked ? 'pick' : '') : paceInput.value.trim();
 
-  if (distValRaw && !(distVal > 0)) { flash(distInput); return; }
-  if (timeValRaw && !durationHours) { flash(timeInput); return; }
-  if (speedValRaw && !(speedVal > 0)) { flash(speedInput); return; }
-  if (paceValRaw && !paceMin) { flash(paceInput); return; }
+  const distVal = distValRaw
+    ? (distMode === 'pick' ? distWholePick.get() + distDecPick.get() / 100 : parseFloat(distValRaw))
+    : NaN;
+  const durationHours = timeValRaw
+    ? (timeMode === 'pick' ? (hPick.get() + mPick.get() / 60 + sPick.get() / 3600) : parseTimeToHours(timeValRaw))
+    : null;
+  const speedVal = speedValRaw
+    ? (speedMode === 'pick' ? speedWholePick.get() + speedDecPick.get() / 10 : parseFloat(speedValRaw))
+    : NaN;
+  const paceMin = paceValRaw
+    ? (paceMode === 'pick' ? (paceMPick.get() + paceSPick.get() / 60) : parsePaceToMinutes(paceValRaw))
+    : null;
+
+  if (distValRaw && !(distVal > 0)) { flashField('distance', distInput); return; }
+  if (timeValRaw && !durationHours) { flashField('time', timeInput); return; }
+  if (speedValRaw && !(speedVal > 0)) { flashField('speed', speedInput); return; }
+  if (paceValRaw && !paceMin) { flashField('pace', paceInput); return; }
 
   const weightKg = getWeightKg();
-  if (!weightKg) { flash(weightInput); return; }
+  if (!weightKg) { flashField('weight', weightInput); return; }
 
   const solved = solveDistanceAndTime({
     distVal: distVal > 0 ? distVal : null, distUnit,
@@ -858,7 +1102,10 @@ addBtn.addEventListener('click', () => {
   });
 
   if (!solved) {
-    [distInput, timeInput, speedInput, paceInput].forEach(flash);
+    flashField('distance', distInput);
+    flashField('time', timeInput);
+    flashField('speed', speedInput);
+    flashField('pace', paceInput);
     return;
   }
 
@@ -881,6 +1128,7 @@ addBtn.addEventListener('click', () => {
   speedInput.value = '';
   paceInput.value = '';
   labelInput.value = '';
+  [distWholePick, distDecPick, hPick, mPick, sPick, speedWholePick, speedDecPick, paceMPick, paceSPick].forEach(p => p.set(0));
   render();
   syncToGitHub();
 
