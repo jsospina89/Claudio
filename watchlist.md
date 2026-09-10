@@ -85,12 +85,14 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 | DLR | Digital Realty Trust | Data-center REIT |
 | EQIX | Equinix | Data-center REIT |
 
-### AI/GPU cloud compute (pivoted businesses)
+### AI/GPU cloud compute
 | Ticker | Name | Notes |
 |---|---|---|
 | IREN | IREN Limited | Former Bitcoin miner, pivoted to AI/GPU cloud compute |
+| CRWV | CoreWeave Inc. | Purpose-built GPU cloud provider, 2025 IPO — direct AI-compute-demand play |
+| NBIS | Nebius Group N.V. | Formerly Yandex N.V.; AI cloud/GPU infrastructure provider |
 
 ## Caution
 SMH, DRAM, CIBR, SOXX, SKYY, BOTZ, AIQ tend to move together in an AI-sentiment scare — same underlying risk factor, different tickers. Real diversification within the AI thesis comes more from the power/materials layer (GRID, NLR, COPX) and the physical build-out names above.
 
-_Last updated: 2026-09-09_
+_Last updated: 2026-09-10_
