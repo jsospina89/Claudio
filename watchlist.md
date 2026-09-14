@@ -92,7 +92,12 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 | CRWV | CoreWeave Inc. | Purpose-built GPU cloud provider, 2025 IPO — direct AI-compute-demand play |
 | NBIS | Nebius Group N.V. | Formerly Yandex N.V.; AI cloud/GPU infrastructure provider |
 
+### AI training/inference chips (Nvidia alternatives)
+| Ticker | Name | Notes |
+|---|---|---|
+| CBRS | Cerebras Systems Inc. | Wafer-scale AI processors — largest chip made, built for AI training/inference |
+
 ## Caution
 SMH, DRAM, CIBR, SOXX, SKYY, BOTZ, AIQ tend to move together in an AI-sentiment scare — same underlying risk factor, different tickers. Real diversification within the AI thesis comes more from the power/materials layer (GRID, NLR, COPX) and the physical build-out names above.
 
-_Last updated: 2026-09-10_
+_Last updated: 2026-09-14_
