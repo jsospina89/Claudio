@@ -29,6 +29,22 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 |---|---|---|
 | BOTZ | Global X Robotics & Artificial Intelligence ETF | |
 
+### Robots (application-level)
+| Ticker | Name | Notes |
+|---|---|---|
+| ISRG | Intuitive Surgical | Surgical robots (da Vinci) — near 52w low (15% of range) as of 2026-09-11 |
+| TER | Teradyne | Owns Universal Robots (cobots) + semiconductor test equipment — 71% of 52w range |
+| SYM | Symbotic | Warehouse/logistics robotics — near 52w low (9% of range) |
+| SERV | Serve Robotics | Sidewalk delivery robots, small-cap — barely off 52w low (1% of range, down ~76% from high) |
+
+### Actuators / motion control (component-level)
+| Ticker | Name | Notes |
+|---|---|---|
+| AME | AMETEK | Electromechanical devices, motors, precision instruments — 76% of 52w range, strongest of the group |
+| MOG.A | Moog Inc. | Precision motion control & actuators, aerospace + industrial — 68% of 52w range |
+| ROK | Rockwell Automation | Industrial automation/control systems — 58% of 52w range |
+| RRX | Regal Rexnord | Motors, actuators, power transmission — 29% of 52w range |
+
 ## Power & grid (buildout layer)
 | Ticker | Name | Notes |
 |---|---|---|
