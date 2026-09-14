@@ -96,6 +96,9 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 | Ticker | Name | Notes |
 |---|---|---|
 | CBRS | Cerebras Systems Inc. | Wafer-scale AI processors — largest chip made, built for AI training/inference |
+| AMBA | Ambarella Inc. | Edge AI vision processors — inference chips for cameras/robotics, not data-center training |
+| CRDO | Credo Technology Group | High-speed connectivity chips for AI data centers — similar niche to ALAB |
+| NVTS | Navitas Semiconductor | Power semiconductors for AI data centers — small-cap, frequent in retail/social AI-chip hype |
 
 ## Caution
 SMH, DRAM, CIBR, SOXX, SKYY, BOTZ, AIQ tend to move together in an AI-sentiment scare — same underlying risk factor, different tickers. Real diversification within the AI thesis comes more from the power/materials layer (GRID, NLR, COPX) and the physical build-out names above.
