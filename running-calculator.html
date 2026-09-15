@@ -197,12 +197,15 @@
 
   .sort-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .sort-row span { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .run-sort-btn, .surface-filter-btn {
+  .run-sort-btn, .surface-filter-btn, .trend-view-btn {
     border: 1px solid var(--border); background: var(--bg); color: var(--muted);
     border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 600; cursor: pointer;
   }
-  .run-sort-btn.active, .surface-filter-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+  .run-sort-btn.active, .surface-filter-btn.active, .trend-view-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
   .badge.surface { background: var(--teal-light); color: var(--teal); }
+
+  .trend-svg { width: 100%; height: 200px; display: block; }
+  .trend-axis-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; flex-wrap: wrap; gap: 6px; }
 
   .records-table { overflow-x: auto; padding-bottom: 4px; }
   .records-inner { width: max-content; min-width: 100%; }
@@ -417,6 +420,17 @@
     </div>
   </div>
 
+  <div class="panel">
+    <h2>Trends</h2>
+    <div class="hint">How your pace and weekly mileage move over time, across all runs.</div>
+    <div class="sort-row">
+      <span>View</span>
+      <button type="button" class="trend-view-btn active" data-view="pace">Pace</button>
+      <button type="button" class="trend-view-btn" data-view="mileage">Weekly mileage</button>
+    </div>
+    <div id="trendChart"></div>
+  </div>
+
   <div class="panel" id="runsPanel">
     <h2>Runs</h2>
     <div class="sort-row">
@@ -610,6 +624,7 @@ let recordSortDir = 'asc';
 let runSort = 'date';
 let recordSurface = 'all';
 let runSurface = 'street';
+let trendView = 'pace';
 let weightUnit = 'kg';
 let distUnit = 'km';
 let speedUnit = 'kmh';
@@ -1283,7 +1298,97 @@ function render() {
   `;
 
   renderRecords();
+  renderTrends();
 }
+
+// --- Trends: a pace-over-time line and a weekly-mileage bar chart, drawn as plain inline SVG. ---
+function trendPaceSeries(pool) {
+  return [...pool]
+    .sort((a, b) => (a.date || '').localeCompare(b.date || '') || a.id - b.id)
+    .map(e => ({ date: e.date, paceMinPerKm: e.durationHours * 60 / e.km }));
+}
+
+// Monday-based week-start key, used to bucket runs into weekly totals.
+function isoWeekKey(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  if (isNaN(d)) return null;
+  const day = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - day);
+  return d.toISOString().slice(0, 10);
+}
+
+function trendWeeklyMileage(pool) {
+  const byWeek = new Map();
+  pool.filter(e => e.date).forEach(e => {
+    const wk = isoWeekKey(e.date);
+    if (!wk) return;
+    byWeek.set(wk, (byWeek.get(wk) || 0) + e.km);
+  });
+  return [...byWeek.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([week, km]) => ({ week, km }));
+}
+
+function renderPaceChart(pool) {
+  const series = trendPaceSeries(pool);
+  if (series.length < 2) return '<div class="empty">Log at least 2 runs to see a pace trend.</div>';
+  const W = 640, H = 200, P = 34;
+  const values = series.map(s => s.paceMinPerKm);
+  const minV = Math.min(...values), maxV = Math.max(...values);
+  const range = maxV - minV || 1;
+  const xStep = (W - P * 2) / (series.length - 1);
+  const xFor = i => P + i * xStep;
+  const yFor = v => P + ((v - minV) / range) * (H - P * 2);
+  const pathD = series.map((s, i) => `${i === 0 ? 'M' : 'L'} ${xFor(i).toFixed(1)} ${yFor(s.paceMinPerKm).toFixed(1)}`).join(' ');
+  const dots = series.map((s, i) => `<circle cx="${xFor(i).toFixed(1)}" cy="${yFor(s.paceMinPerKm).toFixed(1)}" r="3.5" fill="var(--teal)"></circle>`).join('');
+  return `
+    <svg viewBox="0 0 ${W} ${H}" class="trend-svg" preserveAspectRatio="none">
+      <line x1="${P}" y1="${H - P}" x2="${W - P}" y2="${H - P}" stroke="var(--border)" stroke-width="1"/>
+      <path d="${pathD}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+      ${dots}
+    </svg>
+    <div class="trend-axis-row">
+      <span>${escapeHtml(series[0].date || 'earliest')}</span>
+      <span>Fastest: ${fmtPace(minV)} /km · Slowest: ${fmtPace(maxV)} /km</span>
+      <span>${escapeHtml(series[series.length - 1].date || 'latest')}</span>
+    </div>
+  `;
+}
+
+function renderMileageChart(pool) {
+  const series = trendWeeklyMileage(pool);
+  if (series.length === 0) return '<div class="empty">Add dated runs to see weekly mileage.</div>';
+  const W = 640, H = 200, P = 34;
+  const maxKm = Math.max(...series.map(s => s.km), 1);
+  const slot = (W - P * 2) / series.length;
+  const barW = Math.min(28, slot * 0.6);
+  const bars = series.map((s, i) => {
+    const barH = (s.km / maxKm) * (H - P * 2);
+    const x = P + i * slot + (slot - barW) / 2;
+    const y = H - P - barH;
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="3" fill="var(--teal)"></rect>`;
+  }).join('');
+  return `
+    <svg viewBox="0 0 ${W} ${H}" class="trend-svg" preserveAspectRatio="none">
+      <line x1="${P}" y1="${H - P}" x2="${W - P}" y2="${H - P}" stroke="var(--border)" stroke-width="1"/>
+      ${bars}
+    </svg>
+    <div class="trend-axis-row">
+      <span>Week of ${escapeHtml(series[0].week)}</span>
+      <span>Peak week: ${maxKm.toFixed(2)} km</span>
+      <span>Week of ${escapeHtml(series[series.length - 1].week)}</span>
+    </div>
+  `;
+}
+
+function renderTrends() {
+  document.querySelectorAll('.trend-view-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === trendView);
+  });
+  document.getElementById('trendChart').innerHTML = trendView === 'pace' ? renderPaceChart(entries) : renderMileageChart(entries);
+}
+
+document.querySelectorAll('.trend-view-btn').forEach(btn => {
+  btn.addEventListener('click', () => { trendView = btn.dataset.view; renderTrends(); });
+});
 
 function escapeHtml(str) {
   const div = document.createElement('div');
