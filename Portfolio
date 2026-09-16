@@ -2,39 +2,46 @@
 
 _Last updated: 2026-09-16_
 
-| Symbol  | Qty     | Entry       | Worth Today | Chg %   |
-|---------|--------:|------------:|------------:|--------:|
-| VRT     | 0.77074 |     $286.45 |     $242.02 | -15.51% |
-| XLV     | 1.36714 |     $175.00 |     $168.32 |  -3.82% |
-| AMD     |       — |     $380.64 |     $347.50 |  -8.44% |
-| MAGS    |       — |     $179.00 |     $182.50 |  +1.96% |
-| DRAM    |       — |     $500.00 |     $476.58 |  -4.68% |
-| BTC/USD |       — |  $79,293.00 |  $79,410.01 |  +0.15% |
-| DE      |       — |     $695.00 |     $698.97 |  +0.57% |
-| META    | 0.32361 |     $608.73 |     $676.92 | +11.20% |
-| VYM     |       — |     $163.00 |     $164.46 |  +0.90% |
-| MRVL    | 1.25761 |     $240.35 |     $229.34 |  -4.58% |
-| ANET    | 1.02347 |     $202.77 |     $198.73 |  -1.99% |
-| VOO     |       — |     $699.00 |     $707.71 |  +1.25% |
-| AVGO    | 0.27908 |     $360.14 |     $342.88 |  -4.79% |
-| GOOG    | 0.89503 |     $335.57 |     $342.42 |  +2.04% |
-| XLF     | 4.23244 |      $57.23 |      $56.52 |  -1.24% |
-| XLE     |       — |      $64.04 |      $64.21 |  +0.27% |
-| ASML    | 0.05495 |           — |   $1,610.39 |       — |
-| MU      |  0.1814 |           — |     $931.61 |       — |
-| MSFT    |  0.5158 |           — |     $494.38 |       — |
-| TSM     | 0.68371 |           — |     $418.51 |       — |
-| PAVE    | 4.07431 |           — |      $53.35 |       — |
-| QQQ     | 1.49667 |     $707.57 |     $705.42 |  -0.30% |
+## Main account (confirmed via Assets/allocation pie, 14:02 snapshot — 14 positions, 100% of this account, total ≈$2,982.98)
+
+| Symbol  | Qty        | Value      | % Alloc | Entry        | Worth Today | Chg %    |
+|---------|-----------:|-----------:|--------:|-------------:|------------:|---------:|
+| GOOG    | 0.89503    |   $303.71  |  10.18% |     $335.57  |    $339.34  |  +1.12%  |
+| MRVL    | 1.25761    |   $287.31  |   9.63% |     $240.35  |    $228.47  |  -4.94%  |
+| TSM     | 0.68371    |   $284.57  |   9.54% |            — |    $416.24  |       —  |
+| MSFT    | 0.5158     |   $253.27  |   8.49% |            — |    $491.02  |       —  |
+| XLF     | 4.23244    |   $236.54  |   7.93% |      $57.23  |     $55.89  |  -2.34%  |
+| XLV     | 1.36714    |   $229.51  |   7.69% |     $175.00  |    $167.88  |  -4.07%  |
+| META    | 0.32361    |   $219.60  |   7.36% |     $608.73  |    $678.62  | +11.48%  |
+| BTC/USD | 0.00287724 |   $217.47  |   7.29% | $79,293.00\* | $75,586.50  |  -4.67%\*|
+| PAVE    | 4.07431    |   $214.77  |   7.20% |            — |     $52.72  |       —  |
+| ANET    | 1.02347    |   $201.73  |   6.76% |     $202.77  |    $197.13  |  -2.78%  |
+| VRT     | 0.77074    |   $184.71  |   6.19% |     $286.45  |    $239.63  | -16.35%  |
+| MU      | 0.1814     |   $167.98  |   5.63% |            — |    $925.91  |       —  |
+| AVGO    | 0.27908    |    $94.23  |   3.16% |     $360.14  |    $337.66  |  -6.24%  |
+| ASML    | 0.05495    |    $87.54  |   2.93% |            — |  $1,593.09  |       —  |
+
+\* BTC/USD entry price is carried over from before this qty was confirmed — unverified against this specific 0.00287724 lot. Treat Chg% for BTC/USD as unconfirmed.
+
+## Other holdings (not in this account's pie)
+
+| Symbol  | Qty     | Entry       | Worth Today | Chg %   | Status |
+|---------|--------:|------------:|------------:|--------:|--------|
+| QQQ     | 1.49667 |     $707.57 |     $705.42 |  -0.30% | Confirmed — separate, USDC-funded account. Value $1,055.78 there does not count toward the $2,982.98 total above. |
+| AMD     |       — |     $380.64 |     $347.50 |  -8.44% | ⚠ Unconfirmed |
+| MAGS    |       — |     $179.00 |     $182.50 |  +1.96% | ⚠ Unconfirmed |
+| DRAM    |       — |     $500.00 |     $476.58 |  -4.68% | ⚠ Unconfirmed |
+| DE      |       — |     $695.00 |     $698.97 |  +0.57% | ⚠ Unconfirmed |
+| VYM     |       — |     $163.00 |     $164.46 |  +0.90% | ⚠ Unconfirmed |
+| VOO     |       — |     $699.00 |     $707.71 |  +1.25% | ⚠ Unconfirmed |
+| XLE     |       — |      $64.04 |      $64.21 |  +0.27% | ⚠ Unconfirmed |
 
 **Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW
 
-**Not on this list yet:** other positions the user hasn't specified.
-
 ## ⚠ Cross-check flags (2026-09-16)
 
-- **New positions confirmed from broker screenshots, entry price unknown:** ASML, MU, MSFT, TSM, PAVE. Chg% can't be computed until cost basis is supplied.
-- **QQQ added from its individual position screen** (Value $1,055.78, Cost basis $1,059, Unrealized -$3.21/-0.30%, bought 15 Sep 2026). Entry/Worth Today above are derived per-share (cost basis ÷ shares, value ÷ shares) — the app's own -0.30% is used directly for Chg% rather than my derived rounding.
-- **Revised read on the "not visible" list below:** QQQ wasn't in the earlier holdings-list screenshots either, and it's clearly a real, recent position (bought 15 Sep 2026). That means that list was very likely truncated by scroll, not a complete inventory. This weakens the "maybe sold" theory for AMD, MAGS, DRAM, BTC/USD, DE, VYM, VOO, XLE — off-screen is now the more likely explanation, not sold. Still not moving anything to Sold without confirmation.
-- **Tracked positions NOT visible in any screenshot so far:** AMD, MAGS, DRAM, BTC/USD, DE, VYM, VOO, XLE. None are on the Sold list. Left untouched.
-- **Metric mismatch:** the broker screenshots show live price + *intraday* % change. This file's Chg % is *total return vs. entry*, not intraday. Worth Today above was refreshed from the screenshots; Chg % was recalculated against each existing Entry — I did not substitute the screenshot's intraday % into this column (QQQ is the one exception, since the app gave total-return % directly on that screen, not intraday).
+- **Main account is now fully accounted for.** The Assets/allocation screen's 14 positions sum to 100% (≈$2,982.98 total), split into 7 shown directly and 7 grouped under "Others." That's a closed set — nothing else is hiding off-screen in *this* account.
+- **This reverses my last note.** I previously guessed AMD/MAGS/DRAM/BTC-USD/DE/VYM/VOO/XLE were just scrolled-past, based on QQQ being absent from the holdings list too. Turns out QQQ is absent because it lives in a *different account* (bought with USDC, per its transaction log), not because any list was truncated. That explanation doesn't extend to the other 7 — they are simply not part of this account's 100% pie. **This is stronger evidence they were sold and never logged than my earlier take, but it's still not proof** — they could sit in yet another account, same as QQQ. I have not moved them to Sold. You need to tell me: sold, or elsewhere?
+- **BTC/USD quantity confirmed for the first time** (0.00287724, value $217.47) — but its Entry ($79,293) predates that confirmation and may not be the real cost basis for this exact lot. Flagged, not asserted.
+- **Value/% Alloc columns are new** — reflects actual position size, not just price. Prices in this table (14:02 snapshot) are marginally fresher than the 13:59 screenshots and supersede them; Chg% recalculated accordingly.
+- **Metric mismatch stands:** broker screens show live price ± *intraday* % change; this file's Chg% is *total return vs. entry*. Not interchangeable.
