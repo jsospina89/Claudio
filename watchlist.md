@@ -55,7 +55,6 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 | Ticker | Name | Notes |
 |---|---|---|
 | COPX | Global X Copper Miners ETF | Copper demand from data centers/grid |
-| PAVE | Global X U.S. Infrastructure Development ETF | Broader industrial, not AI-pure |
 
 ## Mega-cap AI (discussed, not decided)
 | Ticker | Name | Notes |
@@ -119,4 +118,6 @@ Tickers discussed and confirmed live as candidates for the AI-related sleeve. Fo
 ## Caution
 SMH, DRAM, CIBR, SOXX, SKYY, BOTZ, AIQ tend to move together in an AI-sentiment scare — same underlying risk factor, different tickers. Real diversification within the AI thesis comes more from the power/materials layer (GRID, NLR, COPX) and the physical build-out names above.
 
-_Last updated: 2026-09-14_
+_Last updated: 2026-09-16_
+
+**Note:** PAVE removed from this list — broker screenshot on 2026-09-16 confirms it's now an actual held position (4.07431 shares), not a candidate. See `Portfolio`.
