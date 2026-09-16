@@ -28,20 +28,20 @@ _Last updated: 2026-09-16_
 | Symbol  | Qty     | Entry       | Worth Today | Chg %   | Status |
 |---------|--------:|------------:|------------:|--------:|--------|
 | QQQ     | 1.49667 |     $707.57 |     $705.42 |  -0.30% | Confirmed — separate, USDC-funded account. Value $1,055.78 there does not count toward the $2,982.98 total above. |
-| AMD     |       — |     $380.64 |     $347.50 |  -8.44% | ⚠ Unconfirmed |
-| MAGS    |       — |     $179.00 |     $182.50 |  +1.96% | ⚠ Unconfirmed |
-| DRAM    |       — |     $500.00 |     $476.58 |  -4.68% | ⚠ Unconfirmed |
-| DE      |       — |     $695.00 |     $698.97 |  +0.57% | ⚠ Unconfirmed |
-| VYM     |       — |     $163.00 |     $164.46 |  +0.90% | ⚠ Unconfirmed |
-| VOO     |       — |     $699.00 |     $707.71 |  +1.25% | ⚠ Unconfirmed |
-| XLE     |       — |      $64.04 |      $64.21 |  +0.27% | ⚠ Unconfirmed |
+| AMD     |       — |     $380.64 |     $347.50 |  -8.44% | Not in this account's pie |
+| MAGS    |       — |     $179.00 |     $182.50 |  +1.96% | Not in this account's pie |
+| DRAM    |       — |     $500.00 |     $476.58 |  -4.68% | Not in this account's pie |
+| DE      |       — |     $695.00 |     $698.97 |  +0.57% | Not in this account's pie |
+| VYM     |       — |     $163.00 |     $164.46 |  +0.90% | Not in this account's pie |
+| VOO     |       — |     $699.00 |     $707.71 |  +1.25% | Not in this account's pie |
+| XLE     |       — |      $64.04 |      $64.21 |  +0.27% | Not in this account's pie |
 
-**Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW
+**Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW — sold/not-sold status for the "Other holdings" table above (AMD, MAGS, DRAM, DE, VYM, VOO, XLE) is deliberately on hold; will fold in once confirmed.
 
-## ⚠ Cross-check flags (2026-09-16)
+## Cross-check flags (2026-09-16)
 
 - **Main account is now fully accounted for.** The Assets/allocation screen's 14 positions sum to 100% (≈$2,982.98 total), split into 7 shown directly and 7 grouped under "Others." That's a closed set — nothing else is hiding off-screen in *this* account.
-- **This reverses my last note.** I previously guessed AMD/MAGS/DRAM/BTC-USD/DE/VYM/VOO/XLE were just scrolled-past, based on QQQ being absent from the holdings list too. Turns out QQQ is absent because it lives in a *different account* (bought with USDC, per its transaction log), not because any list was truncated. That explanation doesn't extend to the other 7 — they are simply not part of this account's 100% pie. **This is stronger evidence they were sold and never logged than my earlier take, but it's still not proof** — they could sit in yet another account, same as QQQ. I have not moved them to Sold. You need to tell me: sold, or elsewhere?
+- **QQQ lives in a separate account** — bought with USDC, per its transaction log — which is why it's absent from this account's pie.
 - **BTC/USD quantity confirmed for the first time** (0.00287724, value $217.47) — but its Entry ($79,293) predates that confirmation and may not be the real cost basis for this exact lot. Flagged, not asserted.
 - **Value/% Alloc columns are new** — reflects actual position size, not just price. Prices in this table (14:02 snapshot) are marginally fresher than the 13:59 screenshots and supersede them; Chg% recalculated accordingly.
 - **Metric mismatch stands:** broker screens show live price ± *intraday* % change; this file's Chg% is *total return vs. entry*. Not interchangeable.
