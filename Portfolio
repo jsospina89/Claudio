@@ -25,6 +25,7 @@ _Last updated: 2026-09-16_
 | MSFT    |  0.5158 |           — |     $494.38 |       — |
 | TSM     | 0.68371 |           — |     $418.51 |       — |
 | PAVE    | 4.07431 |           — |      $53.35 |       — |
+| QQQ     | 1.49667 |     $707.57 |     $705.42 |  -0.30% |
 
 **Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW
 
@@ -33,5 +34,7 @@ _Last updated: 2026-09-16_
 ## ⚠ Cross-check flags (2026-09-16)
 
 - **New positions confirmed from broker screenshots, entry price unknown:** ASML, MU, MSFT, TSM, PAVE. Chg% can't be computed until cost basis is supplied.
-- **Tracked positions NOT visible in the latest screenshots:** AMD, MAGS, DRAM, BTC/USD, DE, VYM, VOO, XLE. None of these are on the Sold list either. This could mean they were sold and never logged, or they simply live outside the scrolled/visible range (e.g. a separate crypto tab for BTC/USD). Left untouched — confirm before I move anything to Sold.
-- **Metric mismatch:** the broker screenshots show live price + *intraday* % change. This file's Chg% is *total return vs. entry*, not intraday. Worth Today above was refreshed from the screenshots; Chg% was recalculated against each existing Entry — I did not substitute the screenshot's intraday % into this column.
+- **QQQ added from its individual position screen** (Value $1,055.78, Cost basis $1,059, Unrealized -$3.21/-0.30%, bought 15 Sep 2026). Entry/Worth Today above are derived per-share (cost basis ÷ shares, value ÷ shares) — the app's own -0.30% is used directly for Chg% rather than my derived rounding.
+- **Revised read on the "not visible" list below:** QQQ wasn't in the earlier holdings-list screenshots either, and it's clearly a real, recent position (bought 15 Sep 2026). That means that list was very likely truncated by scroll, not a complete inventory. This weakens the "maybe sold" theory for AMD, MAGS, DRAM, BTC/USD, DE, VYM, VOO, XLE — off-screen is now the more likely explanation, not sold. Still not moving anything to Sold without confirmation.
+- **Tracked positions NOT visible in any screenshot so far:** AMD, MAGS, DRAM, BTC/USD, DE, VYM, VOO, XLE. None are on the Sold list. Left untouched.
+- **Metric mismatch:** the broker screenshots show live price + *intraday* % change. This file's Chg % is *total return vs. entry*, not intraday. Worth Today above was refreshed from the screenshots; Chg % was recalculated against each existing Entry — I did not substitute the screenshot's intraday % into this column (QQQ is the one exception, since the app gave total-return % directly on that screen, not intraday).
