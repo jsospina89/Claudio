@@ -1,47 +1,50 @@
 # Portfolio
 
-_Last updated: 2026-09-16_
+_Last updated: 2026-09-17 (live prices via Twelve Data)_
 
-## Main account (confirmed via Assets/allocation pie, 14:02 snapshot — 14 positions, 100% of this account, total ≈$2,982.98)
+## Main account (qty from 2026-09-16 Assets pie; Value/% Alloc recomputed from live prices below, so these are derived, not a fresh statement)
 
 | Symbol  | Qty        | Value      | % Alloc | Entry        | Worth Today | Chg %    |
 |---------|-----------:|-----------:|--------:|-------------:|------------:|---------:|
-| GOOG    | 0.89503    |   $303.71  |  10.18% |     $335.57  |    $339.34  |  +1.12%  |
-| MRVL    | 1.25761    |   $287.31  |   9.63% |     $240.35  |    $228.47  |  -4.94%  |
-| TSM     | 0.68371    |   $284.57  |   9.54% |     $438.77  |    $416.24  |  -5.13%  |
-| MSFT    | 0.5158     |   $253.27  |   8.49% |     $494.37  |    $491.02  |  -0.68%  |
-| XLF     | 4.23244    |   $236.54  |   7.93% |      $57.23  |     $55.89  |  -2.34%  |
-| XLV     | 1.36714    |   $229.51  |   7.69% |     $175.00  |    $167.88  |  -4.07%  |
-| META    | 0.32361    |   $219.60  |   7.36% |     $608.73  |    $678.62  | +11.48%  |
-| BTC/USD | 0.00287724 |   $217.47  |   7.29% | $79,293.00\* | $75,586.50  |  -4.67%\*|
-| PAVE    | 4.07431    |   $214.77  |   7.20% |      $58.48  |     $52.72  |  -9.85%  |
-| ANET    | 1.02347    |   $201.73  |   6.76% |     $202.77  |    $197.13  |  -2.78%  |
-| VRT     | 0.77074    |   $184.71  |   6.19% |     $286.45  |    $239.63  | -16.35%  |
-| MU      | 0.1814     |   $167.98  |   5.63% |     $942.59  |    $925.91  |  -1.77%  |
-| AVGO    | 0.27908    |    $94.23  |   3.16% |     $360.14  |    $337.66  |  -6.24%  |
-| ASML    | 0.05495    |    $87.54  |   2.93% |   $1,601.21  |  $1,593.09  |  -0.51%  |
+| GOOG    | 0.89503    |   $308.66  |  10.14% |     $335.57  |    $344.87  |  +2.77%  |
+| MRVL    | 1.25761    |   $304.47  |  10.00% |     $240.35  |    $242.10  |  +0.73%  |
+| TSM     | 0.68371    |   $290.67  |   9.55% |     $438.77  |    $425.13  |  -3.11%  |
+| MSFT    | 0.5158     |   $256.60  |   8.43% |     $494.37  |    $497.48  |  +0.63%  |
+| XLF     | 4.23244    |   $235.66  |   7.74% |      $57.23  |     $55.68  |  -2.71%  |
+| XLV     | 1.36714    |   $230.23  |   7.56% |     $175.00  |    $168.39  |  -3.78%  |
+| META    | 0.32361    |   $218.29  |   7.17% |     $608.73  |    $674.54  | +10.81%  |
+| BTC/USD | 0.00287724 |   $220.80  |   7.25% | $79,293.00\* | $76,742.18  |  -3.22%\*|
+| PAVE    | 4.07431    |   $215.72  |   7.09% |      $54.48  |     $52.95  |  -2.82%  |
+| ANET    | 1.02347    |   $209.42  |   6.88% |     $202.77  |    $204.62  |  +0.91%  |
+| VRT     | 0.77074    |   $188.40  |   6.19% |     $286.45  |    $244.44  | -14.67%  |
+| MU      | 0.1814     |   $178.12  |   5.85% |     $942.59  |    $981.91  |  +4.17%  |
+| AVGO    | 0.27908    |    $97.33  |   3.20% |     $360.14  |    $348.74  |  -3.16%  |
+| ASML    | 0.05495    |    $89.58  |   2.94% |   $1,601.21  |  $1,630.18  |  +1.81%  |
 
-\* BTC/USD entry price is carried over from before this qty was confirmed — unverified against this specific 0.00287724 lot. Treat Chg% for BTC/USD as unconfirmed.
+Total ≈ $3,043.95
+
+\* BTC/USD entry price predates this qty being confirmed — unverified against this specific 0.00287724 lot. Treat Chg% for BTC/USD as unconfirmed.
 
 ## Other holdings (not in this account's pie)
 
-| Symbol  | Qty     | Entry       | Worth Today | Chg %   | Status |
-|---------|--------:|------------:|------------:|--------:|--------|
-| QQQ     | 1.49667 |     $707.57 |     $705.42 |  -0.30% | Confirmed — separate, USDC-funded account. Value $1,055.78 there does not count toward the $2,982.98 total above. |
-| AMD     |       — |     $380.64 |     $347.50 |  -8.44% | 👁 On watch — not in this account's pie, status unresolved |
-| MAGS    |       — |     $179.00 |     $182.50 |  +1.96% | 👁 On watch — not in this account's pie, status unresolved |
-| DRAM    |       — |     $500.00 |     $476.58 |  -4.68% | 👁 On watch — not in this account's pie, status unresolved |
-| DE      |       — |     $695.00 |     $698.97 |  +0.57% | 👁 On watch — not in this account's pie, status unresolved |
-| VYM     |       — |     $163.00 |     $164.46 |  +0.90% | 👁 On watch — not in this account's pie, status unresolved |
-| VOO     |       — |     $699.00 |     $707.71 |  +1.25% | 👁 On watch — not in this account's pie, status unresolved |
-| XLE     |       — |      $64.04 |      $64.21 |  +0.27% | 👁 On watch — not in this account's pie, status unresolved |
+| Symbol  | Qty     | Entry       | Worth Today | Chg %    | Status |
+|---------|--------:|------------:|------------:|---------:|--------|
+| QQQ     | 1.49667 |     $707.57 |     $716.64 |  +1.28%  | Confirmed — separate, USDC-funded account. Value ≈$1,072.57 there does not count toward the $3,043.95 total above. |
+| AMD     |       — |     $380.64 |     $538.68 | +41.52%  | 👁 On watch — not in this account's pie, status unresolved. Gain is unusually large; sanity-check the entry price. |
+| MAGS    |       — |     $179.00 |     $70.62  | -60.55%\*| 👁 On watch — ⚠ suspect data, see flags below |
+| DRAM    |       — |     $500.00 |     $57.66  | -88.47%\*| 👁 On watch — ⚠ suspect data, see flags below |
+| DE      |       — |     $695.00 |     $680.36 |  -2.11%  | 👁 On watch — not in this account's pie, status unresolved |
+| VYM     |       — |     $163.00 |     $160.49 |  -1.54%  | 👁 On watch — not in this account's pie, status unresolved |
+| VOO     |       — |     $699.00 |     $700.51 |  +0.22%  | 👁 On watch — not in this account's pie, status unresolved |
+| XLE     |       — |      $64.04 |      $63.99 |  -0.09%  | 👁 On watch — not in this account's pie, status unresolved |
 
 **Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW — AMD, MAGS, DRAM, DE, VYM, VOO, XLE are kept on active watch (table above), not moved here, until sold/elsewhere is confirmed.
 
-## Cross-check flags (2026-09-16)
+## Cross-check flags (2026-09-17)
 
-- **Main account is now fully accounted for.** The Assets/allocation screen's 14 positions sum to 100% (≈$2,982.98 total), split into 7 shown directly and 7 grouped under "Others." That's a closed set — nothing else is hiding off-screen in *this* account.
-- **QQQ lives in a separate account** — bought with USDC, per its transaction log — which is why it's absent from this account's pie.
-- **BTC/USD quantity confirmed for the first time** (0.00287724, value $217.47) — but its Entry ($79,293) predates that confirmation and may not be the real cost basis for this exact lot. Flagged, not asserted.
-- **Value/% Alloc columns are new** — reflects actual position size, not just price. Prices in this table (14:02 snapshot) are marginally fresher than the 13:59 screenshots and supersede them; Chg% recalculated accordingly.
+- **Prices refreshed from Twelve Data live quotes, not screenshots.** Every Worth Today above is a real-time pull at time of writing, superseding all prior screenshot-derived prices. Value/% Alloc for the main account were recomputed from these live prices × the last-confirmed quantities (2026-09-16 pie) — that changes the account total from $2,982.98 to $3,043.95, purely from price movement, not a new balance check.
+- **PAVE entry corrected:** $58.48 → **$54.48** (user correction). This is very likely what "the percentages are wrong" traced back to — the old figure understated the gain and threw off Chg%.
+- **⚠ MAGS and DRAM look like bad data, not real moves.** MAGS entry $179 vs. live $70.62 (-60.5%) and DRAM entry $500 vs. live $57.66 (-88.5%) are implausibly large swings compared to every other position here. Likely explanation: Twelve Data resolved "MAGS"/"DRAM" to a different instrument than the Roundhill ETFs named in `watchlist.md` (ticker collision), or the original $179/$500 entries were never real cost bases to begin with. **Do not treat these Chg% as real until verified** — confirm the actual entry price and correct ticker/exchange for these two.
+- **AMD's +41.52%** is large but not implausible on its own (single large swing, not an order-of-magnitude mismatch like MAGS/DRAM) — flagged for a sanity check, not asserted as bad data.
+- **Sold-status question for AMD, MAGS, DRAM, DE, VYM, VOO, XLE remains open and deliberately not being chased this round**, per earlier instruction — still just on watch.
 - **Metric mismatch stands:** broker screens show live price ± *intraday* % change; this file's Chg% is *total return vs. entry*. Not interchangeable.
