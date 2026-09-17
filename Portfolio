@@ -31,20 +31,18 @@ Total ≈ $3,043.95
 |---------|--------:|------------:|------------:|---------:|--------|
 | QQQ     | 1.49667 |     $707.57 |     $716.64 |  +1.28%  | Confirmed — separate, USDC-funded account. Value ≈$1,072.57 there does not count toward the $3,043.95 total above. |
 | AMD     |       — |     $380.64 |     $538.68 | +41.52%  | 👁 On watch — not in this account's pie, status unresolved. Gain is unusually large; sanity-check the entry price. |
-| MAGS    |       — |     $179.00 |     $70.62  | -60.55%\*| 👁 On watch — ⚠ suspect data, see flags below |
-| DRAM    |       — |     $500.00 |     $57.66  | -88.47%\*| 👁 On watch — ⚠ suspect data, see flags below |
 | DE      |       — |     $695.00 |     $680.36 |  -2.11%  | 👁 On watch — not in this account's pie, status unresolved |
 | VYM     |       — |     $163.00 |     $160.49 |  -1.54%  | 👁 On watch — not in this account's pie, status unresolved |
 | VOO     |       — |     $699.00 |     $700.51 |  +0.22%  | 👁 On watch — not in this account's pie, status unresolved |
 | XLE     |       — |      $64.04 |      $63.99 |  -0.09%  | 👁 On watch — not in this account's pie, status unresolved |
 
-**Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW — AMD, MAGS, DRAM, DE, VYM, VOO, XLE are kept on active watch (table above), not moved here, until sold/elsewhere is confirmed.
+**Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW, MAGS, DRAM — AMD, DE, VYM, VOO, XLE are kept on active watch (table above), not moved here, until sold/elsewhere is confirmed.
 
 ## Cross-check flags (2026-09-17)
 
 - **Prices refreshed from Twelve Data live quotes, not screenshots.** Every Worth Today above is a real-time pull at time of writing, superseding all prior screenshot-derived prices. Value/% Alloc for the main account were recomputed from these live prices × the last-confirmed quantities (2026-09-16 pie) — that changes the account total from $2,982.98 to $3,043.95, purely from price movement, not a new balance check.
 - **PAVE entry corrected:** $58.48 → **$54.48** (user correction). This is very likely what "the percentages are wrong" traced back to — the old figure understated the gain and threw off Chg%.
-- **⚠ MAGS and DRAM look like bad data, not real moves.** MAGS entry $179 vs. live $70.62 (-60.5%) and DRAM entry $500 vs. live $57.66 (-88.5%) are implausibly large swings compared to every other position here. Likely explanation: Twelve Data resolved "MAGS"/"DRAM" to a different instrument than the Roundhill ETFs named in `watchlist.md` (ticker collision), or the original $179/$500 entries were never real cost bases to begin with. **Do not treat these Chg% as real until verified** — confirm the actual entry price and correct ticker/exchange for these two.
+- **MAGS and DRAM confirmed sold** — moved to the Sold line. Their live-quote Chg% (-60.5% / -88.5%) is dropped entirely; those were flagged as probable ticker-mismatch data and are now moot since the positions are closed. No exit price recorded — say so if you want realized P/L tracked here.
 - **AMD's +41.52%** is large but not implausible on its own (single large swing, not an order-of-magnitude mismatch like MAGS/DRAM) — flagged for a sanity check, not asserted as bad data.
 - **Sold-status question for AMD, MAGS, DRAM, DE, VYM, VOO, XLE remains open and deliberately not being chased this round**, per earlier instruction — still just on watch.
 - **Metric mismatch stands:** broker screens show live price ± *intraday* % change; this file's Chg% is *total return vs. entry*. Not interchangeable.
