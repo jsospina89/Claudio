@@ -1,29 +1,26 @@
 # Portfolio
 
-_Last updated: 2026-09-17 (live prices via Twelve Data)_
+_Last updated: 2026-09-18_
 
-## Main account (qty from 2026-09-16 Assets pie; Value/% Alloc recomputed from live prices below, so these are derived, not a fresh statement)
+## Main account (qty from 2026-09-16 Assets pie; Value/% Alloc recomputed from live prices, so these are derived, not a fresh statement)
 
 | Symbol  | Qty        | Value      | % Alloc | Entry        | Worth Today | Chg %    |
 |---------|-----------:|-----------:|--------:|-------------:|------------:|---------:|
-| GOOG    | 0.89503    |   $308.66  |  10.14% |     $335.57  |    $344.87  |  +2.77%  |
-| MRVL    | 1.25761    |   $304.47  |  10.00% |     $240.35  |    $242.10  |  +0.73%  |
-| TSM     | 0.68371    |   $290.67  |   9.55% |     $438.77  |    $425.13  |  -3.11%  |
-| MSFT    | 0.5158     |   $256.60  |   8.43% |     $494.37  |    $497.48  |  +0.63%  |
-| XLF     | 4.23244    |   $235.66  |   7.74% |      $57.23  |     $55.68  |  -2.71%  |
-| XLV     | 1.36714    |   $230.23  |   7.56% |     $175.00  |    $168.39  |  -3.78%  |
-| META    | 0.32361    |   $218.29  |   7.17% |     $608.73  |    $674.54  | +10.81%  |
-| BTC/USD | 0.00287724 |   $220.80  |   7.25% | $79,293.00\* | $76,742.18  |  -3.22%\*|
-| PAVE    | 4.07431    |   $215.72  |   7.09% |      $54.48  |     $52.95  |  -2.82%  |
-| ANET    | 1.02347    |   $209.42  |   6.88% |     $202.77  |    $204.62  |  +0.91%  |
-| VRT     | 0.77074    |   $188.40  |   6.19% |     $286.45  |    $244.44  | -14.67%  |
-| MU      | 0.1814     |   $178.12  |   5.85% |     $942.59  |    $981.91  |  +4.17%  |
-| AVGO    | 0.27908    |    $97.33  |   3.20% |     $360.14  |    $348.74  |  -3.16%  |
-| ASML    | 0.05495    |    $89.58  |   2.94% |   $1,601.21  |  $1,630.18  |  +1.81%  |
+| GOOG    | 0.89503    |   $308.66  |  10.93% |     $335.57  |    $344.87  |  +2.77%  |
+| MRVL    | 1.25761    |   $304.47  |  10.79% |     $240.35  |    $242.10  |  +0.73%  |
+| TSM     | 0.68371    |   $290.67  |  10.30% |     $438.77  |    $425.13  |  -3.11%  |
+| MSFT    | 0.5158     |   $256.60  |   9.09% |     $494.37  |    $497.48  |  +0.63%  |
+| XLF     | 4.23244    |   $235.66  |   8.35% |      $57.23  |     $55.68  |  -2.71%  |
+| XLV     | 1.36714    |   $230.23  |   8.16% |     $175.00  |    $168.39  |  -3.78%  |
+| META    | 0.32361    |   $218.29  |   7.73% |     $608.73  |    $674.54  | +10.81%  |
+| PAVE    | 4.07431    |   $215.72  |   7.64% |      $54.48  |     $52.95  |  -2.82%  |
+| ANET    | 1.02347    |   $209.42  |   7.42% |     $202.77  |    $204.62  |  +0.91%  |
+| VRT     | 0.77074    |   $188.40  |   6.67% |     $286.45  |    $244.44  | -14.67%  |
+| MU      | 0.1814     |   $178.12  |   6.31% |     $942.59  |    $981.91  |  +4.17%  |
+| AVGO    | 0.27908    |    $97.33  |   3.45% |     $360.14  |    $348.74  |  -3.16%  |
+| ASML    | 0.05495    |    $89.58  |   3.17% |   $1,601.21  |  $1,630.18  |  +1.81%  |
 
-Total ≈ $3,043.95
-
-\* BTC/USD entry price predates this qty being confirmed — unverified against this specific 0.00287724 lot. Treat Chg% for BTC/USD as unconfirmed.
+Total ≈ $2,823.15
 
 ## Other holdings (not in this account's pie)
 
@@ -36,13 +33,13 @@ Total ≈ $3,043.95
 | VOO     |       — |     $699.00 |     $700.51 |  +0.22%  | 👁 On watch — not in this account's pie, status unresolved |
 | XLE     |       — |      $64.04 |      $63.99 |  -0.09%  | 👁 On watch — not in this account's pie, status unresolved |
 
-**Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW, MAGS, DRAM — AMD, DE, VYM, VOO, XLE are kept on active watch (table above), not moved here, until sold/elsewhere is confirmed.
+**Sold:** AAOI, CRWV, CRDO, XLI, ALAB, GLW, MAGS, DRAM, BTC/USD — AMD, DE, VYM, VOO, XLE are kept on active watch (table above), not moved here, until sold/elsewhere is confirmed.
 
-## Cross-check flags (2026-09-17)
+## Cross-check flags (2026-09-18)
 
-- **Prices refreshed from Twelve Data live quotes, not screenshots.** Every Worth Today above is a real-time pull at time of writing, superseding all prior screenshot-derived prices. Value/% Alloc for the main account were recomputed from these live prices × the last-confirmed quantities (2026-09-16 pie) — that changes the account total from $2,982.98 to $3,043.95, purely from price movement, not a new balance check.
-- **PAVE entry corrected:** $58.48 → **$54.48** (user correction). This is very likely what "the percentages are wrong" traced back to — the old figure understated the gain and threw off Chg%.
-- **MAGS and DRAM confirmed sold** — moved to the Sold line. Their live-quote Chg% (-60.5% / -88.5%) is dropped entirely; those were flagged as probable ticker-mismatch data and are now moot since the positions are closed. No exit price recorded — say so if you want realized P/L tracked here.
-- **AMD's +41.52%** is large but not implausible on its own (single large swing, not an order-of-magnitude mismatch like MAGS/DRAM) — flagged for a sanity check, not asserted as bad data.
-- **Sold-status question for AMD, MAGS, DRAM, DE, VYM, VOO, XLE remains open and deliberately not being chased this round**, per earlier instruction — still just on watch.
+- **BTC/USD sold, per this update.** Removed from the main account table; total dropped from $3,043.95 to $2,823.15 (exactly the ~$220.80 BTC position, at 2026-09-17's live price — not a market move elsewhere). Remaining 13 positions' % Alloc recomputed against the new total. No exit price given — say so if you want realized P/L tracked.
+- **PAVE entry corrected:** $58.48 → **$54.48** (user correction, still in effect).
+- **MAGS and DRAM confirmed sold** (prior update) — no exit price recorded for either.
+- **AMD's +41.52%** (in Other holdings, live-priced 2026-09-17) is large but not implausible — flagged for a sanity check, not asserted as bad data.
+- **Sold-status question for AMD, DE, VYM, VOO, XLE remains open and deliberately not being chased this round** — still just on watch.
 - **Metric mismatch stands:** broker screens show live price ± *intraday* % change; this file's Chg% is *total return vs. entry*. Not interchangeable.
